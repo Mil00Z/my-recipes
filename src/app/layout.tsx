@@ -1,8 +1,10 @@
+
 import type { Metadata,Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+//Styles
 import "./starter.css";
-// import '@/styles/raw.css';
+import '@/styles/raw.css';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,9 +28,10 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#fff",
+  themeColor: "var(--main-color)",
 
 }
+
 
 export default function RootLayout({
   children,
@@ -36,10 +39,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+        className={`${geistSans.variable} ${geistMono.variable} antialiased home`}>
         {children}
       </body>
     </html>
