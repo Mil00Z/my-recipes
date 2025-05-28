@@ -3,11 +3,12 @@
 --secondary-color: #FFD15B;
 --third-color:#1B1B1B;
 --corporate-color:#b94744;
+--initial-bg-color:#EDEDED;
 
 --body-font-family: 'Manrope', sans-serif;
 --body-font-size: 1rem;
 --body-font-color:var(--black-color);
---body-background-color:#EDEDED;
+--body-background-color:var(--primary-color);
 
 --title-font-family: 'Anton', sans-serif;
 --title-font-size: 3rem;
@@ -94,7 +95,7 @@ display: flex;
 padding: var(--regular-spacing);
 flex-wrap: wrap;
 justify-content: center;
-background: linear-gradient(to right,rgba(0, 0, 0, var(--op))30%, rgba(0, 0, 0, var(--op)) 100%), url('../assets/header-bg.jpg');
+background: linear-gradient(to right,rgba(0, 0, 0, var(--op))30%, rgba(0, 0, 0, var(--op)) 100%), url('/header-bg.jpg');
 background-size: cover;
 background-repeat: no-repeat;
 }
@@ -109,6 +110,10 @@ background-repeat: no-repeat;
 .top-header > a {
     display: block;
     width: fit-content;
+}
+.link {
+    color:var(--white-color);
+    font-size:var(--body-font-size);
 }
 
 .hero {
@@ -300,10 +305,10 @@ form:focus-within .btn-search i {
     color:currentColor;
 }
 
-.filters option:selected{
+/* .filters option:selected{
     background:var(--black-color);
     color:var(--white-color);
-}
+} */
 
 .recipes-counter {
     font-family: var(--title-font-family);
