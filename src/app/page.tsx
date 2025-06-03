@@ -5,6 +5,10 @@ import {useEffect} from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+
+import Hero from "@/components/Hero/Hero";
+
+
 import { useStore } from "@/hooks/dataStore";
 
 const Home = () => {
@@ -18,7 +22,6 @@ console.log(initialRecipes,count,matchingRecipes);
 
 useEffect(() => {
 
- 
 
 }, [count]);
 
@@ -37,18 +40,7 @@ return(
         </Link>
     </div> 
 
-    <div className="hero">
-        <h1 className="hero-title">cherchez parmi plus de <span className="initial-count">{count}</span> recettes<br/>
-            du quotidien,simples et délicieuses
-        </h1>
-
-        <form action="/" className="the-form">
-            <label htmlFor="main-search" className="v-hidden">Recherche</label>
-            <input type="search" name="main-search" id="main-search" placeholder="Rechercher une recette, un ingrédient..."/>
-            <button type="submit" className="btn btn-search" aria-label="bouton de recherche"><i className="fa-solid fa-search"></i></button>
-        </form>
-       
-    </div>
+    <Hero />
 
    </header>
 
