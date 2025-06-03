@@ -1,13 +1,28 @@
 'use client';
 
-import {useState} from "react";
+import {useEffect} from "react";
 
 import Link from "next/link";
 import Image from "next/image";
 
+import { useStore } from "@/hooks/dataStore";
+
 const Home = () => {
 
-const [countRecipes, setCountRecipes] = useState<number>(10);
+const {initialRecipes,count,matchingRecipes,incrementCount} = useStore();
+
+console.log(initialRecipes,count,matchingRecipes);
+
+
+
+
+useEffect(() => {
+
+ 
+
+}, [count]);
+
+
 
 return(
 <>
@@ -23,7 +38,7 @@ return(
     </div> 
 
     <div className="hero">
-        <h1 className="hero-title">cherchez parmi plus de <span className="initial-count">{countRecipes}</span> recettes<br/>
+        <h1 className="hero-title">cherchez parmi plus de <span className="initial-count">{count}</span> recettes<br/>
             du quotidien,simples et délicieuses
         </h1>
 
@@ -32,6 +47,7 @@ return(
             <input type="search" name="main-search" id="main-search" placeholder="Rechercher une recette, un ingrédient..."/>
             <button type="submit" className="btn btn-search" aria-label="bouton de recherche"><i className="fa-solid fa-search"></i></button>
         </form>
+       
     </div>
 
    </header>
@@ -84,7 +100,9 @@ return(
 
         </form>
 
-        <div className="recipes-counter" aria-label="nombre de recettes disponibles"> <span className="count">{countRecipes}</span> recette(s)</div>
+        <div className="recipes-counter" aria-label="nombre de recettes disponibles"> <span className="count">{count}</span> recette(s)</div>
+
+        <button className="btn btn-cta" onClick={() => incrementCount()}>one up +1</button>
 
     </section>
 
@@ -92,11 +110,11 @@ return(
     </section>
 
    </main>
-<div className="debeug"></div>
 
     <footer className="main-footer">
-      <div className="copyright">&copy; 2024 - Les Petits Plats by <a href="https://github.com/Mil00Z"><span> Mil00Z </span></a></div>
+      <div className="copyright">&copy; {new Date().getFullYear()} - My Recipes by <a href="https://github.com/Mil00Z/my-recipes"><span> Mil00Z </span></a></div>
     </footer>
+
   </>
   )
 }
