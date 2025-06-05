@@ -1,9 +1,9 @@
 {
   "recipes":[
     {
-      "id": 1,
-      "image": "hf/chaussons-cantal.jpg",
-      "name" : "Chaussons d'été au cantal AOP & poivrons avec une salade aux noix",
+      "id": "1",
+      "image": "/hf/chaussons-cantal.jpg",
+      "title" : "Chaussons d'été au cantal AOP & poivrons avec une salade aux noix",
       "servings" : 2,
       "ingredients": [
           {
@@ -50,9 +50,9 @@
       "ustensils": ["poêle", "bol", "saladier","papier sulfurisé","plaque de cuisson" ]
   },
   {
-      "id": 2,
-      "image": "hf/vege-teriyaki.jpg",
-      "name" : "Le Végé : émincés végétariens façon teriyak",
+      "id": "2",
+      "image": "/hf/vege-teriyaki.jpg",
+      "title" : "Le Végé : émincés végétariens façon teriyak",
       "servings": 2,
       "ingredients": [
         {
@@ -108,9 +108,9 @@
       "ustensils": ["Passoire","Casserole avec couvercle",
       "Râpe","Éplucheur","Bol"]
   },{
-      "id": 3,
-      "image": "hf/poulet-fraise.jpg",
-      "name": "Poulet & réduction fraise balsamique",
+      "id": "3",
+      "image": "/hf/poulet-fraise.jpg",
+      "title": "Poulet & réduction fraise balsamique",
       "servings": 2,
       "ingredients": [
           {
@@ -154,9 +154,9 @@
       "ustensils": ["Sauteuses avec couvercle","Eplucheur","Passoire"]
     },
     {
-    "id": 4,
-    "image": "hf/saumon-pistou.jpg",
-    "name": "Saumon en papillote & pistou maison",
+    "id": "4",
+    "image": "/hf/saumon-pistou.jpg",
+    "title": "Saumon en papillote & pistou maison",
     "servings": 2,
     "ingredients": [
         {
@@ -189,9 +189,9 @@
     "ustensils": ["Casserole avec couvercle","Sauteuse avec couvercle","Passoire","Plat à four","Eplucheur","Bol","Papier Aluminium"]
     },
     {
-        "id": 5,
-        "image": "hf/enchiladas-veggie.jpg",
-        "name": "Enchiladas veggie gratinées aux haricots noirs",
+        "id": "5",
+        "image": "/hf/enchiladas-veggie.jpg",
+        "title": "Enchiladas veggie gratinées aux haricots noirs",
         "servings": 2,
         "ingredients": [
             {
@@ -240,9 +240,9 @@
         "ustensils": ["Casserole avec couvercle","Poele","Passoire"]
       },
       {
-      "id": 6,
-      "image": "hf/manouche-libanais.jpg",
-      "name": "Man'ouché libanais, carotte rôtie & houmous",
+      "id": "6",
+      "image": "/hf/manouche-libanais.jpg",
+      "title": "Man'ouché libanais, carotte rôtie & houmous",
       "servings": 2,
       "ingredients": [
             {

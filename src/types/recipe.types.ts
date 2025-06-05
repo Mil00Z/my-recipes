@@ -1,6 +1,6 @@
 export type Recipe = {
-  id:number;
-  image:string;
+  id:string;
+  image ?:string;
   title:string;
   servings:number;
   ingredients: {
