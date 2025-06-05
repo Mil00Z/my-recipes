@@ -2,9 +2,14 @@
 import type { Metadata,Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+//Layouts
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
+
 //Styles
-import "./starter.css";
-import '@/styles/raw.css';
+import "@/styles/main.scss";
+import "@/styles/raw.css";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +38,7 @@ export const viewport: Viewport = {
 }
 
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,9 +46,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className="h-full">
+      <head>
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+            integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+            crossOrigin="anonymous"
+            referrerPolicy="no-referrer"
+          />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased home`}>
-        {children}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          
+            {children}
+
+            <Footer />
       </body>
     </html>
   );
