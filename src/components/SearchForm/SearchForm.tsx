@@ -6,12 +6,12 @@ import "./SearchForm.scss";
 
 
 interface SearchFormProps {
-  initialRecipes: Recipe[];
+  recipes: Recipe[];
   matchingRecipes: Recipe[];
   count:number;
 } 
 
-const SearchForm = ({initialRecipes,matchingRecipes,count}:SearchFormProps) => {
+const SearchForm = ({recipes,matchingRecipes,count}:SearchFormProps) => {
 
 
 //Checking Datas
