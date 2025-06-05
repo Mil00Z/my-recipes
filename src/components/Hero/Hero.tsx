@@ -1,11 +1,15 @@
+'use client';
+
 import { useStore } from "@/hooks/dataStore";
 
 import SearchForm from "@/components/SearchForm/SearchForm";
 
+//Styles
+import "./Hero.scss";
 
 const Hero = () => {
 
- const {initialRecipes,matchingRecipes,count} = useStore();
+ const {recipes,matchingRecipes,count} = useStore();
 
 return(
 
@@ -14,7 +18,7 @@ return(
 
     <h1 className="hero-title">cherchez parmi plus de <span className="initial-count">{count}</span> recettes<br/>du quotidien,simples et délicieuses</h1>
 
-    <SearchForm recipes={initialRecipes} matchingRecipes={matchingRecipes} count={count} />
+    <SearchForm recipes={recipes} matchingRecipes={matchingRecipes} count={count} />
 
   </div>
   </>
