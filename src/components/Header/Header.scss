@@ -1,0 +1,26 @@
+/* Header */
+.main-header{
+--op:.3;
+width: 100%;
+height:700px;
+display: flex;
+padding: var(--regular-spacing);
+flex-wrap: wrap;
+justify-content: center;
+background: linear-gradient(to right,rgba(0, 0, 0, var(--op))30%, rgba(0, 0, 0, var(--op)) 100%), url('/header-bg.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+}
+
+
+.top-header {
+    width: 100%;
+    height:fit-content;
+    margin: 1.5rem;
+
+     & > a {
+      display: block;
+      width: fit-content;
+     }
+}
+
