@@ -10,11 +10,11 @@ interface RecipesListProps {
 
 const RecipesList = ({recipes,matchingRecipes}:RecipesListProps) => {
 
-console.log(recipes);
+const displayedRecipes = matchingRecipes?.length > 0 ? matchingRecipes : recipes;
 
   return (
     <section className="recipes-container">
-      {recipes.map((recipe:Recipe) => {
+      {displayedRecipes.map((recipe:Recipe) => {
         return (<RecipeCard key={recipe.id} recipe={recipe} />) 
       })}
     </section>

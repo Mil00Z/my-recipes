@@ -7,24 +7,49 @@ import "./SearchForm.scss";
 
 interface SearchFormProps {
   recipes: Recipe[];
-  matchingRecipes: Recipe[];
-  count:number;
 } 
 
-const SearchForm = ({recipes,matchingRecipes,count}:SearchFormProps) => {
+const SearchForm = ({recipes}:SearchFormProps) => {
+
+  const {matchingRecipes,updateResults} = useStore();
+
+  const minimumQueryLength = 4;
 
 
 //Checking Datas
-function TestingInput(element) {
+function TestingInput(element:string) {
 
-  console.log(element);
+  if (element.length >= minimumQueryLength) {
+
+    const searchValue = element.toLowerCase();
+
+    let results = recipes.filter((recipe:Recipe)=> {
+
+                const nameMatch = recipe.title.toLowerCase().includes(searchValue);
+                const descriptionMatch = recipe.description.toLowerCase().includes(searchValue);
+
+                const ingredientsArray = recipe.ingredients.map((ingredient)=> ingredient.ingredient.toLowerCase())
+               
+                const ingredientMatch = ingredientsArray.some((ingredient)=> {
+
+                    return ingredient.includes(searchValue);
+
+                });
+
+                return nameMatch || descriptionMatch || ingredientMatch;
+
+            });
+
+    updateResults(results);
+  }
+  
 }
 
 return(
 
     <form action="/" className="the-form">
         <label htmlFor="main-search" className="v-hidden">Recherche</label>
-        <input type="search" name="main-search" id="main-search" onChange={(event) => TestingInput(event.target.value)} placeholder="Rechercher une recette, un ingrédient..."/>
+        <input type="search" name="main-search" id="main-search" onChange={(event) => TestingInput(event.target.value)} placeholder="Rechercher une recette, un ingrédient..." aria-label="barre de recherche de recettes" minLength={minimumQueryLength}/>
         <button type="submit" className="btn btn-search" aria-label="bouton de recherche"><i className="fa-solid fa-search"></i></button>
     </form>
   )
