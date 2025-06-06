@@ -9,16 +9,16 @@ import "./Hero.scss";
 
 const Hero = () => {
 
- const {recipes,matchingRecipes,count} = useStore();
+ const {recipes} = useStore();
 
 return(
 
   <>
   <div className="hero">
 
-    <h1 className="hero-title">cherchez parmi plus de <span className="initial-count">{count}</span> recettes<br/>du quotidien,simples et délicieuses</h1>
+    <h1 className="hero-title">cherchez parmi plus de <span className="initial-count">{recipes?.length ?? 0}</span> recettes<br/>du quotidien,simples et délicieuses</h1>
 
-    <SearchForm recipes={recipes} matchingRecipes={matchingRecipes} count={count} />
+    <SearchForm recipes={recipes} />
 
   </div>
   </>
