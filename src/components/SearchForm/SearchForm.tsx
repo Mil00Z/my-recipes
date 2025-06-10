@@ -13,11 +13,18 @@ const SearchForm = ({recipes}:SearchFormProps) => {
 
   const {matchingRecipes,updateResults} = useStore();
 
-  const minimumQueryLength = 4;
+  const minimumQueryLength = 3;
 
 
 //Checking Datas
-function TestingInput(element:string) {
+function MainSearch(element:string) {
+
+  if(element.length === 0) {
+
+    updateResults(recipes);
+    return ;
+
+  }
 
   if (element.length >= minimumQueryLength) {
 
@@ -49,7 +56,7 @@ return(
 
     <form action="/" className="the-form">
         <label htmlFor="main-search" className="v-hidden">Recherche</label>
-        <input type="search" name="main-search" id="main-search" onChange={(event) => TestingInput(event.target.value)} placeholder="Rechercher une recette, un ingrédient..." aria-label="barre de recherche de recettes" minLength={minimumQueryLength}/>
+        <input type="search" name="main-search" id="main-search" onChange={(event) => MainSearch(event.target.value)} placeholder="Rechercher une recette, un ingrédient..." aria-label="barre de recherche de recettes" minLength={minimumQueryLength}/>
         <button type="submit" className="btn btn-search" aria-label="bouton de recherche"><i className="fa-solid fa-search"></i></button>
     </form>
   )
