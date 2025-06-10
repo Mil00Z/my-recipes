@@ -1,6 +1,8 @@
 
 import Header from "@/components/Header/Header";
 
+import StoreDebbuger from "../Debeug/Debeug";
+
 type PageWrapperProps = {
   children: React.ReactNode;
   layout?: string;
@@ -19,6 +21,8 @@ const PageWrapper = ({children,layout =''}:PageWrapperProps) =>{
       {children}
 
     </main>
+
+    <StoreDebbuger />
     
   </>
   )
