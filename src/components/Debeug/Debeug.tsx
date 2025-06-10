@@ -2,18 +2,17 @@ import { useStore } from "@/hooks/dataStore";
 
 const StoreDebbuger = () => {
 
- const {matchingRecipes} = useStore();
-  
+ const {matchingRecipes,count} = useStore();
 
 return(
-   <div className="store-debbuger debeug">
+   <div className="store-debbuger">
       <h3>Store Debug - Count: <span>{matchingRecipes.length}</span></h3>
-      
+  
       <pre>
-        {JSON.stringify({ matchingRecipes }, null, 2)}
+        {JSON.stringify({ matchingRecipes }, null, 1)}
       </pre>
+      
     </div>
 )
-
 };
 export default StoreDebbuger;
