@@ -40,13 +40,13 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-const {recipes,count,matchingRecipes,incrementCount} = useStore();
+const {recipes,count,matchingRecipes,updateResults} = useStore();
 
-// useEffect(() => {
 
-//     console.log(recipes,count,matchingRecipes);
-    
-// }, [count]);
+
+useEffect(() => {
+  updateResults(recipes);
+}, []);
 
 
 return(
@@ -72,9 +72,9 @@ return(
               <span className="count">{count}</span> recette(s)
             </div>
 
-            <button className="btn btn-cta" onClick={() => incrementCount()}>
+            {/* <button className="btn btn-cta" >
               one up +1
-            </button>
+            </button> */}
       </section>
 
       <section className="recipes-container">

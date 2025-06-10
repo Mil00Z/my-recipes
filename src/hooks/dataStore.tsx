@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import {persist} from 'zustand/middleware';
 
 import type { Recipe } from '@/types/recipe.types';
 import {recipes as initialRecipes} from '@/datas/recipes';
@@ -10,9 +11,11 @@ type Store = {
   matchingRecipes: Recipe[];
   incrementCount: () => void;
   updateResults: (results: Recipe[]) => void;
+  resetResults: () => void;
 };  
 
-export const useStore = create<Store>((set) => ({
+export const useStore = create<Store>(
+  persist((set) => ({
   recipes: initialRecipes,
   count:initialRecipes.length,
   matchingRecipes: [],
@@ -20,5 +23,13 @@ export const useStore = create<Store>((set) => ({
   updateResults: (results:Recipe[]) => set((state) => ({    matchingRecipes:results,
   count:results?.length ?? state.initialRecipes.length
   })),
-}));
+  resetResults: () => set((state) => ({ 
+  matchingRecipes: [],
+  count: initialRecipes.length
+  })),
+}),{
+  name:'recipes-stored',
+  }
+)
+);
 
