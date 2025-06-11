@@ -10,11 +10,12 @@ import "./Filter.scss";
 
 const FilterSearch = ({type,title,method}:Filter) => {
 
-    const {matchingRecipes} = useStore();
+    const {matchingRecipes,tag,updateTags} = useStore();
 
     function saveTag(element:string){
 
-        console.log(type,element)
+        updateTags({type:type,value:element});
+       
        
     }
 
