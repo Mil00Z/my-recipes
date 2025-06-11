@@ -1,0 +1,19 @@
+.search-results {
+  --gap: .45rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--gap);
+  
+  > li,
+  .option{
+  padding: .5rem 1rem;
+  color: var(--black-color);
+
+    &:hover,
+    &:focus{
+      background: var(--secondary-color);
+      color: var(--white-color);
+      cursor: pointer;
+    }
+  }
+}
