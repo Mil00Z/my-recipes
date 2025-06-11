@@ -10,6 +10,7 @@ import type { Filter } from "@/types/filter.types";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import FilterSearch from "@/components/Filters/Filter";
 import RecipesList from "@/components/RecipesList/RecipesList";
+import TagElement from "@/components/Tag/Tag";
 
 
 const FiltersDatas : Filter[] = [
@@ -40,13 +41,13 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-const {recipes,count,matchingRecipes,updateResults} = useStore();
+  const {recipes,count,matchingRecipes,updateResults} = useStore();
 
 
 
-useEffect(() => {
-  updateResults(recipes);
-}, []);
+  useEffect(() => {
+    updateResults(recipes);
+  }, []);
 
 
 return(
@@ -64,7 +65,9 @@ return(
 
             </div>
                 
-            <div className="recipe-taglist"></div>
+            <div className="recipe-taglist">
+              <TagElement element="tag" />
+            </div>
 
             </form>
 
