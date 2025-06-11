@@ -11,5 +11,5 @@ export type Recipe = {
   time:number;
   description:string;
   appliance:string;
-  ustentils:string[];
+  ustensils:string[];
 }

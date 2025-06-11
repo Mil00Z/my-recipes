@@ -19,8 +19,6 @@ const Recipe = () => {
   const getParams = useParams();
 
   const recipe = recipes.find((recipe:Recipe) => {
-    // console.log('recipe', typeof recipe.id);
-    // console.log('getParams', typeof getParams.id);
     return recipe.id === getParams.id}
   );
 
@@ -32,7 +30,6 @@ const Recipe = () => {
   }
 
   if (!recipe) {
-
     return (
       <div className="debeug recipe-not-found">Recipe not found</div>
     )
@@ -53,7 +50,7 @@ const Recipe = () => {
             className="recipe-cover"
           /> */}
           <img src={recipe.image} alt={recipe.title} />
-          <p>{recipe.description}</p>
+          <p>Kézako : {recipe.description}</p>
           <p>Timing : {recipe.time} min(s)</p>
           <p>Pour : {recipe.servings} gourmand(es)</p>
           <p>Appareil principal : {recipe.appliance}</p>
