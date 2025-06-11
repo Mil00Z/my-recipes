@@ -1,103 +1,88 @@
 'use client';
 
-import {useState} from "react";
+import {useEffect} from "react";
 
-import Link from "next/link";
-import Image from "next/image";
+import { useStore } from "@/hooks/dataStore";
+import type { Filter } from "@/types/filter.types";
+
+
+//UI
+import PageWrapper from "@/components/PageWrapper/PageWrapper";
+import FilterSearch from "@/components/Filters/Filter";
+import RecipesList from "@/components/RecipesList/RecipesList";
+
+
+const FiltersDatas : Filter[] = [
+
+  {
+    type : 'ingredients',
+    title: 'Ingrédients',
+    method : (value:string) => console.log(value)
+  },
+  {
+    type : 'appliances',
+    title: 'Appareils',
+    method : (value:string) => console.log(value)
+  },
+  {
+    type : 'ustensils',
+    title: 'Ustensiles',
+    method : (value:string) => console.log(value)
+  },
+  {
+    type : 'timing',
+    title: 'Minutages',
+    method : (value:string) => console.log(value)
+  }
+]
+
+
 
 const Home = () => {
 
-const [countRecipes, setCountRecipes] = useState<number>(10);
+const {recipes,count,matchingRecipes,updateResults} = useStore();
+
+
+
+useEffect(() => {
+  updateResults(recipes);
+}, []);
+
 
 return(
-<>
-  <header className="main-header">
+ 
+    <PageWrapper layout="home" >
 
-    <div className="top-header">
-        <Link href="/" aria-label={"lien vers la Homepage"} tabIndex={0}>
-          <Image src="/logo.svg" alt="logo de My-Recipes" width={180} height={38} priority title="V2" />
-        </Link>
-        <Link href="/starter" aria-label={"lien vers le starter"} className="link">
-            Starter
-        </Link>
-    </div> 
-
-    <div className="hero">
-        <h1 className="hero-title">cherchez parmi plus de <span className="initial-count">{countRecipes}</span> recettes<br/>
-            du quotidien,simples et délicieuses
-        </h1>
-
-        <form action="/" className="the-form">
-            <label htmlFor="main-search" className="v-hidden">Recherche</label>
-            <input type="search" name="main-search" id="main-search" placeholder="Rechercher une recette, un ingrédient..."/>
-            <button type="submit" className="btn btn-search" aria-label="bouton de recherche"><i className="fa-solid fa-search"></i></button>
-        </form>
-    </div>
-
-   </header>
-
-   <main className="wrapper">
-
-    <section className="recipes-filter">
-
-        <form action="/" className="form-select">
-
+      <section className="recipes-filter">
+          <form action="/" className="form-select">
             <div className="filters-group">
 
-                <div className="filters">
-                    <label htmlFor="ingredients" className="labels">Ingrédients <i className="fa-solid fa-angle-down"></i></label>
-                    <input type="search" name="ingredients" id="ingredients" className="search-filter"/>
+              {FiltersDatas.map((filter:Filter) => {
 
-                    <ul className="search-results">
-                    </ul>
-                </div>
-
-                <div className="filters">
-                    <label htmlFor="appliances" className="labels">Appareils<i className="fa-solid fa-angle-down"></i></label>
-                    <input type="search" name="appliances" id="appliances" className="search-filter"/>
-
-                    <ul className="search-results">
-                    </ul>
-                </div>
-
-                <div className="filters">
-                    <label htmlFor="ustensils" className="labels">Ustensiles<i className="fa-solid fa-angle-down"></i></label>
-                    <input type="search" name="ustensils" id="ustensils" className="search-filter"/>
-
-                    <ul className="search-results">
-                    </ul>
-                </div>
-
-                <div className="filters">
-                    <label htmlFor="timing" className="labels">Minutages<i className="fa-solid fa-angle-down"></i></label>
-                    <input type="search" name="timing" id="timing" className="search-filter"/>
-
-                    <ul className="search-results">
-                    </ul>
-                </div>
+                  return(<FilterSearch key={filter.type} type={filter.type} title={filter.title} method={filter.method} />)
+              })}
 
             </div>
-            
-            <div className="recipe-taglist">
+                
+            <div className="recipe-taglist"></div>
 
+            </form>
+
+            <div className="recipes-counter" aria-label="nombre de recettes disponibles">
+              <span className="count">{count}</span> recette(s)
             </div>
 
-        </form>
+            {/* <button className="btn btn-cta" >
+              one up +1
+            </button> */}
+      </section>
 
-        <div className="recipes-counter" aria-label="nombre de recettes disponibles"> <span className="count">{countRecipes}</span> recette(s)</div>
+      <section className="recipes-container">
+          <RecipesList recipes={recipes} matchingRecipes={matchingRecipes} />
+      </section>
 
-    </section>
+    </PageWrapper>
 
-    <section className="recipes-container">
-    </section>
-
-   </main>
-<div className="debeug"></div>
-
-    <footer className="main-footer">
-      <div className="copyright">&copy; 2024 - Les Petits Plats by <a href="https://github.com/Mil00Z"><span> Mil00Z </span></a></div>
-    </footer>
-  </>
-  )
+)
 }
 export default Home;

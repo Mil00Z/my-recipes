@@ -1,9 +1,9 @@
 {
   "recipes":[
     {
-      "id": 1,
-      "image": "hf/chaussons-cantal.jpg",
-      "name" : "Chaussons d'été au cantal AOP & poivrons avec une salade aux noix",
+      "id": "1",
+      "image": "/hf/chaussons-cantal.jpg",
+      "title" : "Chaussons d'été au cantal AOP & poivrons avec une salade aux noix",
       "servings" : 2,
       "ingredients": [
           {
@@ -50,9 +50,9 @@
       "ustensils": ["poêle", "bol", "saladier","papier sulfurisé","plaque de cuisson" ]
   },
   {
-      "id": 2,
-      "image": "hf/vege-teriyaki.jpg",
-      "name" : "Le Végé : émincés végétariens façon teriyak",
+      "id": "2",
+      "image": "/hf/vege-teriyaki.jpg",
+      "title" : "Le Végé : émincés végétariens façon teriyak",
       "servings": 2,
       "ingredients": [
         {
@@ -108,9 +108,9 @@
       "ustensils": ["Passoire","Casserole avec couvercle",
       "Râpe","Éplucheur","Bol"]
   },{
-      "id": 3,
-      "image": "hf/poulet-fraise.jpg",
-      "name": "Poulet & réduction fraise balsamique",
+      "id": "3",
+      "image": "/hf/poulet-fraise.jpg",
+      "title": "Poulet & réduction fraise balsamique",
       "servings": 2,
       "ingredients": [
           {
@@ -151,12 +151,12 @@
       "time": 35,
       "description": "L’association de la fraise et du vinaigre balsamique n’est pas connue de tous, et pourtant ! Cette réduction à la saveur aigre-douce s’associe parfaitement avec ce fruit sucré qu’est la fraise. Tentez l’expérience aujourd’hui avec ce poulet accompagné de délicieuses pommes de terre, de brocoli et de la fameuse réduction fraise balsamique !",
       "appliance": "woke/sauteuse",
-      "ustensils": ["Sauteuses avec couvercle","Eplucheur","Passoire"]
+      "ustensils": ["Sauteuses avec couvercle","Éplucheur","Passoire"]
     },
     {
-    "id": 4,
-    "image": "hf/saumon-pistou.jpg",
-    "name": "Saumon en papillote & pistou maison",
+    "id": "4",
+    "image": "/hf/saumon-pistou.jpg",
+    "title": "Saumon en papillote & pistou maison",
     "servings": 2,
     "ingredients": [
         {
@@ -186,12 +186,12 @@
     "time": 40,
     "description": "La cuisson en papillote permet au saumon de cuire doucement dans ses propres jus, préservant ainsi sa tendreté et sa saveur. Cette méthode de cuisson à la vapeur crée une expérience culinaire légère et saine, où le poisson reste moelleux et savoureux. Ce plat frais et gourmand saura faire plaisir à vos papilles !",
     "appliance": "Four",
-    "ustensils": ["Casserole avec couvercle","Sauteuse avec couvercle","Passoire","Plat à four","Eplucheur","Bol","Papier Aluminium"]
+    "ustensils": ["Casserole avec couvercle","Sauteuse avec couvercle","Passoire","Plat à four","Éplucheur","Bol","Papier Aluminium"]
     },
     {
-        "id": 5,
-        "image": "hf/enchiladas-veggie.jpg",
-        "name": "Enchiladas veggie gratinées aux haricots noirs",
+        "id": "5",
+        "image": "/hf/enchiladas-veggie.jpg",
+        "title": "Enchiladas veggie gratinées aux haricots noirs",
         "servings": 2,
         "ingredients": [
             {
@@ -237,12 +237,12 @@
         "time": 50,
         "description": "Connaissez-vous les enchiladas ? C’est un plat typiquement mexicain composé de tortillas farcies, roulées et nappées d’une sauce légèrement pimentée, puis gratinées avec du fromage, bien sûr ! Alors que les enchiladas sont traditionnellement garnies de viande, cette version réunit deux protéines végétales : le quinoa et les haricots noirs ! La gourmandise à l’état pur, ¡Ay, caramba!",
         "appliance": "Four",
-        "ustensils": ["Casserole avec couvercle","Poele","Passoire"]
+        "ustensils": ["Casserole avec couvercle","Poêle","Passoire"]
       },
       {
-      "id": 6,
-      "image": "hf/manouche-libanais.jpg",
-      "name": "Man'ouché libanais, carotte rôtie & houmous",
+      "id": "6",
+      "image": "/hf/manouche-libanais.jpg",
+      "title": "Man'ouché libanais, carotte rôtie & houmous",
       "servings": 2,
       "ingredients": [
             {
@@ -302,7 +302,7 @@
       "time": 40,
       "description": "Le saviez-vous ? Le Man'ouché est une galette typique de la cuisine levantine, composée d’une pâte levée, arrosée d’huile d’olive et saupoudrée de zaatar, un mélange d’épices dont la composition varie selon les régions mais qui comprend généralement du thym, de l’origan, du sumac et des graines de sésame.",
       "appliance": "Four",
-      "ustensils": ["Plaque de cuisson","papier sulfurisé","Saladier","Eplucheur","Bol","Papier Aluminium"]
+      "ustensils": ["Plaque de cuisson","papier sulfurisé","Saladier","Éplucheur","Bol","Papier Aluminium"]
       }
   ]
 }

@@ -1,0 +1,109 @@
+:root{
+--primary-color: #6C63FF;
+--secondary-color: #FFD15B;
+--third-color:#1B1B1B;
+--corporate-color:#b94744;
+--initial-bg-color:#EDEDED;
+
+--body-font-family: 'Manrope', sans-serif;
+--body-font-size: 1rem;
+--body-font-color:var(--black-color);
+--body-background-color:var(--initial-bg-color);
+
+--title-font-family: 'Anton', sans-serif;
+--title-font-size: 3rem;
+--title-font-color:var(--third-color);
+
+--white-color: #FFFFFF;
+--black-color:#000000;
+--grey-color:#7A7A7A;
+--grey-light-color:#C6C6C6;
+--color-debeug:crimson;
+
+--weight-regular:500;
+--weight-bold:600;
+--weight-light:400;
+--weight-extra:800;
+
+--skeleton:80%;
+--regular-spacing:1rem;
+--radius:5px;
+--regular-transi: all 1s ease-in-out;
+--debeug:3px dashed var(--color-debeug);
+}
+
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background-color: var(--body-background-color);
+    font-family: var(--body-font-family);
+    font-size: var(--body-font-size);
+    color: var(--body-font-color);
+}
+
+.debeug {
+    outline: var(--debeug);
+}
+
+.pop{
+    transform: scale(1.1);
+}
+
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding:1rem;
+    text-align: center;
+    font-size:3rem;
+    color:var(--color-debeug);
+    background: var(--white-color);
+    border: 2px solid var(--color-debeug);
+    border-radius: var(--radius);
+}
+
+.wrapper {
+    width:var(--skeleton);
+}
+
+
+.link {
+    color:var(--white-color);
+    font-size:var(--body-font-size);
+}
+
+.v-hidden {
+    position: absolute;
+    height: 1px; 
+    width: 1px;
+    font-size:0;
+}
+
+.store-debbuger{
+    width: 100%;
+    height:20dvh;
+    padding:1rem 2rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: fixed;
+    bottom:-12%;
+    left:0;
+    background-color: var(--black-color);
+    color:var(--white-color);
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+
+    &:hover{
+        bottom:0;
+    }
+
+    span{
+        font-size:1.25rem;
+        color:var(--corporate-color)
+    }
+}

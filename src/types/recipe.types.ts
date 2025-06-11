@@ -1,6 +1,6 @@
-type Recipe = {
-  id:number;
-  image:string;
+export type Recipe = {
+  id:string;
+  image ?:string;
   title:string;
   servings:number;
   ingredients: {
@@ -11,5 +11,5 @@ type Recipe = {
   time:number;
   description:string;
   appliance:string;
-  ustentils:string[];
+  ustensils:string[];
 }

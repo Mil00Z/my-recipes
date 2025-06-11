@@ -1,0 +1,25 @@
+.btn  {
+    --sizes:45px;
+    width:var(--sizes);
+    height:var(--sizes);
+    position: absolute;
+    top:50%;
+    right:8px;
+    transform: translate(0,-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color:var(--white-color);
+    border:none;
+    border-radius: var(--radius);
+    background-color: var(--black-color);
+    transition: var(--regular-transi);
+}
+
+.btn:hover,
+.btn:focus {
+    background-color: var(--black-color);
+    color:var(--white-color);
+    cursor: pointer;
+}
