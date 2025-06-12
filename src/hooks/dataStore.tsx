@@ -16,28 +16,37 @@ type Store = {
   incrementCount: () => void;
   updateResults: (results: Recipe[]) => void;
   resetResults: () => void;
-  updateTags: (tag:Tag[]) => void;
+  updateTags: (tag:Tag) => void;
+  removeTag: (tag:Tag) => void;
 };  
+
 
 export const useStore = create<Store>(
   persist((set) => ({
-    recipes: initialRecipes,
-    count:initialRecipes.length,
-    matchingRecipes: [],
-    tags: [],
-    incrementCount: () => set((state) => ({ count: state.count + 1})),
-    updateResults: (results:Recipe[]) => set((state) => ({    matchingRecipes:results,
-    count:results?.length ?? state.initialRecipes.length
-    })),
-    resetResults: () => set((state) => ({ 
-    matchingRecipes: [],
-    count: initialRecipes.length
-    })),
-    updateTags: (tag:Tag) => set((state) => ({
-      tags:[...state.tags,tag]
-    })),
-    removeTag : (tag:Tag) => set((state) => ({
-      tags:[]
+      recipes: initialRecipes,
+      count:initialRecipes.length,
+      matchingRecipes: [],
+      tags: [],
+      incrementCount: () => set((state) => ({ count: state.count + 1})),
+      updateResults: (results:Recipe[]) => set((state) => ({    matchingRecipes:results,
+      count:results?.length ?? state.initialRecipes.length
+      })),
+      resetResults: () => set((state) => ({ 
+      matchingRecipes: [],
+      count: initialRecipes.length
+      })),
+      updateTags: (tag:Tag) => set((state) => {
+
+        const tagExists = state.tags.some((existantTag:Tag) => 
+        existantTag.type === tag.type && 
+        existantTag.value === tag.value);
+    
+      return {tags: tagExists ? state.tags : [...state.tags, tag]}
+
+    }),
+      removeTag: (tag: Tag) => set((state) => ({
+      tags: state.tags.filter((existantTag:Tag) => 
+          existantTag.type !== tag.type || existantTag.value !== tag.value)
     }))
   }),{
     name:'recipes-stored',

@@ -12,12 +12,13 @@ const FilterSearch = ({type,title,method}:Filter) => {
 
     const {matchingRecipes,tag,updateTags} = useStore();
 
-    function saveTag(element:string){
 
-        updateTags({type:type,value:element});
-       
+    function handleUpdateTag(value:string){
+
+        updateTags({type:type,value:value});
        
     }
+
 
     const getFilterDatas = () => {
 
@@ -103,9 +104,8 @@ const FilterSearch = ({type,title,method}:Filter) => {
     }
 
     };
-
+    
     const filters = getFilterDatas();
-
 
   return (
       <>
@@ -116,7 +116,7 @@ const FilterSearch = ({type,title,method}:Filter) => {
             <input type="search" name={type} id={type} className="search-filter" onChange={(event) => method(event.target.value)}/>
             <ul className="search-results">
                 {filters.map((element) => {
-                    return <li key={element} className="option" data-value={element} onClick={() => saveTag(element)}>{element} </li>;
+                    return <li key={element} className="option" data-value={element} onClick={() => handleUpdateTag(element)}>{element} </li>;
                 })}
             </ul>
         </div>
