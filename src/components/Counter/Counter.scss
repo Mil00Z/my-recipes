@@ -1,0 +1,32 @@
+.recipes-counter {
+    align-self: flex-start;
+    font-family: var(--title-font-family);
+    font-size: 1.35rem;
+}
+
+.count {
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight:var(--weight-bold);
+    color:var(--color-debeug);
+    transition: all 0.3s ease-out;
+    transform-origin: center center;
+    transform-style: preserve-3d;
+
+    &.updated {
+    animation: counter .66s ease-out forwards;
+  }
+}
+
+@keyframes counter {
+  from {
+    transform: rotateX(0deg) ;
+    color:var(--color-debeug);
+    
+  }
+  to {
+    transform: rotateY(360deg) ; ;
+    color:var(--primary-color);
+    
+  }
+}

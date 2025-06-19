@@ -11,6 +11,7 @@ import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import FilterSearch from "@/components/Filters/Filter";
 import RecipesList from "@/components/RecipesList/RecipesList";
 import TagElement from "@/components/Tag/Tag";
+import Counter from "@/components/Counter/Counter";
 
 
 const FiltersDatas : Filter[] = [
@@ -41,14 +42,21 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-  const {recipes,count,matchingRecipes,updateResults} = useStore();
+  const {recipes,tags,matchingRecipes,updateResults} = useStore();
 
 
 
   useEffect(() => {
+
+    // if(tags.length === 0){
+    //   updateResults(recipes);
+    // }
+
     updateResults(recipes);
   }, []);
 
+  // console.log('nbre recettes initiales',count);
+  // console.log('nbre recettes updates',matchingRecipes.length);
 
 return(
  
@@ -71,13 +79,9 @@ return(
 
             </form>
 
-            <div className="recipes-counter" aria-label="nombre de recettes disponibles">
-              <span className="count">{count}</span> recette(s)
-            </div>
 
-            {/* <button className="btn btn-cta" >
-              one up +1
-            </button> */}
+            <Counter value={matchingRecipes.length} />
+            
       </section>
 
       <section className="recipes-container">
