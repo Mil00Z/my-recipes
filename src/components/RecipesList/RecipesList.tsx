@@ -1,7 +1,7 @@
 
 import type { Recipe } from "@/types/recipe.types";
 import RecipeCard from "@/components/RecipeCard/RecipeCard";
-import Recipe from "@/app/recipe/[id]/page";
+
 
 interface RecipesListProps {
   recipes: Recipe[];
