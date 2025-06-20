@@ -10,11 +10,7 @@ interface CounterProps {
 
 const Counter = ({value} : CounterProps) => {
 
-
- 
-
   const counterElement = useRef(null);
-
 
   useEffect(() => {
         // Force animation reset
