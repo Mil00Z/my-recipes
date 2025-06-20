@@ -1,3 +1,4 @@
+import { useEffect,useState } from "react";
 
 import type { Filter } from "@/types/filter.types";
 import type { Recipe } from "@/types/recipe.types";
@@ -13,6 +14,9 @@ const FilterSearch = ({type,title,method}:Filter) => {
 
     const {matchingRecipes,tags,updateTags,updateResults} = useStore();
 
+    // State pour la liste filtrée à afficher
+    const [displayedFilters, setDisplayedFilters] = useState<string[]>([]);
+
 
     function handleUpdateTag(value:string){
 
@@ -24,6 +28,21 @@ const FilterSearch = ({type,title,method}:Filter) => {
         //Update results
         updateResults(filteredResults);
        
+    }
+
+
+    function handleRefreshFilters(value:string){
+
+        let currentString = value.toLowerCase();
+
+        const filteredFilters = getFilterDatas().filter((element) => {
+            
+            return element.includes(currentString);
+        })
+
+
+        setDisplayedFilters(filteredFilters);
+
     }
 
    function filteredData(type: string, value: string) {
@@ -162,23 +181,27 @@ const FilterSearch = ({type,title,method}:Filter) => {
     }
 
     };
-    
-    const filters = getFilterDatas();
 
+
+    useEffect(() => {
+        setDisplayedFilters(getFilterDatas());
+    }, [matchingRecipes]);
+    
+   
   return (
-      <>
+    <>
         <div className="filters">
             <label htmlFor={type} className="labels">
                 {title} <i className="fa-solid fa-angle-down"></i>
             </label>
-            <input type="search" name={type} id={type} className="search-filter" onChange={(event) => method(event.target.value)}/>
+            <input type="search" name={type} id={type} className="search-filter" onChange={(event) => handleRefreshFilters(event.target.value)}/>
             <ul className="search-results">
-                {filters.map((element) => {
+                {displayedFilters?.map((element) => {
                     return <li key={element} className="option" data-value={element} onClick={() => handleUpdateTag(element)}>{element}</li>;
                 })}
             </ul>
         </div>
     </>
-)
+  )
 };
 export default FilterSearch;
