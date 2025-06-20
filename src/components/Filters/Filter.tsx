@@ -48,7 +48,7 @@ const FilterSearch = ({type,title,method}:Filter) => {
                     return recipe.time === parseInt(tag.value);
 
                     default:
-                        return true
+                    return false
                 }
             });
 
@@ -56,24 +56,27 @@ const FilterSearch = ({type,title,method}:Filter) => {
         const newTagMatch = (() => {
             switch(type) {
                 case 'ingredients':
-                    return recipe.ingredients.some(ing => 
-                        ing.ingredient.toLowerCase() === value
-                    );
+                return recipe.ingredients.some(ing => 
+                    ing.ingredient.toLowerCase() === value
+                );
                 case 'ustensils':
-                    return recipe.ustensils.includes(value);
+                return recipe.ustensils.includes(value);
+
                 case 'appliances':
-                    return recipe.appliance.toLowerCase() === value;
+                return recipe.appliance.toLowerCase() === value;
+
                 case 'timing':
-                    return recipe.time === parseInt(value);
+                return recipe.time === parseInt(value);
+
                 default:
-                    return true;
+                return false
             }
         })();
 
         // 3. La recette doit matcher tous les critères
         return existTags && newTagMatch;
     });
-}
+    }
 
 
     const getFilterDatas = () => {
