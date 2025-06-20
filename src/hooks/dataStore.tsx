@@ -18,6 +18,7 @@ type Store = {
   resetResults: () => void;
   updateTags: (tag:Tag) => void;
   removeTag: (tag:Tag) => void;
+  resetTags: () => void;
 };  
 
 
@@ -45,10 +46,15 @@ export const useStore = create<Store>(
       return {tags: tagExists ? state.tags : [...state.tags, tag]}
 
     }),
-      removeTag: (tag: Tag) => set((state) => ({
-      tags: state.tags.filter((existantTag:Tag) => 
+      removeTag: (tag: Tag) => set((state) => {
+
+      const updatedTags = state.tags.filter((existantTag:Tag) => 
           existantTag.type !== tag.type || existantTag.value !== tag.value)
-    }))
+
+      return {tags: updatedTags}
+   
+      }),
+      resetTags: () => set((state) => ({tags: []})),
   }),{
     name:'recipes-stored',
     }
