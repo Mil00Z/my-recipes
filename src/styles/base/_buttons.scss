@@ -1,11 +1,11 @@
 .btn  {
-    --sizes:45px;
-    width:var(--sizes);
-    height:var(--sizes);
-    position: absolute;
-    top:50%;
-    right:8px;
-    transform: translate(0,-50%);
+    // --sizes:45px;
+    // width:var(--sizes);
+    // height:var(--sizes);
+    // position: absolute;
+    // top:50%;
+    // right:8px;
+    // transform: translate(0,-50%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,6 +15,29 @@
     border-radius: var(--radius);
     background-color: var(--black-color);
     transition: var(--regular-transi);
+
+    //search
+    &-search {
+    --sizes:45px;
+    width:var(--sizes);
+    height:var(--sizes);
+    position: absolute;
+    top:50%;
+    right:8px;
+    transform: translate(0,-50%);
+
+        i.fa-solid {
+        color:var(--secondary-color);
+        transition: var(--regular-transi);
+        }
+    }
+
+    //reset
+    &.reset-tag{
+        font-size:1.5rem;
+        padding:5px;
+        background-color: var(--color-debeug);
+    }
 }
 
 .btn:hover,
@@ -23,3 +46,4 @@
     color:var(--white-color);
     cursor: pointer;
 }
+

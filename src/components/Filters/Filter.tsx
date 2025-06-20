@@ -1,6 +1,8 @@
+import { useEffect,useState } from "react";
 
 import type { Filter } from "@/types/filter.types";
 import type { Recipe } from "@/types/recipe.types";
+import type { Tag } from "@/types/tag.types";
 
 import { useStore } from "@/hooks/dataStore";
 
@@ -10,13 +12,91 @@ import "./Filter.scss";
 
 const FilterSearch = ({type,title,method}:Filter) => {
 
-    const {matchingRecipes} = useStore();
+    const {matchingRecipes,tags,updateTags,updateResults} = useStore();
 
-    function saveTag(element:string){
+    // State pour la liste filtrée à afficher
+    const [displayedFilters, setDisplayedFilters] = useState<string[]>([]);
 
-        console.log(type,element)
+
+    function handleUpdateTag(value:string){
+
+        //update tag
+        updateTags({type:type,value:value});
+
+        // filter tag
+        const filteredResults = filteredData(type,value);
+        //Update results
+        updateResults(filteredResults);
        
     }
+
+
+    function handleRefreshFilters(value:string){
+
+        let currentString = value.toLowerCase();
+
+        const filteredFilters = getFilterDatas().filter((element) => {
+            
+            return element.includes(currentString);
+        })
+
+
+        setDisplayedFilters(filteredFilters);
+
+    }
+
+   function filteredData(type: string, value: string) {
+    return matchingRecipes.filter((recipe: Recipe) => {
+
+        // 1. Vérifier tous les tags existants
+        const existTags = tags.every((tag:Tag) => {
+                switch(tag.type) {
+
+                    case 'ingredients':
+                        return recipe.ingredients.some(ing => 
+                        ing.ingredient.toLowerCase() === tag.value
+                    );
+
+                    case 'ustensils':
+                    return recipe.ustensils.includes(tag.value);
+
+                    case 'appliances':
+                    return recipe.appliance.toLowerCase() === tag.value;
+
+                    case 'timing':
+                    return recipe.time === parseInt(tag.value);
+
+                    default:
+                    return false
+                }
+            });
+
+        // 2. Vérifier le nouveau tag
+        const newTagMatch = (() => {
+            switch(type) {
+                case 'ingredients':
+                return recipe.ingredients.some(ing => 
+                    ing.ingredient.toLowerCase() === value
+                );
+                case 'ustensils':
+                return recipe.ustensils.includes(value);
+
+                case 'appliances':
+                return recipe.appliance.toLowerCase() === value;
+
+                case 'timing':
+                return recipe.time === parseInt(value);
+
+                default:
+                return false
+            }
+        })();
+
+        // 3. La recette doit matcher tous les critères
+        return existTags && newTagMatch;
+    });
+    }
+
 
     const getFilterDatas = () => {
 
@@ -77,8 +157,7 @@ const FilterSearch = ({type,title,method}:Filter) => {
 
         let ingredientsArrays : object[] = matchingRecipes.map((recipe:Recipe) => recipe.ingredients);
 
-      
-
+        
         ingredientsArrays.forEach((singleIngredientArray:object) => {
 
             let singleIngred = singleIngredientArray.map((element:Recipe) =>{
@@ -103,23 +182,26 @@ const FilterSearch = ({type,title,method}:Filter) => {
 
     };
 
-    const filters = getFilterDatas();
 
-
+    useEffect(() => {
+        setDisplayedFilters(getFilterDatas());
+    }, [matchingRecipes]);
+    
+   
   return (
-      <>
-        <div className="filters debeug">
+    <>
+        <div className="filters">
             <label htmlFor={type} className="labels">
                 {title} <i className="fa-solid fa-angle-down"></i>
             </label>
-            <input type="search" name={type} id={type} className="search-filter" onChange={(event) => method(event.target.value)}/>
+            <input type="search" name={type} id={type} className="search-filter" onChange={(event) => handleRefreshFilters(event.target.value)}/>
             <ul className="search-results">
-                {filters.map((element) => {
-                    return <li key={element} className="option" data-value={element} onClick={() => saveTag(element)}>{element} </li>;
+                {displayedFilters?.map((element) => {
+                    return <li key={element} className="option" data-value={element} onClick={() => handleUpdateTag(element)}>{element}</li>;
                 })}
             </ul>
         </div>
     </>
-)
+  )
 };
 export default FilterSearch;

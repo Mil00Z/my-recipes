@@ -1,15 +1,20 @@
 'use client';
 
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 import { useStore } from "@/hooks/dataStore";
 import type { Filter } from "@/types/filter.types";
+import type { Recipe } from "@/types/recipe.types";
+import type { Tag } from "@/types/tag.types";
 
 
 //UI
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import FilterSearch from "@/components/Filters/Filter";
+import ResetTag from "@/components/ResetTag/ResetTag";
 import RecipesList from "@/components/RecipesList/RecipesList";
+import TagElement from "@/components/Tag/Tag";
+import Counter from "@/components/Counter/Counter";
 
 
 const FiltersDatas : Filter[] = [
@@ -40,14 +45,59 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-const {recipes,count,matchingRecipes,updateResults} = useStore();
+  const {recipes,tags,matchingRecipes,updateResults} = useStore();
 
 
 
-useEffect(() => {
-  updateResults(recipes);
-}, []);
+  useEffect(() => {
 
+    updateResults(recipes);
+
+  }, []);
+
+
+
+  useEffect(() => {
+    
+      // gros soucis de source de données, on tourne en rond
+      const baseSource = matchingRecipes?.length > 0 && matchingRecipes!== recipes ? matchingRecipes : recipes;
+
+  
+    if (tags.length === 0) {
+
+      updateResults(recipes);
+
+      return;
+    }
+
+    //Algo de Filtrage
+    const filteredResults = baseSource.filter((recipe:Recipe) =>
+      tags.every((tag:Tag) => {
+        switch (tag.type) {
+          case 'ingredients':
+            return recipe.ingredients.some(ing =>
+              ing.ingredient.toLowerCase() === tag.value.toLowerCase()
+            );
+          case 'ustensils':
+            return recipe.ustensils
+              .map(u => u.toLowerCase())
+              .includes(tag.value.toLowerCase());
+          case 'appliances':
+            return recipe.appliance.toLowerCase() === tag.value.toLowerCase();
+          case 'timing':
+            return recipe.time === parseInt(tag.value);
+          default:
+            return false;
+        }
+      })
+    );
+
+    
+    updateResults(filteredResults);
+    
+  }, [tags]);
+
+ 
 
 return(
  
@@ -62,19 +112,19 @@ return(
                   return(<FilterSearch key={filter.type} type={filter.type} title={filter.title} method={filter.method} />)
               })}
 
+              <ResetTag />
+
             </div>
                 
-            <div className="recipe-taglist"></div>
+            <div className="recipe-taglist">
+              <TagElement element="tag" />
+            </div>
 
             </form>
 
-            <div className="recipes-counter" aria-label="nombre de recettes disponibles">
-              <span className="count">{count}</span> recette(s)
-            </div>
 
-            {/* <button className="btn btn-cta" >
-              one up +1
-            </button> */}
+            <Counter value={matchingRecipes.length} />
+            
       </section>
 
       <section className="recipes-container">

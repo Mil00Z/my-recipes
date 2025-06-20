@@ -3,7 +3,6 @@ import type { Metadata,Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 //Layouts
-import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 
 //Styles

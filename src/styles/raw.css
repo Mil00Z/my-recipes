@@ -108,15 +108,6 @@
     color:var(--white-color);
 } */
 
-.recipes-counter {
-    font-family: var(--title-font-family);
-    font-size: 1.3rem;
-}
-
-.count {
-    font-size: 1.35rem;
-    color:var(--color-debeug);
-}
 
 
 /* List of Recipes */

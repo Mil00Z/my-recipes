@@ -12,7 +12,7 @@ import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import "./Recipe.scss";
 
 
-const Recipe = () => {
+const RecipeSingle = () => {
 
   const {recipes} = useStore();
 
@@ -49,7 +49,7 @@ const Recipe = () => {
             height={600}
             className="recipe-cover"
           /> */}
-          <img src={recipe.image} alt={recipe.title} />
+          <img src={recipe.image} alt={recipe.title} className="recipe-cover" />
           <p>Kézako : {recipe.description}</p>
           <p>Timing : {recipe.time} min(s)</p>
           <p>Pour : {recipe.servings} gourmand(es)</p>
@@ -61,4 +61,4 @@ const Recipe = () => {
   </>
   )
 }
-export default Recipe
+export default RecipeSingle

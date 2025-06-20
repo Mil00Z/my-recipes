@@ -22,10 +22,6 @@ input[type="search"]::placeholder {
     color:var(--grey-color);
 }
 
-.btn-search i.fa-solid {
-    color:var(--secondary-color);
-    transition: var(--regular-transi);
-}
 
 form:focus-within .btn-search i {
     color: var(--main-color);
