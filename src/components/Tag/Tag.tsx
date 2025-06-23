@@ -1,4 +1,4 @@
-
+import {useEffect} from "react";
 import { useStore } from "@/hooks/dataStore";
 import { Tag } from "@/types/tag.types";
 
@@ -67,57 +67,59 @@ const TagElement = ({element} : TagProps) => {
      });
   }
 
+  function filterRecipesByTags(recipes: Recipe[], tags: Tag[]) {
+  if (tags.length === 0) return recipes;
+  return recipes.filter((recipe) =>
+    tags.every((tag) => {
+      switch (tag.type) {
+        case 'ingredients':
+          return recipe.ingredients.some(ing =>
+            ing.ingredient.toLowerCase() === tag.value.toLowerCase()
+          );
+        case 'ustensils':
+          return recipe.ustensils
+            .map(u => u.toLowerCase())
+            .includes(tag.value.toLowerCase());
+        case 'appliances':
+          return recipe.appliance.toLowerCase() === tag.value.toLowerCase();
+        case 'timing':
+          return recipe.time === parseInt(tag.value);
+        default:
+          return false;
+      }
+    })
+  );
+}
 
   function handleRemoveTag (tag:Tag)  {
 
-    removeTag(tag)
+    removeTag(tag);
 
-  
+    console.log('before filter',tags);
+
   }
 
-  // useEffect(() => {
-
-  
-   
-  //   if(tags.length === 0){
-      
-  //     updateResults(recipes);
-
-  //     return;
-  //   }
 
    
-  //   const filteredResults = matchingRecipes.filter((recipe: Recipe) => {
-      
-  //     return tags.every((tag:Tag) => {
+ useEffect(() => {
+ 
+    if (tags.length === 0) {
+      updateResults(recipes);
+      return;
+    }
 
-  //           switch(tag.type) {
+    
+    const filteredResults = filterRecipesByTags(recipes, tags);
+    console.log('after filter',tags);
 
-  //               case 'ingredients':
-  //               return recipe.ingredients.some(ing => 
-  //                       ing.ingredient.toLowerCase() === tag.value
-  //                   );
+    console.log('recipes filtered 1',filteredResults);
 
-  //               case 'ustensils':  
-  //                return recipe.ustensils.map((ustensil : string) => ustensil.toLowerCase())
-  //                .includes(tag.value);
+    updateResults(filteredResults);
 
-  //               case 'appliances':
-  //               return recipe.appliance.toLowerCase() === tag.value;
+    console.log('recipes filtered 2',filteredResults);
 
-  //               case 'timing':
-  //               return recipe.time === parseInt(tag.value);
+}, [tags]);
 
-  //               default:
-  //               return false
-  //             }
-  //         });
-  //   })
-
-   
-  //   updateResults(filteredResults);
-
-  // },[tags])
 
   
   return (
