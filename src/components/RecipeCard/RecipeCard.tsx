@@ -9,9 +9,9 @@ const RecipeCard = ({recipe}:Recipe) => {
   
   return (
     <article className="card-recipe" key={recipe.id} data-index={`${recipe.id}`}>
-      <span className="recipe-badge">{recipe.id}</span>
+      <span className="recipe-badge">{recipe.id.slice(0,3)}</span>
       <Link href={`/recipe/${recipe.id}`} target="_blank">
-        <Image src={recipe.image} alt={recipe.title} width={500} height={250} className="recipe-thumbnail" />
+        <Image src={recipe.image && typeof recipe.image === "string" && recipe.image.length > 0 ? recipe.image : "/hf/default-recipe.jpg"} alt={recipe.title} width={500} height={250} className="recipe-thumbnail" />
       </Link>
      <div className="recipe-content"> 
             <h2 className="recipe-title">{recipe.title}</h2>

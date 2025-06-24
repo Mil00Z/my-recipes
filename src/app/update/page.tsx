@@ -4,8 +4,11 @@ import {useState,useEffect} from "react";
 import type { Recipe } from "@/types/recipe.types";
 import { useStore } from "@/hooks/dataStore";
 
+import {v4 as uuid} from "uuid";
+
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
+import RecipeCard from "@/components/RecipeCard/RecipeCard";
 
 //Styles
 import "./updateRecipe.scss";
@@ -14,7 +17,7 @@ import "./updateRecipe.scss";
 
 const AddRecipePage = () => {
 
-  const [newRecipeData, setNewRecipeData] = useState<Recipe[]>({});
+  const [newRecipeData, setNewRecipeData] = useState<Recipe[]>([]);
 
   const {matchingRecipes,tags} = useStore();
 
@@ -26,8 +29,10 @@ const AddRecipePage = () => {
     const formData = new FormData(e.target as HTMLFormElement)
 
     const newRecipe : Recipe = {
+      id : uuid(),
       title: formData.get("title") as string,
       description: formData.get("description") as string,
+      servings : 2,
       ingredients: [{
         ingredient: formData.get("ingredient") as string,
         quantity: Number(formData.get("quantity")) ,
@@ -39,8 +44,8 @@ const AddRecipePage = () => {
       image: formData.get("image") as string,
   };
 
-  console.log(newRecipe);
-    
+ 
+    setNewRecipeData((newRecipeData : Recipe[]) => [...newRecipeData,newRecipe]);
 
   }
 
@@ -78,10 +83,20 @@ const AddRecipePage = () => {
         </label>
         <label>
           Image (URL) :
-          <input type="text" name="image" />
+          <input type="text" name="image" defaultValue="/hf/default.recipe.jpg" readOnly/>
         </label>
         <button type="submit">Ajouter la recette</button>
       </form>
+
+      <div className="update-container debeug">
+
+        <h2>Updated Datas <span className="counter">({newRecipeData.length})</span></h2>
+      
+          {newRecipeData?.map((recipe:Recipe) => (
+            <RecipeCard key={recipe.id} recipe={recipe} />
+          ))}
+       
+      </div>
     </PageWrapper>
 
   )

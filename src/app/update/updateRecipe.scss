@@ -98,3 +98,7 @@
   -webkit-appearance: none;
   margin: 0;
 }
+.update-container{
+  --spacing:2rem;
+  padding:var(--spacing);
+}

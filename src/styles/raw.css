@@ -177,6 +177,13 @@
     height: 250px;
     object-fit: cover;
     flex-grow: 1;  
+    background: var(--corporate-color);
+    color: var(--white-color);
+    text-decoration-line: unset;
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .recipe-title {
