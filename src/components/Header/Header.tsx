@@ -22,6 +22,9 @@ const Header = ({layout}:HeaderProps) => {
         <Link href="/starter" aria-label={"lien vers le starter"} className="link">
             Starter
         </Link>
+        <Link href="/update" aria-label={"lien vers l'update de recettes"} className="link debeug">
+            UPDATE
+        </Link>
     </div> 
 
     {layout === "home" && <Hero />}
