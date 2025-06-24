@@ -6,7 +6,7 @@ export type Recipe = {
   ingredients: {
     ingredient:string;
     quantity:number;
-    unit ?: number
+    unit ?: string | null ;
   }[],
   time:number;
   description:string;
