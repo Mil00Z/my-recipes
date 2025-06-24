@@ -1,6 +1,6 @@
 .add-recipe-form {
-  max-width: 500px;
-  margin: 2rem auto;
+  max-width: 50%;
+  margin: 5dvh auto;
   padding: 2rem 2.5rem;
   background: #fff;
   border-radius: 12px;
@@ -8,6 +8,12 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  transition: all 0.2s ease-in-out;
+  outline: 3px solid transparent;
+
+  &:focus-within {
+    outline-color:  var(--secondary-color);
+  }
 }
 
 .add-recipe-form h2 {
@@ -69,7 +75,7 @@
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .add-recipe-form button[type="submit"]:hover {

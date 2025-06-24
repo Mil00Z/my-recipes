@@ -1,18 +1,54 @@
 'use client';
 
+import {useState,useEffect} from "react";
+import type { Recipe } from "@/types/recipe.types";
+import { useStore } from "@/hooks/dataStore";
+
+//Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 
+//Styles
 import "./updateRecipe.scss";
+
+
 
 const AddRecipePage = () => {
 
+  const [newRecipeData, setNewRecipeData] = useState<Recipe[]>({});
 
+  const {matchingRecipes,tags} = useStore();
+
+
+  const handleSubmit = (e:Event) =>{
+
+    e.preventDefault()
+   
+    const formData = new FormData(e.target as HTMLFormElement)
+
+    const newRecipe : Recipe = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      ingredients: [{
+        ingredient: formData.get("ingredient") as string,
+        quantity: Number(formData.get("quantity")) ,
+        unit: formData.get("unit") as string ,
+      }],
+      appliance: formData.get("appliance") as string,
+      ustensils: [formData.get("ustensil") as string],
+      time: Number(formData.get("time")),
+      image: formData.get("image") as string,
+  };
+
+  console.log(newRecipe);
+    
+
+  }
 
 
   return (
    
     <PageWrapper>
-        <form className="add-recipe-form">
+        <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
         <h2>Ajouter une recette</h2>
         <label>
           Titre :
