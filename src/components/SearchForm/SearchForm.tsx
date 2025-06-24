@@ -19,6 +19,8 @@ const SearchForm = ({recipes}:SearchFormProps) => {
 //Checking Datas
 function MainSearch(element:string) {
 
+  const baseSource = matchingRecipes.length > 0 ? matchingRecipes : recipes;
+
   if(element.length === 0) {
 
     updateResults(recipes);
@@ -30,7 +32,7 @@ function MainSearch(element:string) {
 
     const searchValue = element.toLowerCase();
 
-    let results = recipes.filter((recipe:Recipe)=> {
+    let results = baseSource.filter((recipe:Recipe)=> {
 
                 const nameMatch = recipe.title.toLowerCase().includes(searchValue);
                 const descriptionMatch = recipe.description.toLowerCase().includes(searchValue);
