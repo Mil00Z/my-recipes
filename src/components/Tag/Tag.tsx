@@ -3,6 +3,9 @@ import { useStore } from "@/hooks/dataStore";
 import { Tag } from "@/types/tag.types";
 
 
+import type { Recipe } from "@/types/recipe.types";
+
+
 interface TagProps {
   element: string;
 }
@@ -13,63 +16,62 @@ const TagElement = ({element} : TagProps) => {
  const {tags,removeTag,updateResults,recipes,matchingRecipes} = useStore();
 
 
+ 
+  // function filteredData(type: string, value: string) {
+  //    return matchingRecipes.filter((recipe: Recipe) => {
+ 
+  //        // 1. Vérifier tous les tags existants
+  //        const existTags = tags.every((tag:Tag) => {
+  //                switch(tag.type) {
+ 
+  //                    case 'ingredients':
+  //                        return recipe.ingredients.some(ing => 
+  //                        ing.ingredient.toLowerCase() === tag.value
+  //                    );
+ 
+  //                    case 'ustensils':
+  //                    return recipe.ustensils.includes(tag.value);
+ 
+  //                    case 'appliances':
+  //                    return recipe.appliance.toLowerCase() === tag.value;
+ 
+  //                    case 'timing':
+  //                    return recipe.time === parseInt(tag.value);
+ 
+  //                    default:
+  //                    return false
+  //                }
+  //            });
+ 
+  //        // 2. Vérifier le nouveau tag
+  //        const newTagMatch = (() => {
+  //            switch(type) {
+  //                case 'ingredients':
+  //                return recipe.ingredients.some(ing => 
+  //                    ing.ingredient.toLowerCase() === value
+  //                );
+  //                case 'ustensils':
+  //                return recipe.ustensils.includes(value);
+ 
+  //                case 'appliances':
+  //                return recipe.appliance.toLowerCase() === value;
+ 
+  //                case 'timing':
+  //                return recipe.time === parseInt(value);
+ 
+  //                default:
+  //                return false
+  //            }
+  //        })();
+ 
+  //        // 3. La recette doit matcher tous les critères
+  //        return existTags && newTagMatch;
+  //    });
+  // }
 
-
-  function filteredData(type: string, value: string) {
-     return matchingRecipes.filter((recipe: Recipe) => {
- 
-         // 1. Vérifier tous les tags existants
-         const existTags = tags.every((tag:Tag) => {
-                 switch(tag.type) {
- 
-                     case 'ingredients':
-                         return recipe.ingredients.some(ing => 
-                         ing.ingredient.toLowerCase() === tag.value
-                     );
- 
-                     case 'ustensils':
-                     return recipe.ustensils.includes(tag.value);
- 
-                     case 'appliances':
-                     return recipe.appliance.toLowerCase() === tag.value;
- 
-                     case 'timing':
-                     return recipe.time === parseInt(tag.value);
- 
-                     default:
-                     return false
-                 }
-             });
- 
-         // 2. Vérifier le nouveau tag
-         const newTagMatch = (() => {
-             switch(type) {
-                 case 'ingredients':
-                 return recipe.ingredients.some(ing => 
-                     ing.ingredient.toLowerCase() === value
-                 );
-                 case 'ustensils':
-                 return recipe.ustensils.includes(value);
- 
-                 case 'appliances':
-                 return recipe.appliance.toLowerCase() === value;
- 
-                 case 'timing':
-                 return recipe.time === parseInt(value);
- 
-                 default:
-                 return false
-             }
-         })();
- 
-         // 3. La recette doit matcher tous les critères
-         return existTags && newTagMatch;
-     });
-  }
-
-  function filterRecipesByTags(recipes: Recipe[], tags: Tag[]) {
-  if (tags.length === 0) return recipes;
-  return recipes.filter((recipe) =>
+  
+  function filterRecipesByTags(sourceData: Recipe[], tags: Tag[]) {
+  return sourceData.filter((recipe) =>
     tags.every((tag) => {
       switch (tag.type) {
         case 'ingredients':
@@ -94,31 +96,37 @@ const TagElement = ({element} : TagProps) => {
   function handleRemoveTag (tag:Tag)  {
 
     removeTag(tag);
-
-    console.log('before filter',tags);
+    // Je ne sais pas pk le update ici permets la résolution du soucis : recalcul + update dans le flow B to A
+    updateResults(recipes);
 
   }
 
 
-   
- useEffect(() => {
- 
+
+useEffect(() => {
+
+
+  const getDataSource = (tags: Tag[], matchingRecipes:Recipe[], recipes:Recipe[]) => {
+
     if (tags.length === 0) {
-      updateResults(recipes);
-      return;
+      console.log('source tags null',recipes);
+      return recipes;
+    } else if (matchingRecipes.length !== 0 || tags.length !== 0) {
+      console.log('source tags not null || matchiongRecipes not exist ',matchingRecipes);
+      return matchingRecipes;
+    } else {
+      console.log('fallback of shit',recipes);
+      return recipes;
     }
+  };
 
-    
-    const filteredResults = filterRecipesByTags(recipes, tags);
-    console.log('after filter',tags);
+  const source = getDataSource(tags, matchingRecipes, recipes);
 
-    console.log('recipes filtered 1',filteredResults);
-
-    updateResults(filteredResults);
-
-    console.log('recipes filtered 2',filteredResults);
+  const filteredResults = filterRecipesByTags(source, tags);
+  updateResults(filteredResults);
 
 }, [tags]);
+
 
 
   
