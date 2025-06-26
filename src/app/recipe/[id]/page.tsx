@@ -1,6 +1,6 @@
 'use client';
 
-import {Image} from "next/image";
+import Image from "next/image";
 import { useStore } from "@/hooks/dataStore";
 import type { Recipe } from "@/types/recipe.types";
 import { useParams } from "next/navigation";
@@ -42,14 +42,13 @@ const RecipeSingle = () => {
 
         <div className="recipe-single">
           <h1>{recipe.title}</h1>
-          {/* <Image
+          <Image
             src={recipe.image}
             alt={recipe.title}
             width={800}
             height={600}
             className="recipe-cover"
-          /> */}
-          <img src={recipe.image} alt={recipe.title} className="recipe-cover" />
+          />
           <p>Kézako : {recipe.description}</p>
           <p>Timing : {recipe.time} min(s)</p>
           <p>Pour : {recipe.servings} gourmand(es)</p>
