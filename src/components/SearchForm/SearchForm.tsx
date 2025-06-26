@@ -11,13 +11,23 @@ interface SearchFormProps {
 
 const SearchForm = ({recipes}:SearchFormProps) => {
 
-  const {matchingRecipes,updateResults} = useStore();
+  const {matchingRecipes,updateResults,tags} = useStore();
 
   const minimumQueryLength = 3;
 
 
 //Checking Datas
 function MainSearch(element:string) {
+
+  if(tags.length > 0) {
+
+    console.log('on utilise les données des recettes filtrées',matchingRecipes)
+  } else {
+
+    console.log('on utilise toutes les données',recipes);
+  }
+
+  const baseSource = matchingRecipes.length > 0 ? matchingRecipes : recipes;
 
   if(element.length === 0) {
 
