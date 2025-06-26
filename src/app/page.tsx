@@ -4,8 +4,8 @@ import {useEffect, useState} from "react";
 
 import { useStore } from "@/hooks/dataStore";
 import type { Filter } from "@/types/filter.types";
-import type { Recipe } from "@/types/recipe.types";
-import type { Tag } from "@/types/tag.types";
+// import type { Recipe } from "@/types/recipe.types";
+// import type { Tag } from "@/types/tag.types";
 
 
 //UI
@@ -45,7 +45,7 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-  const {recipes,tags,matchingRecipes,updateResults} = useStore();
+  const {recipes,matchingRecipes,updateResults} = useStore();
 
 
 
