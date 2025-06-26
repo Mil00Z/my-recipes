@@ -12,7 +12,7 @@ import "./Filter.scss";
 
 const FilterSearch = ({type,title,method}:Filter) => {
 
-    const {matchingRecipes,tags,updateTags,updateResults} = useStore();
+    const {matchingRecipes,recipes,tags,updateTags,updateResults} = useStore();
 
     // State pour la liste filtrée à afficher
     const [displayedFilters, setDisplayedFilters] = useState<string[]>([]);
@@ -24,12 +24,15 @@ const FilterSearch = ({type,title,method}:Filter) => {
         updateTags({type:type,value:value});
 
         // filter tag
+        console.log('before',matchingRecipes)
+
         const filteredResults = filteredData(type,value);
+        console.log('after',filteredResults);
+        
         //Update results
         updateResults(filteredResults);
        
     }
-
 
     function handleRefreshFilters(value:string){
 
@@ -96,7 +99,6 @@ const FilterSearch = ({type,title,method}:Filter) => {
         return existTags && newTagMatch;
     });
     }
-
 
     const getFilterDatas = () => {
 
