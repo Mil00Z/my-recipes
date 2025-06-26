@@ -5,7 +5,7 @@ import type { Recipe } from '@/types/recipe.types';
 import type { Tag	 } from '@/types/tag.types';
 
 //Datas
-import {recipes as initialRecipes} from '@/datas/recipes';
+import {recipes as initialRecipes} from '@/datas/recipes.json';
 
 
 type Store = {
