@@ -11,7 +11,7 @@ interface SearchFormProps {
 
 const SearchForm = ({recipes}:SearchFormProps) => {
 
-  const {matchingRecipes,updateResults} = useStore();
+  const {matchingRecipes,updateResults,tags} = useStore();
 
   const minimumQueryLength = 3;
 
@@ -28,6 +28,12 @@ function MainSearch(element:string) {
 
   }
 
+  // complete feature search tags + Main Search
+  // if (tags.length !== 0) {
+  //   console.log('tags exist => merge search',tags);
+  // }
+
+  
   if (element.length >= minimumQueryLength) {
 
     const searchValue = element.toLowerCase();
