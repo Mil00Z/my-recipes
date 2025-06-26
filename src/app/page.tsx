@@ -4,8 +4,8 @@ import {useEffect, useState} from "react";
 
 import { useStore } from "@/hooks/dataStore";
 import type { Filter } from "@/types/filter.types";
-import type { Recipe } from "@/types/recipe.types";
-import type { Tag } from "@/types/tag.types";
+// import type { Recipe } from "@/types/recipe.types";
+// import type { Tag } from "@/types/tag.types";
 
 
 //UI
@@ -45,7 +45,7 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-  const {recipes,tags,matchingRecipes,updateResults} = useStore();
+  const {recipes,matchingRecipes,updateResults} = useStore();
 
 
 
@@ -57,6 +57,8 @@ const Home = () => {
 
 
 
+<<<<<<< refacto-filter
+=======
   // useEffect(() => {
     
   //     // gros soucis de source de données, on tourne en rond
@@ -99,6 +101,7 @@ const Home = () => {
 
  
 
+>>>>>>> main
 return(
  
     <PageWrapper layout="home" >
@@ -127,9 +130,9 @@ return(
             
       </section>
 
-      <section className="recipes-container">
-          <RecipesList recipes={recipes} matchingRecipes={matchingRecipes} />
-      </section>
+      
+      <RecipesList recipes={recipes} matchingRecipes={matchingRecipes} />
+    
 
     </PageWrapper>
 

@@ -19,6 +19,8 @@ const SearchForm = ({recipes}:SearchFormProps) => {
 //Checking Datas
 function MainSearch(element:string) {
 
+<<<<<<< refacto-filter
+=======
   if(tags.length > 0) {
 
     console.log('on utilise les données des recettes filtrées',matchingRecipes)
@@ -27,6 +29,7 @@ function MainSearch(element:string) {
     console.log('on utilise toutes les données',recipes);
   }
 
+>>>>>>> main
   const baseSource = matchingRecipes.length > 0 ? matchingRecipes : recipes;
 
   if(element.length === 0) {
@@ -40,7 +43,7 @@ function MainSearch(element:string) {
 
     const searchValue = element.toLowerCase();
 
-    let results = recipes.filter((recipe:Recipe)=> {
+    let results = baseSource.filter((recipe:Recipe)=> {
 
                 const nameMatch = recipe.title.toLowerCase().includes(searchValue);
                 const descriptionMatch = recipe.description.toLowerCase().includes(searchValue);

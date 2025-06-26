@@ -1,3 +1,4 @@
+
 import {useEffect,useState} from "react";
 import { useStore } from "@/hooks/dataStore";
 import { Tag } from "@/types/tag.types";
@@ -61,10 +62,17 @@ const TagElement = ({element} : TagProps) => {
   //            }
   //        })();
  
+
+         // 3. La recette doit matcher tous les critères
+         //return existTags && newTagMatch;
+     //});
+  //}
+
   //        // 3. La recette doit matcher tous les critères
   //        return existTags && newTagMatch;
   //    });
   // }
+
 
   function filterRecipesByTags(recipes: Recipe[], tags: Tag[]) {
   if (tags.length === 0) return recipes;
@@ -92,9 +100,9 @@ const TagElement = ({element} : TagProps) => {
 
   function handleRemoveTag (tag:Tag)  {
 
-    removeTag(tag)
-
-  }
+    removeTag(tag);
+    
+}
 
    
  useEffect(() => {
