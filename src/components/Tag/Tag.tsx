@@ -96,7 +96,7 @@ const TagElement = ({element} : TagProps) => {
   function handleRemoveTag (tag:Tag)  {
 
     removeTag(tag);
-    // Je ne sais pas pk le update ici permets la résolution du soucis : recalcul + update dans le flow B to A
+    // Je ne sais pas pourquoi cet update forcé ici permets la résolution du soucis : recalcul + update dans le flow B to A
     updateResults(recipes);
 
   }
@@ -104,7 +104,6 @@ const TagElement = ({element} : TagProps) => {
 
 
 useEffect(() => {
-
 
   const getDataSource = (tags: Tag[], matchingRecipes:Recipe[], recipes:Recipe[]) => {
 
@@ -123,6 +122,8 @@ useEffect(() => {
   const source = getDataSource(tags, matchingRecipes, recipes);
 
   const filteredResults = filterRecipesByTags(source, tags);
+
+
   updateResults(filteredResults);
 
 }, [tags]);
