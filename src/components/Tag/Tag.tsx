@@ -1,4 +1,5 @@
-import {useEffect} from "react";
+
+import {useEffect,useState} from "react";
 import { useStore } from "@/hooks/dataStore";
 import { Tag } from "@/types/tag.types";
 
@@ -14,9 +15,9 @@ interface TagProps {
 const TagElement = ({element} : TagProps) => {
 
  const {tags,removeTag,updateResults,recipes,matchingRecipes} = useStore();
+ const [tagsHasChanged, setTagsHasChanged] = useState<Boolean>(false);
 
 
- 
   // function filteredData(type: string, value: string) {
   //    return matchingRecipes.filter((recipe: Recipe) => {
  
@@ -69,6 +70,7 @@ const TagElement = ({element} : TagProps) => {
   //    });
   // }
 
+
   
   function filterRecipesByTags(sourceData: Recipe[], tags: Tag[]) {
   return sourceData.filter((recipe) =>
@@ -96,13 +98,13 @@ const TagElement = ({element} : TagProps) => {
   function handleRemoveTag (tag:Tag)  {
 
     removeTag(tag);
+
     // Je ne sais pas pourquoi cet update forcé ici permets la résolution du soucis : recalcul + update dans le flow B to A
     updateResults(recipes);
+  
+}
 
-  }
-
-
-
+   
 useEffect(() => {
 
   const getDataSource = (tags: Tag[], matchingRecipes:Recipe[], recipes:Recipe[]) => {

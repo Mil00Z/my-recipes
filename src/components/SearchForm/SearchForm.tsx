@@ -62,11 +62,11 @@ const SearchForm = ({recipes}:SearchFormProps) => {
   
     }
 
+
     if (element.length < minimumQueryLength) {
           updateResults(baseSource); 
           return; 
     }
-
     //Search
     const searchValue = element.toLowerCase();
 
