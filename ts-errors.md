@@ -22,15 +22,15 @@ Chaque tableau regroupe les erreurs par fichier, avec un résumé et le chemin c
 
 ---
 
-## src/components/Filters/Filter.tsx
+## src/components/Filters/Filter.tsx ✔
 
 | Ligne | Erreur / Résumé | Correction à prévoir |
 |-------|-----------------|----------------------|
-| 64 | TS2345: Argument of type 'string \| number' is not assignable to parameter of type 'string' (ustensils) | S'assurer que `tag.value` est de type `string` avant de l'utiliser dans `includes()`. Peut-être convertir `tag.value` en `string` ou ajuster le type de `ustensils`. |
-| 70 | TS2345: Argument of type 'string \| number' is not assignable to parameter of type 'string' (time) | S'assurer que `tag.value` est de type `string` avant de le passer à `parseInt()`. |
-| 141 | TS2339: Property 'map' does not exist on type 'object' (singleUstensilArray) | Typage correct du tableau `singleUstensilArray`. Il est probablement de type `any[]` ou `object`, mais devrait être `string[]` ou un tableau d'un type spécifique. |
-| 165 | TS2339: Property 'map' does not exist on type 'object' (singleIngredientArray) | Typage correct du tableau `singleIngredientArray`. Il est probablement de type `any[]` ou `object`, mais devrait être `Ingredient[]` ou un tableau d'un type spécifique. |
-| 166 | TS2551: Property 'ingredient' does not exist on type 'Recipe'. Did you mean 'ingredients'? | Dans la fonction de `map`, l'élément est de type `Recipe` mais vous essayez d'accéder à `element.ingredient`. Il faut accéder à `element.ingredients` (qui est un tableau) puis itérer dedans. |
+| 64 | ~~TS2345: Argument of type 'string\number' is not assignable to parameter of type 'string' (ustensils) ~~| S'assurer que `tag.value` est de type `string` avant de l'utiliser dans `includes()`. Peut-être convertir `tag.value` en `string` ou ajuster le type de `ustensils`. |
+| 70 |~~ TS2345: Argument of type 'string\number' is not assignable to parameter of type 'string' (time)~~ | S'assurer que `tag.value` est de type `string` avant de le passer à `parseInt()`. |
+| 141 | ~~TS2339: Property 'map' does not exist on type 'object' (singleUstensilArray) ~~| Typage correct du tableau `singleUstensilArray`. Il est probablement de type `any[]` ou `object`, mais devrait être `string[]` ou un tableau d'un type spécifique. |
+| 165 | ~~TS2339: Property 'map' does not exist on type 'object' (singleIngredientArray)~~ | Typage correct du tableau `singleIngredientArray`. Il est probablement de type `any[]` ou `object`, mais devrait être `Ingredient[]` ou un tableau d'un type spécifique. |
+| 166 | ~~TS2551: Property 'ingredient' does not exist on type 'Recipe'. Did you mean 'ingredients'?~~ | Dans la fonction de `map`, l'élément est de type `Recipe` mais vous essayez d'accéder à `element.ingredient`. Il faut accéder à `element.ingredients` (qui est un tableau) puis itérer dedans. |
 
 ---
 
@@ -103,4 +103,4 @@ Chaque tableau regroupe les erreurs par fichier, avec un résumé et le chemin c
 - [ ] Assurer la cohérence entre la structure de vos données initiales (`initialRecipes`) et vos interfaces de type (`Recipe`, `Ingredient`).
 
 ---
-**Total des erreurs restantes : 21**
+**Total des erreurs restantes : 16**

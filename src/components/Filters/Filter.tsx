@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 import type { Filter } from "@/types/filter.types";
 import type { Recipe } from "@/types/recipe.types";
 import type { Tag } from "@/types/tag.types";
+import type { Ingredient } from "@/types/ingredient.types";
 
 import { useStore } from "@/hooks/dataStore";
 
@@ -56,21 +57,34 @@ const FilterSearch = ({type,title,method}:Filter) => {
                 switch(tag.type) {
 
                     case 'ingredients':
-                        return recipe.ingredients.some(ing => 
+
+                    if (typeof tag.value === 'string'){
+
+                    return recipe.ingredients.some(ing => 
                         ing.ingredient.toLowerCase() === tag.value
                     );
 
-                    case 'ustensils':
-                    return recipe.ustensils.includes(tag.value);
+                    }
+                    return false;
 
+                    case 'ustensils':
+                    if (typeof tag.value === 'string'){
+                        return recipe.ustensils.includes(tag.value);
+                    }
+                    return false;
+                    
                     case 'appliances':
-                    return recipe.appliance.toLowerCase() === tag.value;
+                    if(typeof tag.value === 'string'){
+                        return recipe.appliance.toLowerCase() === tag.value;
+                    }
+                    return false;
 
                     case 'timing':
-                    return recipe.time === parseInt(tag.value);
+                    console.log(tag.value,typeof tag.value);  
+                    return recipe.time === parseInt(String(tag.value));
 
                     default:
-                    return false
+                    return false;
                 }
             });
 
@@ -132,11 +146,9 @@ const FilterSearch = ({type,title,method}:Filter) => {
         case "ustensils":
         let ustenList: string[] = [];
 
-        let ustensilsArrays : object[] = matchingRecipes.map((recipe:Recipe) => recipe.ustensils);
+        let ustensilsArrays : string[][] = matchingRecipes.map((recipe:Recipe) => recipe.ustensils);
 
-        // console.log(ustensilsArrays);
-
-        ustensilsArrays.forEach((singleUstensilArray:object) => {
+        ustensilsArrays.forEach((singleUstensilArray:string[]) => {
 
             let singleUstensil = singleUstensilArray.map((element:string) =>{
                 return element.toLowerCase();
@@ -157,12 +169,12 @@ const FilterSearch = ({type,title,method}:Filter) => {
         case "ingredients":
         let ingredList: string[] = [];
 
-        let ingredientsArrays : object[] = matchingRecipes.map((recipe:Recipe) => recipe.ingredients);
+        let ingredientsArrays : Ingredient[][] = matchingRecipes.map((recipe:Recipe) => recipe.ingredients);
 
         
-        ingredientsArrays.forEach((singleIngredientArray:object) => {
+        ingredientsArrays.forEach((singleIngredientArray:Ingredient[]) => {
 
-            let singleIngred = singleIngredientArray.map((element:Recipe) =>{
+            let singleIngred = singleIngredientArray.map((element:Ingredient) =>{
                 return element.ingredient.toLowerCase();
             });
 
