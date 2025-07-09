@@ -5,19 +5,20 @@ Chaque tableau regroupe les erreurs par fichier, avec un résumé et le chemin c
 
 ---
 
-## src/app/recipe/[id]/page.tsx
+ ## src/app/recipe/[id]/page.tsx ✔
 
 | Ligne | Erreur / Résumé | Correction à prévoir |
 |-------|-----------------|----------------------|
-| 52 | TS2322: Type 'string \| undefined' is not assignable to type 'string \| StaticImport'. Type 'undefined' is not assignable to type 'string \| StaticImport'. | S'assurer que `recipe.image` est toujours une chaîne de caractères définie ou gérer le cas `undefined`. Peut-être utiliser une image par défaut ou une vérification conditionnelle. |
+| 52 | ~~TS2322: Type 'string \| undefined' is not assignable to type 'string \| StaticImport'. Type 'undefined' is not assignable to type 'string \| StaticImport'.~~ | S'assurer que `recipe.image` est toujours une chaîne de caractères définie ou gérer le cas `undefined`. Peut-être utiliser une image par défaut ou une vérification conditionnelle. |
 
 ---
 
-## src/components/Counter/Counter.tsx
+## src/components/Counter/Counter.tsx ✔
+
 
 | Ligne | Erreur / Résumé | Correction à prévoir |
 |-------|-----------------|----------------------|
-| 22 | TS18047: `counterElement.current` is possibly 'null'. | Vérifier si `counterElement.current` n'est pas `null` avant d'y accéder (ex: `if (counterElement.current) { ... }`). |
+| 22 |~~TS18047: `counterElement.current` is possibly 'null'.~~ | Vérifier si `counterElement.current` n'est pas `null` avant d'y accéder (ex: `if (counterElement.current) { ... }`). |
 
 ---
 
@@ -102,5 +103,4 @@ Chaque tableau regroupe les erreurs par fichier, avec un résumé et le chemin c
 - [ ] Assurer la cohérence entre la structure de vos données initiales (`initialRecipes`) et vos interfaces de type (`Recipe`, `Ingredient`).
 
 ---
-**Total des erreurs restantes : 23**
-**À régler avant le build final pour garantir la stabilité TypeScript du projet.**
+**Total des erreurs restantes : 21**
