@@ -49,7 +49,7 @@ const RecipeSingle = () => {
         <div className="recipe-single">
           <h1>{recipe.title}</h1>
           <Image
-            src={recipe.image}
+            src={recipe.image ? recipe.image :'/default.jpg'}
             alt={recipe.title}
             width={800}
             height={600}
