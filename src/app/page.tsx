@@ -45,13 +45,15 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-  const {recipes,matchingRecipes,updateResults} = useStore();
+  const {recipes,matchingRecipes,updateResults,resetTags} = useStore();
 
 
 
   useEffect(() => {
 
+    // PATCH : clean UI on reload | navigation
     updateResults(recipes);
+    resetTags();
 
   }, []);
 

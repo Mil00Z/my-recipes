@@ -25,13 +25,19 @@ const RecipeSingle = () => {
 
  if (!recipes.length) {
     return (
-      <div className="debeug recipe-loading">Loading Recipes...</div>
+      <PageWrapper>
+          <div className="debeug recipe-loading">Loading Recipes...</div>
+      </PageWrapper>
+      
     )
   }
 
   if (!recipe) {
     return (
-      <div className="debeug recipe-not-found">Recipe not found</div>
+      <PageWrapper>
+          <div className="recipe-not-found"> ❌ Recipe not found</div>
+      </PageWrapper>
+      
     )
   }
 

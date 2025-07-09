@@ -4,6 +4,9 @@ import { useStore } from "@/hooks/dataStore";
 import { Tag } from "@/types/tag.types";
 
 
+import type { Recipe } from "@/types/recipe.types";
+
+
 interface TagProps {
   element: string;
 }
@@ -62,21 +65,15 @@ const TagElement = ({element} : TagProps) => {
   //            }
   //        })();
  
-
-         // 3. La recette doit matcher tous les critères
-         //return existTags && newTagMatch;
-     //});
-  //}
-
   //        // 3. La recette doit matcher tous les critères
   //        return existTags && newTagMatch;
   //    });
   // }
 
 
-  function filterRecipesByTags(recipes: Recipe[], tags: Tag[]) {
-  if (tags.length === 0) return recipes;
-  return recipes.filter((recipe) =>
+  
+  function filterRecipesByTags(sourceData: Recipe[], tags: Tag[]) {
+  return sourceData.filter((recipe) =>
     tags.every((tag) => {
       switch (tag.type) {
         case 'ingredients':
@@ -101,37 +98,38 @@ const TagElement = ({element} : TagProps) => {
   function handleRemoveTag (tag:Tag)  {
 
     removeTag(tag);
-    
+
+    // Je ne sais pas pourquoi cet update forcé ici permets la résolution du soucis : recalcul + update dans le flow B to A
+    updateResults(recipes);
+  
 }
 
    
- useEffect(() => {
+useEffect(() => {
 
-  let baseSource : Recipe[] = [];
+  const getDataSource = (tags: Tag[], matchingRecipes:Recipe[], recipes:Recipe[]) => {
 
     if (tags.length === 0) {
-
-      baseSource = recipes ;
-   
+      console.log('source tags null',recipes);
+      return recipes;
+    } else if (matchingRecipes.length !== 0 || tags.length !== 0) {
+      console.log('source tags not null || matchiongRecipes not exist ',matchingRecipes);
+      return matchingRecipes;
     } else {
-
-      baseSource = matchingRecipes;
-      setTagsHasChanged((tagsHasChanged:Boolean) => true);
-      
+      console.log('fallback of shit',recipes);
+      return recipes;
     }
+  };
 
-    if (tags.length > 0 && tagsHasChanged) {
+  const source = getDataSource(tags, matchingRecipes, recipes);
 
-        const newMatchingRecipes = filterRecipesByTags(recipes, tags);
-        updateResults(newMatchingRecipes);
+  const filteredResults = filterRecipesByTags(source, tags);
 
-    }
 
-    const filteredResults = filterRecipesByTags(baseSource, tags);
-   
-    updateResults(filteredResults);
+  updateResults(filteredResults);
 
 }, [tags]);
+
 
 
   
