@@ -23,16 +23,16 @@ const SearchForm = ({recipes}:SearchFormProps) => {
           switch (tag.type) {
             case 'ingredients':
               return recipe.ingredients.some(ing =>
-                ing.ingredient.toLowerCase() === tag.value.toLowerCase()
+                ing.ingredient.toLowerCase() === String(tag.value).toLowerCase()
               );
             case 'ustensils':
               return recipe.ustensils
                 .map(u => u.toLowerCase())
-                .includes(tag.value.toLowerCase());
+                .includes(String(tag.value).toLowerCase());
             case 'appliances':
-              return recipe.appliance.toLowerCase() === tag.value.toLowerCase();
+              return recipe.appliance.toLowerCase() === String(tag.value).toLowerCase();
             case 'timing':
-              return recipe.time === parseInt(tag.value);
+              return recipe.time === parseInt(String(tag.value));
             default:
               return false;
           }
