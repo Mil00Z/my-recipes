@@ -3,8 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 import type { Recipe } from "@/types/recipe.types";
+import type { Ingredient } from "@/types/ingredient.types";
 
-const RecipeCard = ({recipe}:Recipe) => {
+const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 
   
   return (
@@ -20,7 +21,7 @@ const RecipeCard = ({recipe}:Recipe) => {
             <p className="recipe-description">{recipe.description}</p>
             <h3 className="recipe-subtitle">Ingrédients</h3> 
              <ul className="recipe-list">
-              {recipe.ingredients.map((element) => {
+              {recipe.ingredients.map((element:Ingredient) => {
                 return (
                   <li key={element.ingredient} className="recipe-ingredient">
                     {element.ingredient}
@@ -34,7 +35,7 @@ const RecipeCard = ({recipe}:Recipe) => {
             <h3 className="recipe-subtitle">Appareils</h3>
             <p>{recipe.appliance}</p>
             <h3 className="recipe-subtitle">Ustensiles</h3>
-            {recipe.ustensils.map((ustensil) => {
+            {recipe.ustensils.map((ustensil:string) => {
               return <span key={ustensil} className="recipe-ustensil">{ustensil}</span>
             })}
       </div>
