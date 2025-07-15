@@ -1,7 +1,7 @@
 export type Ingredient = {
 
   ingredient:string;
-  quantity:number;
-  unit ?: string | number;
+  quantity?: number | undefined;
+  unit?: string | undefined;
   
 }
