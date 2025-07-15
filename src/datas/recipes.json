@@ -222,7 +222,7 @@
         },
         {
           "ingredient": "Oeuf",
-          "quantity": "2"
+          "quantity": 2
         },
         {
           "ingredient": "Crème fraîche",
@@ -271,7 +271,7 @@
         },
         {
           "ingredient": "Beurre",
-          "quantity": "30",
+          "quantity": 30,
           "unit": "grammes"
         },
         {
@@ -295,7 +295,7 @@
       "ingredients": [
         {
           "ingredient": "Noix",
-          "quantity": "180",
+          "quantity": 180,
           "unit": "grammes"
         },
         {
@@ -314,7 +314,7 @@
         },
         {
           "ingredient": "Sucre en Poudre",
-          "quantity": "110",
+          "quantity": 110,
           "unit": "grammes"
         },
         {
@@ -375,7 +375,7 @@
       "ingredients": [
         {
           "ingredient": "Reblochon",
-          "quantity": "1"
+          "quantity": 1
         },
         {
           "ingredient": "Pommes de terre",
@@ -472,7 +472,7 @@
         },
         {
           "ingredient": "Eau",
-          "quantity": "0.5",
+          "quantity": 0.5,
           "unit": "tasses"
         }
       ],
@@ -1156,7 +1156,7 @@
       ]
     },
     {
-    "id": 30,
+    "id": "30",
     "image": "/Recette30.jpg",
     "title": "Purée de pois cassés",
     "servings": 4,
@@ -1182,7 +1182,7 @@
     "ustensils": ["casserole", "cuillère en bois"]
   },
   {
-    "id": 31,
+    "id": "31",
     "image": "/Recette31.jpg",
     "title": "Jardinière de légumes",
     "servings": 4,
@@ -1217,7 +1217,7 @@
     "ustensils": ["Couteau", "économe"]
   },
   {
-    "id": 32,
+    "id": "32",
     "image": "/Recette32.jpg",
     "title": "Croque Monsieur à la dinde",
     "servings": 4,
@@ -1259,7 +1259,7 @@
     "ustensils": ["râpe à fromage", "cuillère à Soupe", "couteau"]
   },
   {
-    "id": 33,
+    "id": "33",
     "image": "/Recette33.jpg",
     "title": "Sandwich au saumon fumé",
     "servings": 4,
@@ -1295,7 +1295,7 @@
     "ustensils": ["couteau", "cuillère en bois"]
   },
   {
-    "id": 34,
+    "id": "34",
     "image": "/Recette34.jpg",
     "title": "Purée de patate douce",
     "servings": 4,
@@ -1324,7 +1324,7 @@
     "ustensils": ["couteau", "économe", "cuillère en bois"]
   },
   {
-    "id": 35,
+    "id": "35",
     "image": "/Recette35.jpg",
     "title": "Purée de carottes",
     "servings": 2,
@@ -1364,7 +1364,7 @@
     "ustensils": ["cocotte minute", "couteau", "cuillère en bois"]
   },
   {
-    "id": 36,
+    "id": "36",
     "image": "/Recette36.jpg",
     "title": "Lasagne Courgettes et Chèvre",
     "servings": 2,
@@ -1404,7 +1404,7 @@
     "ustensils": ["plat à gratin", "râpe à fromage", "fouet"]
   },
   {
-    "id": 37,
+    "id": "37",
     "image": "/Recette37.jpg",
     "title": "Courgettes farcies au boeuf",
     "servings": 2,
@@ -1444,7 +1444,7 @@
     "ustensils": ["couteau", "cuillère en bois", "Poêle à frire"]
   },
   {
-    "id": 38,
+    "id": "38",
     "image": "/Recette38.jpg",
     "title": "Pain Perdu",
     "servings": 4,
@@ -1475,7 +1475,7 @@
     "ustensils": ["fouet", "bol", "Cuillère à Soupe"]
   },
   {
-    "id": 39,
+    "id": "39",
     "image": "/Recette39.jpg",
     "title": "Crumble aux pommes",
     "servings": 40,
@@ -1506,7 +1506,7 @@
     "ustensils": ["saladier", "couteau", "fouet"]
   },
   {
-    "id": 40,
+    "id": "40",
     "image": "/Recette40.jpg",
     "title": "Limonade",
     "servings": 4,
@@ -1537,7 +1537,7 @@
     "ustensils": ["cuillère en bois"]
   },
   {
-    "id": 41,
+    "id": "41",
     "image": "/Recette41.jpg",
     "title": "Mousse au chocolat",
     "servings": 4,
@@ -1563,7 +1563,7 @@
     "ustensils": ["fouet", "spatule", "verres"]
   },
   {
-    "id": 42,
+    "id": "42",
     "image": "/Recette42.jpg",
     "title": "Charlotte au poires",
     "servings": 3,
@@ -1593,7 +1593,7 @@
     "ustensils": ["saladier", "couteau", "fouet"]
   },
   {
-    "id": 43,
+    "id": "43",
     "image": "/Recette43.jpg",
     "title": "Tarte au citron",
     "servings": 6,
@@ -1627,7 +1627,7 @@
     "ustensils": ["rouleau à patisserie", "moule à tarte", "presse citron"]
   },
   {
-    "id": 44,
+    "id": "44",
     "image": "/Recette44.jpg",
     "title": "Crème dessert au chocolat",
     "servings": 6,
@@ -1664,7 +1664,7 @@
     "ustensils": ["cuillère en bois"]
   },
   {
-    "id": 45,
+    "id": "45",
     "image": "/Recette45.jpg",
     "title": "Crème pâtissière",
     "servings": 8,
@@ -1695,7 +1695,7 @@
     "ustensils": ["fouet", "saladier"]
   },
   {
-    "id": 46,
+    "id": "46",
     "image": "/Recette46.jpg",
     "title": "Far breton",
     "servings": 6,
@@ -1736,7 +1736,7 @@
     "ustensils": ["fouet", "moule", "verres"]
   },
   {
-    "id": 47,
+    "id": "47",
     "image": "/Recette47.jpg",
     "title": "Mousse au citron",
     "servings": 6,
@@ -1768,7 +1768,7 @@
     "ustensils": ["fouet", "verres", "cuillère en bois"]
   },
   {
-    "id": 48,
+    "id": "48",
     "image": "/Recette48.jpg",
     "title": "Pizza",
     "servings": 4,
@@ -1804,7 +1804,7 @@
     "ustensils": ["rouleau à patisserie", "râpe à fromage", "couteau"]
   },
   {
-    "id": 49,
+    "id": "49",
     "image": "/Recette49.jpg",
     "title": "Smoothie tropical",
     "servings": 4,
@@ -1838,7 +1838,7 @@
     "ustensils": ["couteau", "verres"]
   },
   {
-    "id": 50,
+    "id": "50",
     "image": "/Recette50.jpg",
     "title": "Frangipane",
     "servings": 2,
