@@ -22,7 +22,8 @@ type Store = {
 };  
 
 
-export const useStore = create<Store>(
+export const useStore = create<Store>()(
+
   persist((set) => ({
       recipes: initialRecipes,
       count:initialRecipes.length,
@@ -31,7 +32,7 @@ export const useStore = create<Store>(
       incrementCount: () => set((state) => ({ count: state.count + 1})),
       updateResults: (results:Recipe[]) => set((state) => ({    
       matchingRecipes:results,
-      count:results?.length ?? state.initialRecipes.length
+      count: results?.length ?? state.recipes.length
       })),
       resetResults: () => set((state) => ({ 
       matchingRecipes: [],
@@ -58,6 +59,6 @@ export const useStore = create<Store>(
   }),{
     name:'recipes-stored',
     }
-  )
-);
+  ))
+
 
