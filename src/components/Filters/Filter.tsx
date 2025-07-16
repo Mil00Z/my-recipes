@@ -11,9 +11,9 @@ import { useStore } from "@/hooks/dataStore";
 import "./Filter.scss";
 
 
-const FilterSearch = ({type,title,method}:Filter) => {
+const FilterSearch = ({type,title}:Filter) => {
 
-    const {matchingRecipes,recipes,tags,updateTags,updateResults} = useStore();
+    const {matchingRecipes,tags,updateTags,updateResults} = useStore();
 
     // State pour la liste filtrée à afficher
     const [displayedFilters, setDisplayedFilters] = useState<string[]>([]);
@@ -25,10 +25,10 @@ const FilterSearch = ({type,title,method}:Filter) => {
         updateTags({type:type,value:value});
 
         // filter tag
-        console.log('before',matchingRecipes)
+        // console.log('before',matchingRecipes)
 
         const filteredResults = filteredData(type,value);
-        console.log('after',filteredResults);
+        // console.log('after',filteredResults);
         
         //Update results
         updateResults(filteredResults);
@@ -37,11 +37,11 @@ const FilterSearch = ({type,title,method}:Filter) => {
 
     function handleRefreshFilters(value:string){
 
-        let currentString = value.toLowerCase();
+        const currentString = value.toLowerCase();
 
         const filteredFilters = getFilterDatas().filter((element) => {
             
-            return element.includes(currentString);
+            return String(element).includes(currentString);
         })
 
 
@@ -114,80 +114,90 @@ const FilterSearch = ({type,title,method}:Filter) => {
     });
     }
 
-    const getFilterDatas = () => {
+    const getFilterDatas = () : string[] => {
 
-    let filtersDatas: any[] = [];    
+    // let filtersDatas: string[] = [];    
 
     switch(type) {
 
         //Outils
-        case 'appliances':
-        let allAppliances = matchingRecipes.map((recipe:Recipe) => recipe.appliance.toLowerCase());
-       
-        // /Get distinct item of a collection of values
-        filtersDatas = Array.from(new Set(allAppliances)).sort((a,b) => {
-            return a.localeCompare(b);
-        });
-
-        return filtersDatas;
+        case 'appliances':{
+            
+            const allAppliances = matchingRecipes.map((recipe:Recipe) => recipe.appliance.toLowerCase());
+           
+            // /Get distinct item of a collection of values
+            const filtersDatas : string[] = Array.from(new Set(allAppliances)).sort((a,b) => {
+                return a.localeCompare(b);
+            });
+    
+            return filtersDatas;
+        }
 
         //Temps
-        case 'timing':
-        let allTiming = matchingRecipes.map((recipe:Recipe) => recipe.time);
-       
-        // /Get distinct item of a collection of values
-       filtersDatas = Array.from(new Set(allTiming)).sort((a,b) => {
-            return a - b;
-        });
-
-        return filtersDatas;
+        case 'timing': {
+            
+            const allTiming = matchingRecipes.map((recipe:Recipe) => recipe.time);
+           
+            // /Get distinct item of a collection of values
+           const filtersDatas : string[] = Array.from(new Set(allTiming.map(t => t.toString()))).sort((a,b) => {
+                return a.localeCompare(b, undefined, { numeric: true });
+            });
+    
+            return filtersDatas;
+        }
 
         //Ustensiles
-        case "ustensils":
-        let ustenList: string[] = [];
+        case "ustensils": {
 
-        let ustensilsArrays : string[][] = matchingRecipes.map((recipe:Recipe) => recipe.ustensils);
-
-        ustensilsArrays.forEach((singleUstensilArray:string[]) => {
-
-            let singleUstensil = singleUstensilArray.map((element:string) =>{
-                return element.toLowerCase();
+            let ustenList: string[] = [];
+    
+            const ustensilsArrays : string[][] = matchingRecipes.map((recipe:Recipe) => recipe.ustensils);
+    
+            ustensilsArrays.forEach((singleUstensilArray:string[]) => {
+    
+                const singleUstensil = singleUstensilArray.map((element:string) =>{
+                    return element.toLowerCase();
+                });
+    
+                ustenList = ustenList.concat(singleUstensil);
+    
             });
+    
+           
+            const filtersDatas: string[] = Array.from(new Set(ustenList)).sort((a,b) => {
+                return a.localeCompare(b);
+            });
+           
+            return filtersDatas;
 
-            ustenList = ustenList.concat(singleUstensil);
-
-        });
-
-       
-        filtersDatas = Array.from(new Set(ustenList)).sort((a,b) => {
-            return a.localeCompare(b);
-        });
-       
-	    return filtersDatas;
+        }
 
         //Ingrédients
-        case "ingredients":
-        let ingredList: string[] = [];
+        case "ingredients": {
 
-        let ingredientsArrays : Ingredient[][] = matchingRecipes.map((recipe:Recipe) => recipe.ingredients);
-
-        
-        ingredientsArrays.forEach((singleIngredientArray:Ingredient[]) => {
-
-            let singleIngred = singleIngredientArray.map((element:Ingredient) =>{
-                return element.ingredient.toLowerCase();
+            let ingredList: string[] = [];
+    
+            const ingredientsArrays : Ingredient[][] = matchingRecipes.map((recipe:Recipe) => recipe.ingredients);
+    
+            
+            ingredientsArrays.forEach((singleIngredientArray:Ingredient[]) => {
+    
+                const singleIngred = singleIngredientArray.map((element:Ingredient) =>{
+                    return element.ingredient.toLowerCase();
+                });
+    
+                ingredList = ingredList.concat(singleIngred);
+    
             });
+    
+           
+            const filtersDatas:string[] = Array.from(new Set(ingredList)).sort((a,b) => {
+                return a.localeCompare(b);
+            });
+           
+            return filtersDatas;
 
-            ingredList = ingredList.concat(singleIngred);
-
-        });
-
-       
-        filtersDatas = Array.from(new Set(ingredList)).sort((a,b) => {
-            return a.localeCompare(b);
-        });
-       
-        return filtersDatas;
+        }
     
        //Default Ending
         default:
