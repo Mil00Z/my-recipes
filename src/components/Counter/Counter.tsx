@@ -10,7 +10,7 @@ interface CounterProps {
 
 const Counter = ({value} : CounterProps) => {
 
-  const counterElement = useRef(null);
+  const counterElement = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
         // Force animation reset
@@ -19,7 +19,9 @@ const Counter = ({value} : CounterProps) => {
 
            // Petit délai pour laisser le browser "oublier" l'état précédent
             setTimeout(() => {
+              if (counterElement.current) { 
                 counterElement.current.classList.add('updated');
+            };
             }, 0);
         }
     }, [value]);

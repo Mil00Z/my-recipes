@@ -5,10 +5,10 @@ import StoreDebbuger from "../Debeug/Debeug";
 
 type PageWrapperProps = {
   children: React.ReactNode;
-  layout?: string;
+  layout?: 'home' | undefined;
 };
 
-const PageWrapper = ({children,layout =''}:PageWrapperProps) =>{
+const PageWrapper = ({children,layout = undefined}:PageWrapperProps) =>{
 
 
   return(
