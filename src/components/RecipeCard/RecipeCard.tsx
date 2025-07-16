@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import Image from "next/image";
 
@@ -46,4 +45,5 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   )
   
 }
+
 export default RecipeCard

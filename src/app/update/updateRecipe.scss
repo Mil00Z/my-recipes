@@ -1,0 +1,104 @@
+.add-recipe-form {
+  max-width: 50%;
+  margin: 5dvh auto;
+  padding: 2rem 2.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all 0.2s ease-in-out;
+  outline: 3px solid transparent;
+
+  &:focus-within {
+    outline-color:  var(--secondary-color);
+  }
+}
+
+.add-recipe-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--black-color);
+  font-size: 2rem;
+}
+
+.add-recipe-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--third-color);
+  gap: 0.5rem;
+}
+
+.add-recipe-form input[type="text"],
+.add-recipe-form input[type="number"],
+.add-recipe-form textarea {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f9fafb;
+  margin-top: 0.2rem;
+}
+
+.add-recipe-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.add-recipe-form fieldset {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0;
+  background: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.add-recipe-form legend {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.add-recipe-form button[type="submit"] {
+  margin-top: 1.5rem;
+  padding: 0.8rem 0;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-recipe-form button[type="submit"]:hover {
+  background: var(--secondary-color);
+}
+
+/* Ajouts pour améliorer la lisibilité et la cohérence */
+.add-recipe-form input::placeholder,
+.add-recipe-form textarea::placeholder {
+  color: #a0aec0;
+  opacity: 1;
+}
+
+.add-recipe-form fieldset {
+  margin-bottom: 1rem;
+}
+
+.add-recipe-form input[type="number"]::-webkit-inner-spin-button,
+.add-recipe-form input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.update-container{
+  --spacing:2rem;
+  padding:var(--spacing);
+}
