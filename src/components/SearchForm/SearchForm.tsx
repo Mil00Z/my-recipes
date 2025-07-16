@@ -12,7 +12,7 @@ interface SearchFormProps {
 
 const SearchForm = ({recipes}:SearchFormProps) => {
 
-  const {matchingRecipes,updateResults,tags} = useStore();
+  const {updateResults,tags} = useStore();
 
   const minimumQueryLength = 3;
 
@@ -70,7 +70,7 @@ const SearchForm = ({recipes}:SearchFormProps) => {
     //Search
     const searchValue = element.toLowerCase();
 
-    let results = baseSource.filter((recipe:Recipe)=> {
+    const results = baseSource.filter((recipe:Recipe)=> {
 
                   const nameMatch = recipe.title.toLowerCase().includes(searchValue);
                   const descriptionMatch = recipe.description.toLowerCase().includes(searchValue);
