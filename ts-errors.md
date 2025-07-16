@@ -92,9 +92,19 @@ Chaque tableau regroupe les erreurs par fichier, avec un résumé et le chemin c
 
 ---
 
+
+## src/app/update/page.tsx 
+| Ligne | Erreur / Résumé | Correction à prévoir |
+|-------|-----------------|----------------------|
+| 56 | ~~TS2345: Argument of type 'FormEvent<HTMLFormElement>' is not assignable to parameter of type 'Event'. Type 'FormEvent<HTMLFormElement>' is missing the following properties from type 'Event': cancelBubble, composed, returnValue, srcElement, and 7 more~~| La fonction handleSubmit attend un argument de type Event, mais elle reçoit un FormEvent<HTMLFormElement>. Il faut ajuster le type du paramètre de handleSubmit pour qu'il soit React.FormEvent<HTMLFormElement>. |
+
+---
+
+
 ## Résumé des priorités (mis à jour)
 - [ ] Vérifier la configuration Zustand/persist et les génériques pour résoudre l'erreur `TS2345` sur `StateCreator`.
 - [ ] Assurer la cohérence entre la structure de vos données initiales (`initialRecipes`) et vos interfaces de type (`Recipe`, `Ingredient`).
+- [ ] Corriger l'erreur de type pour FormEvent dans src/app/update/page.tsx (si ce n'est pas déjà fait avec l'assertion).
 
 ---
-**Total des erreurs restantes : 2/24**
+**Total des erreurs restantes : 1/26**
