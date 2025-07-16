@@ -21,7 +21,7 @@ const Counter = ({value} : CounterProps) => {
             setTimeout(() => {
               if (counterElement.current) { 
                 counterElement.current.classList.add('updated');
-            }('updated');
+            };
             }, 0);
         }
     }, [value]);

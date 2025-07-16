@@ -34,7 +34,7 @@ export const useStore = create<Store>()(
       matchingRecipes:results,
       count: results?.length ?? state.recipes.length
       })),
-      resetResults: () => set((state) => ({ 
+      resetResults: () => set(() => ({ 
       matchingRecipes: [],
       count: initialRecipes.length
       })),
@@ -55,7 +55,7 @@ export const useStore = create<Store>()(
       return {tags: updatedTags}
    
       }),
-      resetTags: () => set((state) => ({tags: []})),
+      resetTags: () => set(() => ({tags: []})),
   }),{
     name:'recipes-stored',
     }

@@ -1,11 +1,10 @@
 'use client';
 
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 import { useStore } from "@/hooks/dataStore";
 import type { Filter } from "@/types/filter.types";
-// import type { Recipe } from "@/types/recipe.types";
-// import type { Tag } from "@/types/tag.types";
+
 
 
 //UI
