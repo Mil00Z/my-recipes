@@ -1,5 +1,5 @@
 
-import {useEffect,useState} from "react";
+import {useEffect} from "react";
 import { useStore } from "@/hooks/dataStore";
 import { Tag } from "@/types/tag.types";
 
@@ -15,8 +15,7 @@ interface TagProps {
 const TagElement = ({element} : TagProps) => {
 
  const {tags,removeTag,updateResults,recipes,matchingRecipes} = useStore();
- const [tagsHasChanged, setTagsHasChanged] = useState<Boolean>(false);
-
+ 
 
   // function filteredData(type: string, value: string) {
   //    return matchingRecipes.filter((recipe: Recipe) => {
@@ -104,19 +103,19 @@ const TagElement = ({element} : TagProps) => {
   
 }
 
-   
+// eslint-disable-next-line react-hooks/exhaustive-deps
 useEffect(() => {
 
   const getDataSource = (tags: Tag[], matchingRecipes:Recipe[], recipes:Recipe[]) => {
 
     if (tags.length === 0) {
-      console.log('source tags null',recipes);
+      // console.log('source tags null',recipes);
       return recipes;
     } else if (matchingRecipes.length !== 0 || tags.length !== 0) {
-      console.log('source tags not null || matchiongRecipes not exist ',matchingRecipes);
+      // console.log('source tags not null || matchiongRecipes not exist ',matchingRecipes);
       return matchingRecipes;
     } else {
-      console.log('fallback of shit',recipes);
+      // console.log('fallback of shit',recipes);
       return recipes;
     }
   };
@@ -137,7 +136,7 @@ useEffect(() => {
     <>
       {tags?.map((tag:Tag,index:number) => {
         return(
-          <span key={`${tag.type}-${index}`} className="recipe-tag" data-parent={tag.type}>{tag.value}
+          <span key={`${tag.type}-${index}`} className={`recipe-${element}`} data-parent={tag.type}>{tag.value}
             <i className="fa-solid fa-xmark" onClick={() => handleRemoveTag(tag)}></i>
           </span>
         )
