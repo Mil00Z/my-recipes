@@ -1,5 +1,8 @@
 import { useStore } from "@/hooks/dataStore";
 
+//Styles
+import "./Debeug.scss"
+
 const StoreDebbuger = () => {
 
  const {matchingRecipes,tags} = useStore();
@@ -7,21 +10,19 @@ const StoreDebbuger = () => {
 return(
    <div className="store-debbuger">
 
-       <h3>Store Debug - tags: <span>{tags.length}</span></h3>
+       <h3>Store - Activ tags: <span>{tags.length}</span></h3>
       <pre>
         {JSON.stringify({ tags }, null, 1)}
       </pre>
 
 
-      <h3>Store Debug - Count: <span>{matchingRecipes.length}</span></h3>
+      <h3>Store - Active Recipes: <span>{matchingRecipes.length}</span></h3>
   
       <pre>
         {JSON.stringify({ matchingRecipes }, null, 1)}
       </pre>
 
-
-     
-      
+      <span className="title">Debeug Store</span>
     </div>
 )
 };
