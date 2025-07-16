@@ -1,8 +1,7 @@
 'use client';
 
-import {useState,useEffect} from "react";
+import {useState} from "react";
 import type { Recipe } from "@/types/recipe.types";
-import { useStore } from "@/hooks/dataStore";
 
 import {v4 as uuid} from "uuid";
 
@@ -19,10 +18,8 @@ const AddRecipePage = () => {
 
   const [newRecipeData, setNewRecipeData] = useState<Recipe[]>([]);
 
-  const {matchingRecipes,tags} = useStore();
-
-
-  const handleSubmit = (e:Event) =>{
+ 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
 
     e.preventDefault()
    
@@ -53,6 +50,7 @@ const AddRecipePage = () => {
   return (
    
     <PageWrapper>
+
         <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
         <h2>Ajouter une recette</h2>
         <label>
@@ -97,8 +95,8 @@ const AddRecipePage = () => {
           ))}
        
       </div>
-    </PageWrapper>
 
+    </PageWrapper>
   )
 }
 export default AddRecipePage;
