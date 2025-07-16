@@ -4,6 +4,9 @@ import Image from "next/image";
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
 
+//Styles
+import "./RecipeCard.scss";
+
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 
   
@@ -15,7 +18,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       </Link>
      <div className="recipe-content"> 
             <h2 className="recipe-title">{recipe.title}</h2>
-              <span className="recipe-timing">{recipe.time} min</span> 
+              <span className="recipe-timing">{recipe.time} min(s)</span> 
             <h3 className="recipe-subtitle">Recette</h3>
             <p className="recipe-description">{recipe.description}</p>
             <h3 className="recipe-subtitle">Ingrédients</h3> 
@@ -40,10 +43,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       </div>
     </article>
           
-          
-     
   )
   
 }
-
 export default RecipeCard
