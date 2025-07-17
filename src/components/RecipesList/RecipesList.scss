@@ -1,0 +1,14 @@
+/* List of Recipes */
+.recipes-container {
+    --gap:5dvw;
+    width:100%;
+    min-height:80dvh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: start;
+    gap:var(--gap) 1rem;
+    margin-top: 3rem;
+}
+
+

@@ -1,6 +1,7 @@
 'use client';
 
 import {useState} from "react";
+
 import type { Recipe } from "@/types/recipe.types";
 
 import {v4 as uuid} from "uuid";
@@ -8,10 +9,10 @@ import {v4 as uuid} from "uuid";
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import RecipeCard from "@/components/RecipeCard/RecipeCard";
+import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
 import "./updateRecipe.scss";
-
 
 
 const AddRecipePage = () => {
@@ -48,55 +49,60 @@ const AddRecipePage = () => {
 
 
   return (
+    <>
+      <PageWrapper>
+
+          <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
+          <h2>Ajouter une recette</h2>
+          <label>
+            Titre :
+            <input type="text" name="title" required />
+          </label>
+          <label>
+            Description :
+            <textarea name="description" required />
+          </label>
+          <fieldset>
+            <legend>Ingrédients</legend>
+            <input type="text" name="ingredient" placeholder="Ingrédient" required />
+            <input type="text" name="quantity" placeholder="Quantité" />
+            <input type="text" name="unit" placeholder="Unité" />
+          </fieldset>
+          <label>
+            Appareil :
+            <input type="text" name="appliance" required />
+          </label>
+          <fieldset>
+            <legend>Ustensiles</legend>
+            <input type="text" name="ustensil" placeholder="Ustensile" required />
+          </fieldset>
+          <label>
+            Temps (minutes) :
+            <input type="number" name="time" min="1" required />
+          </label>
+          <label>
+            Image (URL) :
+            <input type="text" name="image" defaultValue="/hf/default.recipe.jpg" readOnly/>
+          </label>
+          <button type="submit">Ajouter la recette</button>
+        </form>
+
+        <div className="update-container debeug">
+
+          <h2>Updated Datas <span className="counter">({newRecipeData.length})</span></h2>
+        
+            {newRecipeData?.map((recipe:Recipe) => (
+              <RecipeCard key={recipe.id} recipe={recipe} />
+            ))}
+        
+        </div>
+
+      </PageWrapper>
+
+      <StoreDebbuger />
+  
+    </>
    
-    <PageWrapper>
-
-        <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
-        <h2>Ajouter une recette</h2>
-        <label>
-          Titre :
-          <input type="text" name="title" required />
-        </label>
-        <label>
-          Description :
-          <textarea name="description" required />
-        </label>
-        <fieldset>
-          <legend>Ingrédients</legend>
-          <input type="text" name="ingredient" placeholder="Ingrédient" required />
-          <input type="text" name="quantity" placeholder="Quantité" />
-          <input type="text" name="unit" placeholder="Unité" />
-        </fieldset>
-        <label>
-          Appareil :
-          <input type="text" name="appliance" required />
-        </label>
-        <fieldset>
-          <legend>Ustensiles</legend>
-          <input type="text" name="ustensil" placeholder="Ustensile" required />
-        </fieldset>
-        <label>
-          Temps (minutes) :
-          <input type="number" name="time" min="1" required />
-        </label>
-        <label>
-          Image (URL) :
-          <input type="text" name="image" defaultValue="/hf/default.recipe.jpg" readOnly/>
-        </label>
-        <button type="submit">Ajouter la recette</button>
-      </form>
-
-      <div className="update-container debeug">
-
-        <h2>Updated Datas <span className="counter">({newRecipeData.length})</span></h2>
-      
-          {newRecipeData?.map((recipe:Recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
-          ))}
-       
-      </div>
-
-    </PageWrapper>
   )
 }
 export default AddRecipePage;

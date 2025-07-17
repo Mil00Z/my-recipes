@@ -2,6 +2,9 @@
 import type { Recipe } from "@/types/recipe.types";
 import RecipeCard from "@/components/RecipeCard/RecipeCard";
 
+//Styles
+import "./RecipesList.scss";
+
 
 interface RecipesListProps {
   recipes: Recipe[];
