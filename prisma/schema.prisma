@@ -1,0 +1,34 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ingredient {
+  id         String @id @default(uuid())
+  ingredient String 
+  quantity   Float?
+  unit       String?
+  recipes    Recipe[] @relation(name:"RecipeIngredients")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+}
+
+model Recipe {
+  id  String  @id @default(uuid())
+  image String? 
+  title String 
+  time Int
+  description String 
+  appliance String 
+  ustensils String[]
+  ingredients Ingredient[] @relation(name:"RecipeIngredients")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
