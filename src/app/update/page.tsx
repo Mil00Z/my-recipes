@@ -3,6 +3,8 @@
 import {useState} from "react";
 
 import type { Recipe } from "@/types/recipe.types";
+import type { Ingredient } from "@/types/ingredient.types";
+
 
 import {v4 as uuid} from "uuid";
 
@@ -19,7 +21,44 @@ const AddRecipePage = () => {
 
   const [newRecipeData, setNewRecipeData] = useState<Recipe[]>([]);
 
- 
+  
+
+  const createNewIngredient = () : Ingredient => ({
+    ingredient :'',
+    quantity:undefined,
+    unit:undefined
+  })
+
+
+
+  const [ingredients,setIngredients] = useState<Ingredient[]>([
+ createNewIngredient()])
+
+  const [ustensils,setUstensils] = useState<string[]>([])
+
+  // Add
+  const addIngred = () => {
+
+      setIngredients((ingredients:Ingredient[]) => [...ingredients,createNewIngredient()])
+
+      console.log(ingredients);
+  }
+
+  // Remove
+    const removeIngred = (index:number) => {
+
+    const targetIngredient = ingredients.filter((_, i:number) =>{
+
+      return i !== index
+
+    });
+
+    setIngredients((ingredients:Ingredient[]) => targetIngredient)
+  
+  }
+
+
+  // Submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
 
     e.preventDefault()
@@ -42,11 +81,12 @@ const AddRecipePage = () => {
       image: formData.get("image") as string,
   };
 
- 
     setNewRecipeData((newRecipeData : Recipe[]) => [...newRecipeData,newRecipe]);
 
   }
-
+  
+  //Debeug
+  // console.log(ingredients,ustensils);
 
   return (
     <>
@@ -64,10 +104,29 @@ const AddRecipePage = () => {
           </label>
           <fieldset>
             <legend>Ingrédients</legend>
-            <input type="text" name="ingredient" placeholder="Ingrédient" required />
-            <input type="text" name="quantity" placeholder="Quantité" />
-            <input type="text" name="unit" placeholder="Unité" />
+            <div className="ingred-list">
+
+            {ingredients?.map((_,index:number) => (
+
+                <div key={`ingred-item-${index}`}  className="ingred-item" data-index={`ingred-item-${index}`}>
+
+                  <input type="text" name="ingredient" placeholder="Ingrédient" required />
+                  <input type="text" name="quantity" placeholder="Quantité" />
+                  <input type="text" name="unit" placeholder="Unité" />
+
+                  <button type="button" className="remove btn manage-ingred" onClick={() => removeIngred(index)}>- Suppr ingrédient
+                  </button>
+
+                </div>
+            ))}
+            
+            </div>
+
+            <button type="button" className="add btn manage-ingred" onClick={() => addIngred()}>
+              + Ajouter ingrédient
+            </button>
           </fieldset>
+
           <label>
             Appareil :
             <input type="text" name="appliance" required />
