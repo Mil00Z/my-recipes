@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "debug-env": "echo $DIRECT_URL",
+    "debug-env-win": "echo %DIRECT_URL%"
   },
   "dependencies": {
     "@prisma/client": "^6.12.0",
