@@ -1,0 +1,53 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+model Recipe {
+  id  String  @id @default(uuid())
+  image String? 
+  title String @db.VarChar(55) 
+  description String 
+  appliance Appliance[] @relation(name:"RecipeAppliances") 
+  ustensils Ustensil[] @relation(name:"RecipeUstensils")
+  ingredients Ingredient[] @relation(name:"RecipeIngredients")
+  time Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Ingredient {
+  id         String @id @default(uuid())
+  ingredient String 
+  quantity   Float?
+  unit       String?
+  recipes    Recipe[] @relation(name:"RecipeIngredients")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+}
+
+model Appliance {
+  id         String @id @default(uuid())
+  name       String
+  recipes    Recipe[] @relation(name:"RecipeAppliances")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Ustensil {
+  id         String @id @default(uuid())
+  name       String
+  recipes    Recipe[] @relation(name:"RecipeUstensils")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+}
+
