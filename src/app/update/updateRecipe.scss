@@ -1,5 +1,5 @@
 .add-recipe-form {
-  max-width: 50%;
+  max-width: 55%;
   margin: 5dvh auto;
   padding: 2rem 2.5rem;
   background: #fff;
@@ -101,4 +101,27 @@
 .update-container{
   --spacing:2rem;
   padding:var(--spacing);
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  & > h2 {
+    width:100%;
+  }
+}
+
+.ingred-list{
+  --spacing:.9rem;
+  display: flex;
+  flex-flow: row wrap;
+  gap: var(--spacing) calc(var(--spacing) * 1.25);
+}
+
+
+.ingred-item{
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--spacing);
+
 }
