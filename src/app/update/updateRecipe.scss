@@ -65,22 +65,6 @@
   font-size: 1.1rem;
 }
 
-.add-recipe-form button[type="submit"] {
-  margin-top: 1.5rem;
-  padding: 0.8rem 0;
-  background: var(--primary-color);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.add-recipe-form button[type="submit"]:hover {
-  background: var(--secondary-color);
-}
 
 /* Ajouts pour améliorer la lisibilité et la cohérence */
 .add-recipe-form input::placeholder,
@@ -124,4 +108,11 @@
   flex-direction: column;
   row-gap: var(--spacing);
 
+}
+
+//submit//
+.letsgo{
+  display:flex;
+  justify-content: space-evenly;
+  margin-block: 2vh;
 }

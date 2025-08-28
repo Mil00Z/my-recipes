@@ -143,7 +143,12 @@ const AddRecipePage = () => {
             Image (URL) :
             <input type="text" name="image" defaultValue="/hf/default.recipe.jpg" readOnly/>
           </label>
-          <button type="submit">Ajouter la recette</button>
+          <div className="letsgo">
+            <button type="submit" className="btn"> 💾 Enregistrer la recette</button>
+            <button type="button" className="btn reset-recipe" onClick={(e) => e.target.closest('form').reset()}>
+              💥 Clear
+          </button>
+          </div>
         </form>
 
         <div className="update-container debeug">
