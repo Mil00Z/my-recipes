@@ -13,12 +13,14 @@ type Store = {
   count:number;
   matchingRecipes: Recipe[];
   tags: Tag[];
+  newRecipes:Recipe[]
   incrementCount: () => void;
   updateResults: (results: Recipe[]) => void;
   resetResults: () => void;
   updateTags: (tag:Tag) => void;
   removeTag: (tag:Tag) => void;
   resetTags: () => void;
+  addRecipe:(formRecipe: Recipe) => void;
 };  
 
 
@@ -29,6 +31,7 @@ export const useStore = create<Store>()(
       count:initialRecipes.length,
       matchingRecipes: [],
       tags: [],
+      newRecipes:[],
       incrementCount: () => set((state) => ({ count: state.count + 1})),
       updateResults: (results:Recipe[]) => set((state) => ({    
       matchingRecipes:results,
@@ -56,6 +59,9 @@ export const useStore = create<Store>()(
    
       }),
       resetTags: () => set(() => ({tags: []})),
+      addRecipe: (formRecipe:Recipe) => set((state) => ({
+        newRecipes:[...state.newRecipes,formRecipe]
+      }))
   }),{
     name:'recipes-stored',
     }
