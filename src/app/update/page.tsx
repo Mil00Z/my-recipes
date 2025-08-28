@@ -1,6 +1,7 @@
 'use client';
 
 import {useState} from "react";
+import { useStore } from "@/hooks/dataStore";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
@@ -19,9 +20,11 @@ import "./updateRecipe.scss";
 
 const AddRecipePage = () => {
 
+  //Store
+  const {newRecipes,addRecipe} = useStore();
+
   const [newRecipeData, setNewRecipeData] = useState<Recipe[]>([]);
 
-  
 
   const createNewIngredient = () : Ingredient => ({
     ingredient :'',
@@ -29,12 +32,12 @@ const AddRecipePage = () => {
     unit:undefined
   })
 
-
-
   const [ingredients,setIngredients] = useState<Ingredient[]>([
  createNewIngredient()])
 
-  const [ustensils,setUstensils] = useState<string[]>([])
+  const [ustensils,setUstensils] = useState<string[]>([]);
+
+
 
   // Add
   const addIngred = () => {
@@ -70,23 +73,30 @@ const AddRecipePage = () => {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       servings : 2,
-      ingredients: [{
-        ingredient: formData.get("ingredient") as string,
-        quantity: Number(formData.get("quantity")) ,
-        unit: formData.get("unit") as string ,
-      }],
+      ingredients: ingredients.map((_, index:number) => ({
+            ingredient: formData.get(`ingredient-${index}`) as string,
+            quantity: Number(formData.get(`quantity-${index}`)),
+            unit: formData.get(`unit-${index}`) as string,
+        })),
       appliance: formData.get("appliance") as string,
       ustensils: [formData.get("ustensil") as string],
       time: Number(formData.get("time")),
       image: formData.get("image") as string,
   };
 
+    //State Storage
     setNewRecipeData((newRecipeData : Recipe[]) => [...newRecipeData,newRecipe]);
 
+    //Store Storage
+    addRecipe(newRecipe);
+
+    //Quick reset
+    e.target.reset();
+    setIngredients([createNewIngredient()]);
+    
   }
   
-  //Debeug
-  // console.log(ingredients,ustensils);
+ 
 
   return (
     <>
@@ -95,24 +105,24 @@ const AddRecipePage = () => {
           <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
           <h2>Ajouter une recette</h2>
           <label>
-            Titre :
+            Titre
             <input type="text" name="title" required />
           </label>
           <label>
-            Description :
+            Description
             <textarea name="description" required />
           </label>
           <fieldset>
-            <legend>Ingrédients</legend>
+            <legend>Ingrédients ({ingredients.length})</legend>
             <div className="ingred-list">
 
             {ingredients?.map((_,index:number) => (
 
                 <div key={`ingred-item-${index}`}  className="ingred-item" data-index={`ingred-item-${index}`}>
 
-                  <input type="text" name="ingredient" placeholder="Ingrédient" required />
-                  <input type="text" name="quantity" placeholder="Quantité" />
-                  <input type="text" name="unit" placeholder="Unité" />
+                  <input type="text" name={`ingredient-${index}`} placeholder="Ingrédient" required />
+                  <input type="text" name={`quantity-${index}`} placeholder="Quantité" />
+                  <input type="text" name={`unit-${index}`} placeholder="Unité" />
 
                   <button type="button" className="remove btn manage-ingred" onClick={() => removeIngred(index)}>- Suppr ingrédient
                   </button>
@@ -128,7 +138,7 @@ const AddRecipePage = () => {
           </fieldset>
 
           <label>
-            Appareil :
+            Appareil
             <input type="text" name="appliance" required />
           </label>
           <fieldset>
@@ -136,11 +146,11 @@ const AddRecipePage = () => {
             <input type="text" name="ustensil" placeholder="Ustensile" required />
           </fieldset>
           <label>
-            Temps (minutes) :
+            Temps (minutes)
             <input type="number" name="time" min="1" required />
           </label>
           <label>
-            Image (URL) :
+            Image (URL)
             <input type="text" name="image" defaultValue="/hf/default.recipe.jpg" readOnly/>
           </label>
           <div className="letsgo">
@@ -153,9 +163,9 @@ const AddRecipePage = () => {
 
         <div className="update-container debeug">
 
-          <h2>Updated Datas <span className="counter">({newRecipeData.length})</span></h2>
+          <h2>Updated Datas <span className="counter">({newRecipes?.length})</span></h2>
         
-            {newRecipeData?.map((recipe:Recipe) => (
+            {newRecipes?.map((recipe:Recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
         
