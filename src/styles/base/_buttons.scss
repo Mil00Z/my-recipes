@@ -46,7 +46,7 @@
     }
 
     
-    &.manage-ingred{
+    &[class*="manage"]{
         padding: .8rem 0;
         font {
             size: 1.1rem;

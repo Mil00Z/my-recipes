@@ -95,7 +95,8 @@
   }
 }
 
-.ingred-list{
+.ingred-list,
+.ustensil-list{
   --spacing:.9rem;
   display: flex;
   flex-flow: row wrap;
@@ -103,7 +104,8 @@
 }
 
 
-.ingred-item{
+.ingred-item,
+.ustensil-item {
   display: flex;
   flex-direction: column;
   row-gap: var(--spacing);
