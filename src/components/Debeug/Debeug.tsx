@@ -1,4 +1,6 @@
+
 import { useStore } from "@/hooks/dataStore";
+import { useSyncDataTabs } from "@/hooks/syncDataTabs";
 
 //Styles
 import "./Debeug.scss"
@@ -6,6 +8,10 @@ import "./Debeug.scss"
 const StoreDebbuger = () => {
 
  const {matchingRecipes,tags,newRecipes} = useStore();
+
+ //Live Reload Store Update
+ useSyncDataTabs('recipes-stored'); 
+
 
 return(
    <div className="store-debbuger">
@@ -27,6 +33,6 @@ return(
 
       <span className="title">Debeug Store</span>
     </div>
-)
+  )
 };
 export default StoreDebbuger;
