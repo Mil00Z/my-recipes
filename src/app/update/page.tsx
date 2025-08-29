@@ -32,19 +32,25 @@ const AddRecipePage = () => {
     unit:undefined
   })
 
+  const createNewUstensil = () : string => ('default');
+
   const [ingredients,setIngredients] = useState<Ingredient[]>([
  createNewIngredient()])
 
-  const [ustensils,setUstensils] = useState<string[]>([]);
+  const [ustensils,setUstensils] = useState<string[]>([createNewUstensil()]);
 
-
-
+ 
   // Add
   const addIngred = () => {
 
       setIngredients((ingredients:Ingredient[]) => [...ingredients,createNewIngredient()])
 
-      console.log(ingredients);
+      // console.log(ingredients);
+  }
+
+  const addUstensil = () => {
+
+      setUstensils((ustensils:string[]) => [...ustensils,createNewUstensil()])
   }
 
   // Remove
@@ -59,6 +65,19 @@ const AddRecipePage = () => {
     setIngredients((ingredients:Ingredient[]) => targetIngredient)
   
   }
+
+  const removeUstensil = (index:number) => {
+
+    const targetUstensil = ustensils.filter((_, i:number) =>{
+
+      return i !== index
+
+    });
+
+    setUstensils((ustensils:string[]) => targetUstensil)
+  
+  }
+
 
 
   // Submit
@@ -79,7 +98,7 @@ const AddRecipePage = () => {
             unit: formData.get(`unit-${index}`) as string,
         })),
       appliance: formData.get("appliance") as string,
-      ustensils: [formData.get("ustensil") as string],
+      ustensils: ustensils.map((_, index: number) => formData.get(`ustensil-${index}`) as string),
       time: Number(formData.get("time")),
       image: formData.get("image") as string,
   };
@@ -93,6 +112,7 @@ const AddRecipePage = () => {
     //Quick reset
     e.target.reset();
     setIngredients([createNewIngredient()]);
+    setUstensils([createNewUstensil()]);
     
   }
   
@@ -101,7 +121,7 @@ const AddRecipePage = () => {
   return (
     <>
       <PageWrapper>
-
+      
           <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
           <h2>Ajouter une recette</h2>
           <label>
@@ -114,8 +134,8 @@ const AddRecipePage = () => {
           </label>
           <fieldset>
             <legend>Ingrédients ({ingredients.length})</legend>
-            <div className="ingred-list">
 
+            <div className="ingred-list">
             {ingredients?.map((_,index:number) => (
 
                 <div key={`ingred-item-${index}`}  className="ingred-item" data-index={`ingred-item-${index}`}>
@@ -129,7 +149,6 @@ const AddRecipePage = () => {
 
                 </div>
             ))}
-            
             </div>
 
             <button type="button" className="add btn manage-ingred" onClick={() => addIngred()}>
@@ -142,8 +161,27 @@ const AddRecipePage = () => {
             <input type="text" name="appliance" required />
           </label>
           <fieldset>
-            <legend>Ustensiles</legend>
-            <input type="text" name="ustensil" placeholder="Ustensile" required />
+            <legend>Ustensiles ({ustensils.length})</legend>
+
+            <div className="ustensil-list">
+
+            {ustensils?.map((_,index:number) => (
+
+              <div key={`ustensil-item-${index}`}  className="ustensil-item" data-index={`ustensil-item-${index}`}>
+
+                  <input type="text" name={`ustensil-${index}`} placeholder="Ustensile" required />
+                
+
+                  <button type="button" className="remove btn manage-ustensil" onClick={() => removeUstensil(index)}>- Suppr Ustensil
+                  </button>
+
+              </div>
+            ))}
+            </div>
+
+            <button type="button" className="add btn manage-ustensil" onClick={() => addUstensil()}>
+              + Ajouter Ustensile
+            </button>
           </fieldset>
           <label>
             Temps (minutes)
@@ -170,6 +208,7 @@ const AddRecipePage = () => {
             ))}
         
         </div>
+
 
       </PageWrapper>
 
