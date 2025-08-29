@@ -64,6 +64,7 @@ export const useStore = create<Store>()(
       }))
   }),{
     name:'recipes-stored',
+    getStorage: () => localStorage,
     }
   ))
 
