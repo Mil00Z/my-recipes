@@ -2,6 +2,7 @@
 
 import {useState} from "react";
 import { useStore } from "@/hooks/dataStore";
+import useFormList from "@/hooks/useFormList"
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
@@ -32,12 +33,13 @@ const AddRecipePage = () => {
     unit:undefined
   })
 
-  const createNewUstensil = () : string => ('default');
-
   const [ingredients,setIngredients] = useState<Ingredient[]>([
  createNewIngredient()])
 
-  const [ustensils,setUstensils] = useState<string[]>([createNewUstensil()]);
+
+
+ const createNewUstensil = () : string => ('');
+ const [ustensils,addUstensil,removeUstensil,cleanUstensil] = useFormList<string>(createNewUstensil)
 
  
   // Add
@@ -48,10 +50,10 @@ const AddRecipePage = () => {
       // console.log(ingredients);
   }
 
-  const addUstensil = () => {
+  // const addUstensil = () => {
 
-      setUstensils((ustensils:string[]) => [...ustensils,createNewUstensil()])
-  }
+  //     setUstensils((ustensils:string[]) => [...ustensils,createNewUstensil()])
+  // }
 
   // Remove
     const removeIngred = (index:number) => {
@@ -66,17 +68,17 @@ const AddRecipePage = () => {
   
   }
 
-  const removeUstensil = (index:number) => {
+  // const removeUstensil = (index:number) => {
 
-    const targetUstensil = ustensils.filter((_, i:number) =>{
+  //   const targetUstensil = ustensils.filter((_, i:number) =>{
 
-      return i !== index
+  //     return i !== index
 
-    });
+  //   });
 
-    setUstensils((ustensils:string[]) => targetUstensil)
+  //   setUstensils((ustensils:string[]) => targetUstensil)
   
-  }
+  // }
 
 
 
@@ -112,7 +114,6 @@ const AddRecipePage = () => {
     //Quick reset
     e.target.reset();
     setIngredients([createNewIngredient()]);
-    setUstensils([createNewUstensil()]);
     
   }
   
