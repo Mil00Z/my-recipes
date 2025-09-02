@@ -27,60 +27,16 @@ const AddRecipePage = () => {
   const [newRecipeData, setNewRecipeData] = useState<Recipe[]>([]);
 
 
-  const createNewIngredient = () : Ingredient => ({
+ const createNewIngredient = () : Ingredient => ({
     ingredient :'',
     quantity:undefined,
     unit:undefined
   })
-
-  const [ingredients,setIngredients] = useState<Ingredient[]>([
- createNewIngredient()])
-
+ const [ingredients,addIngredient,removeIngredient] = useFormList<Ingredient>(createNewIngredient)
 
 
  const createNewUstensil = () : string => ('');
- const [ustensils,addUstensil,removeUstensil,cleanUstensil] = useFormList<string>(createNewUstensil)
-
- 
-  // Add
-  const addIngred = () => {
-
-      setIngredients((ingredients:Ingredient[]) => [...ingredients,createNewIngredient()])
-
-      // console.log(ingredients);
-  }
-
-  // const addUstensil = () => {
-
-  //     setUstensils((ustensils:string[]) => [...ustensils,createNewUstensil()])
-  // }
-
-  // Remove
-    const removeIngred = (index:number) => {
-
-    const targetIngredient = ingredients.filter((_, i:number) =>{
-
-      return i !== index
-
-    });
-
-    setIngredients((ingredients:Ingredient[]) => targetIngredient)
-  
-  }
-
-  // const removeUstensil = (index:number) => {
-
-  //   const targetUstensil = ustensils.filter((_, i:number) =>{
-
-  //     return i !== index
-
-  //   });
-
-  //   setUstensils((ustensils:string[]) => targetUstensil)
-  
-  // }
-
-
+ const [ustensils,addUstensil,removeUstensil] = useFormList<string>(createNewUstensil)
 
   // Submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
@@ -113,7 +69,6 @@ const AddRecipePage = () => {
 
     //Quick reset
     e.target.reset();
-    setIngredients([createNewIngredient()]);
     
   }
   
@@ -145,14 +100,14 @@ const AddRecipePage = () => {
                   <input type="text" name={`quantity-${index}`} placeholder="Quantité" />
                   <input type="text" name={`unit-${index}`} placeholder="Unité" />
 
-                  <button type="button" className="remove btn manage-ingred" onClick={() => removeIngred(index)}>- Suppr ingrédient
+                  <button type="button" className="remove btn manage-ingred" onClick={() => removeIngredient(index)}>- Suppr ingrédient
                   </button>
 
                 </div>
             ))}
             </div>
 
-            <button type="button" className="add btn manage-ingred" onClick={() => addIngred()}>
+            <button type="button" className="add btn manage-ingred" onClick={() => addIngredient()}>
               + Ajouter ingrédient
             </button>
           </fieldset>
