@@ -50,3 +50,6 @@ project-status.md
 
 #prisma
 /src/generated/prisma
+
+#datas
+*.csv
