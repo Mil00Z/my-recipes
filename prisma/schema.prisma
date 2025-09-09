@@ -1,12 +1,14 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+  relationMode = "prisma"
 }
 
 
@@ -15,6 +17,7 @@ model Recipe {
   image String? 
   title String @db.VarChar(55) 
   description String 
+  servings Int @default(2)
   appliance Appliance[] @relation(name:"RecipeAppliances") 
   ustensils Ustensil[] @relation(name:"RecipeUstensils")
   ingredients Ingredient[] @relation(name:"RecipeIngredients")
@@ -31,7 +34,6 @@ model Ingredient {
   recipes    Recipe[] @relation(name:"RecipeIngredients")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
 }
 
 model Appliance {
@@ -48,6 +50,5 @@ model Ustensil {
   recipes    Recipe[] @relation(name:"RecipeUstensils")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
 }
 
