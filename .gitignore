@@ -18,6 +18,7 @@
 
 # next.js
 /.next/
+.next
 /out/
 
 # production
@@ -46,3 +47,9 @@ next-env.d.ts
 # project datas
 legacy/*
 project-status.md
+
+#prisma
+/src/generated/prisma
+
+#datas
+*.csv
