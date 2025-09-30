@@ -1,5 +1,7 @@
 'use client';
 
+// @refresh reset
+
 import {useState,useEffect} from 'react';
 import RecipeCard from '@/components/RecipeCard/RecipeCard';
 
@@ -42,7 +44,7 @@ const SandBoxPage = () => {
 
   },[])
 
-
+  
   return(
     <>
       <PageWrapper>
@@ -50,12 +52,13 @@ const SandBoxPage = () => {
         <h1>Testing Fetching API</h1>
         
         <div className="debeug">
-          allo
+          
           
           {fetchedDatas && fetchedDatas.map((recipe: Recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))
           }
+
 
         </div>
 
