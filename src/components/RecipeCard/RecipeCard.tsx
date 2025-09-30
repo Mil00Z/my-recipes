@@ -1,15 +1,53 @@
+import {useEffect} from 'react';
+
+
 import Link from "next/link";
 import Image from "next/image";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
 
+// @refresh reset
+
 //Styles
 import "./RecipeCard.scss";
 
-const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 
-  
+// Définition d'un type étendu qui peut inclure les propriétés de l'API avec des majuscules.
+type TempRecipe = Recipe & {
+  Ingredients?: Ingredient[];
+  Appliance?: { name: string }[] | string;
+  Ustensils?: { name: string }[] | string[];
+};
+
+const RecipeCard = ({ recipe }: { recipe: TempRecipe}) => {
+
+  const ingredientsToDisplay = recipe.ingredients || recipe.Ingredients;
+  const applianceToDisplay = recipe.appliance || recipe.Appliance;
+  const ustensilsToDisplay = recipe.ustensils || recipe.Ustensils;
+
+
+  const normalizeDatas = (data:any) => {
+
+    if (!data) return [];
+
+
+    if (Array.isArray(data)){
+       console.log('is array !!', data);
+
+    } else {
+      console.log('CLC ce projet');
+    }
+  }
+
+  useEffect(() =>{
+
+
+    normalizeDatas('coucou');
+
+  },[])
+
+
   return (
     <article className="card-recipe" key={recipe.id} data-index={`${recipe.id}`}>
       <span className="recipe-badge">{recipe.id}</span>
@@ -23,7 +61,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
             <p className="recipe-description">{recipe.description}</p>
             <h3 className="recipe-subtitle">Ingrédients</h3> 
              <ul className="recipe-list">
-              {recipe.ingredients.map((element:Ingredient) => {
+              {/* {displayIngredients.map((element:Ingredient) => {
                 return (
                   <li key={element.ingredient} className="recipe-ingredient">
                     {element.ingredient}
@@ -32,14 +70,14 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
                     </span>
                   </li>
                   )
-                })}
+                })} */}
             </ul>
             <h3 className="recipe-subtitle">Appareils</h3>
-            <p>{recipe.appliance}</p>
+            {/* <p>{displayAppliance}</p> */}
             <h3 className="recipe-subtitle">Ustensiles</h3>
-            {recipe.ustensils.map((ustensil:string) => {
+            {/* {displayUstensils.map((ustensil:string) => {
               return <span key={ustensil} className="recipe-ustensil">{ustensil}</span>
-            })}
+            })} */}
       </div>
     </article>
           
