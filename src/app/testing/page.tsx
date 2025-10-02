@@ -10,7 +10,7 @@ import type { Recipe } from '@/types/recipe.types';
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
-
+import './Testing.scss'
 import '@/components/RecipeCard/RecipeCard.scss';
 
 
@@ -23,9 +23,8 @@ const SandBoxPage = () => {
 
 
         try {
-          
+        
           const response = await fetch('/api/recipe');
-          
           const datas = await response.json();
 
           // console.log(datas);
@@ -37,9 +36,10 @@ const SandBoxPage = () => {
         }
       }
 
+      
   useEffect(() =>{
 
-   
+  
     getDatas();
 
   },[])
@@ -49,9 +49,10 @@ const SandBoxPage = () => {
     <>
       <PageWrapper>
 
-        <h1>Testing Fetching API</h1>
+        <h1>✔ Testing Fetching API</h1>
+        <h2> 📜 Implement normalize strategies on Datas</h2>
         
-        <div className="debeug">
+        <div className="testing">
           
           
           {fetchedDatas && fetchedDatas.map((recipe: Recipe) => (
