@@ -18,7 +18,7 @@ export async function GET(request : Request) {
 
   try {
     // Récupérer toutes les recettes depuis la table 'recipes'
-    const { data : recipes, error } = await supabase.from('Recipe').select('*,Ingredient(ingredient,quantity,unit),Appliance(name),Ustensil(name)');
+    const { data : recipes, error } = await supabase.from('Recipe').select('*,Ingredient(ingredient,quantity,unit),Appliance(name),Ustensil(name)').limit(3);
 
     // Si Supabase renvoie une erreur, retourner une réponse avec un message clair
     if (error) {
