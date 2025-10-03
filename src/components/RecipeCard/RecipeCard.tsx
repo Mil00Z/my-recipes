@@ -7,45 +7,122 @@ import Image from "next/image";
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
 
-// @refresh reset
 
 //Styles
 import "./RecipeCard.scss";
-
+import { Ustensil } from '@/generated/prisma';
 
 // Définition d'un type étendu qui peut inclure les propriétés de l'API avec des majuscules.
 type TempRecipe = Recipe & {
-  Ingredients?: Ingredient[];
+  Ingredient?: Ingredient[];
   Appliance?: { name: string }[] | string;
-  Ustensils?: { name: string }[] | string[];
+  Ustensil?: { name: string }[] | string[];
 };
 
 const RecipeCard = ({ recipe }: { recipe: TempRecipe}) => {
 
-  const ingredientsToDisplay = recipe.ingredients || recipe.Ingredients;
+  const ingredientsToDisplay = recipe.ingredients || recipe.Ingredient;
   const applianceToDisplay = recipe.appliance || recipe.Appliance;
-  const ustensilsToDisplay = recipe.ustensils || recipe.Ustensils;
+  const ustensilsToDisplay = recipe.ustensils || recipe.Ustensil;
 
 
-  const normalizeDatas = (data:any) => {
+  const normalizeAppliance = (dataAppliance:any) : string => {
 
-    if (!data) return [];
-
-
-    if (Array.isArray(data)){
-       console.log('is array !!', data);
-
-    } else {
-      console.log('CLC ce projet');
+    if (typeof dataAppliance === "string") {
+      return dataAppliance;
     }
+
+    if (Array.isArray(dataAppliance) && dataAppliance.length > 0){
+
+      //  console.log('is array !!', dataAppliance);
+       return  dataAppliance[0].name;
+    } 
+
+    if (typeof dataAppliance === "object" && !Array.isArray(dataAppliance) ) {
+
+      // console.log('is object without array biasis',dataAppliance);
+      return String(dataAppliance.name.toLowerCase());
+    }
+
+    return dataAppliance;
   }
 
-  useEffect(() =>{
+  const normalizeUstensil = (dataUstensil:any) : string[] => {
 
 
-    normalizeDatas('coucou');
+    // Pas de tableau rendu
+    if (!Array.isArray(dataUstensil) || dataUstensil === null ){
 
-  },[])
+      return [];
+      
+    } 
+
+
+    if (Array.isArray(dataUstensil) && dataUstensil.length > 0){
+
+      console.log('array',dataUstensil.length, dataUstensil);
+
+      // Cas de rendu de l'API
+      if (typeof dataUstensil[0] === 'object' && 'name' in dataUstensil[0]) {
+
+        const extractUstensil = dataUstensil.map((element :Ustensil) => {
+          return String(element.name.toLowerCase());
+        }) 
+
+        return extractUstensil;
+
+      } 
+      // Cas si c'est un tableau de string
+      else if (typeof dataUstensil[0] === 'string') {
+
+        return dataUstensil;
+
+      }
+  
+    }
+    return []
+
+  }
+
+  const normalizeIngredient = (dataIngredient:any) : Ingredient[] => {
+
+
+     // Pas de tableau rendu
+    if (!Array.isArray(dataIngredient) || dataIngredient === null ){
+
+      return [];
+      
+    } 
+
+    if(Array.isArray(dataIngredient) && dataIngredient.length > 0) {
+
+      console.log('ok ?')
+      // Cas de rendu de l'API
+      if (typeof dataIngredient[0] === 'object' && 'ingredient' in dataIngredient[0]) {
+
+        const extractIngredient = dataIngredient.map((element) => {
+
+          return {
+            ingredient : String(element.ingredient),
+            quantity : element.quantity  ? Number(element.quantity) : undefined,
+            unit : element.unit ? String(element.unit) : undefined
+          }
+
+        })
+
+        return extractIngredient;
+
+      } 
+
+    }
+
+    return []
+  }
+
+
+  const displayAppliance = normalizeAppliance(applianceToDisplay);
+  const displayUstensils = normalizeUstensil(ustensilsToDisplay);
+  const displayIngredients = normalizeIngredient(ingredientsToDisplay);
 
 
   return (
@@ -61,23 +138,23 @@ const RecipeCard = ({ recipe }: { recipe: TempRecipe}) => {
             <p className="recipe-description">{recipe.description}</p>
             <h3 className="recipe-subtitle">Ingrédients</h3> 
              <ul className="recipe-list">
-              {/* {displayIngredients.map((element:Ingredient) => {
+              {displayIngredients.map((element:Ingredient,index:number) => {
                 return (
-                  <li key={element.ingredient} className="recipe-ingredient">
+                  <li key={`${element.ingredient}-${index}`} className="recipe-ingredient">
                     {element.ingredient}
                     <span className="recipe-quantity">
                       {element.quantity} {element.unit ? element.unit : ''} 
                     </span>
                   </li>
                   )
-                })} */}
+                })}
             </ul>
-            <h3 className="recipe-subtitle">Appareils</h3>
-            {/* <p>{displayAppliance}</p> */}
+            <h3 className="recipe-subtitle">Appareil</h3>
+            <p>{displayAppliance}</p>
             <h3 className="recipe-subtitle">Ustensiles</h3>
-            {/* {displayUstensils.map((ustensil:string) => {
-              return <span key={ustensil} className="recipe-ustensil">{ustensil}</span>
-            })} */}
+            {displayUstensils.map((ustensil:string) => {
+              return <a key={ustensil} href={`http://www.google.fr/search?q=${recipe.title}+${ustensil}`} target={"_blank" }className="recipe-ustensil">{ustensil}</a>
+            })}
       </div>
     </article>
           
