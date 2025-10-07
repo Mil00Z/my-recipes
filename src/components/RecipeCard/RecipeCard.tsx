@@ -1,6 +1,3 @@
-import {useEffect} from 'react';
-
-
 import Link from "next/link";
 import Image from "next/image";
 
@@ -10,7 +7,7 @@ import type { Ingredient } from "@/types/ingredient.types";
 
 //Styles
 import "./RecipeCard.scss";
-import { Ustensil } from '@/generated/prisma';
+
 
 // Définition d'un type étendu qui peut inclure les propriétés de l'API avec des majuscules.
 type TempRecipe = Recipe & {
@@ -19,11 +16,13 @@ type TempRecipe = Recipe & {
   Ustensil?: { name: string }[] | string[];
 };
 
+
 const RecipeCard = ({ recipe }: { recipe: TempRecipe}) => {
 
   const ingredientsToDisplay = recipe.ingredients || recipe.Ingredient;
   const applianceToDisplay = recipe.appliance || recipe.Appliance;
   const ustensilsToDisplay = recipe.ustensils || recipe.Ustensil;
+
 
 
   const normalizeAppliance = (dataAppliance:any) : string => {
@@ -34,85 +33,104 @@ const RecipeCard = ({ recipe }: { recipe: TempRecipe}) => {
 
     if (Array.isArray(dataAppliance) && dataAppliance.length > 0){
 
-      //  console.log('is array !!', dataAppliance);
-       return  dataAppliance[0].name;
+      const propExist = dataAppliance.filter((_,index) => { 
+
+        return dataAppliance[index] && dataAppliance[index].name !== null
+
+      })
+
+      const filteredProp = propExist.map((obj) => {
+
+          return obj.name ? String(obj.name) : "" ;
+      })
+
+      return filteredProp.reduce((acc, current) => acc || current, '');
+
     } 
 
-    if (typeof dataAppliance === "object" && !Array.isArray(dataAppliance) ) {
+    if (typeof dataAppliance === "object" && !Array.isArray(dataAppliance) && dataAppliance.name ) {
 
-      // console.log('is object without array biasis',dataAppliance);
       return String(dataAppliance.name.toLowerCase());
     }
 
-    return dataAppliance;
+    return '';
   }
+
+
 
   const normalizeUstensil = (dataUstensil:any) : string[] => {
 
 
     // Pas de tableau rendu
-    if (!Array.isArray(dataUstensil) || dataUstensil === null ){
-
-      return [];
-      
-    } 
+    if (!Array.isArray(dataUstensil) || dataUstensil === null) {
+        return [];
+    }
 
 
     if (Array.isArray(dataUstensil) && dataUstensil.length > 0){
 
-      console.log('array',dataUstensil.length, dataUstensil);
 
-      // Cas de rendu de l'API
-      if (typeof dataUstensil[0] === 'object' && 'name' in dataUstensil[0]) {
+      const propExist = dataUstensil.filter((_,index:number)=>{
 
-        const extractUstensil = dataUstensil.map((element :Ustensil) => {
-          return String(element.name.toLowerCase());
-        }) 
+            return dataUstensil[index] && dataUstensil[index].name !== null
 
-        return extractUstensil;
+      });
 
-      } 
-      // Cas si c'est un tableau de string
-      else if (typeof dataUstensil[0] === 'string') {
+      const filteredProp = propExist.map((obj) =>{
+        return obj.name ? String(obj.name.toLowerCase()) : "";
+      })
 
-        return dataUstensil;
-
-      }
-  
+      return filteredProp;
     }
-    return []
+  
+    
+    if (typeof dataUstensil === "object" && !Array.isArray(dataUstensil) && dataUstensil.name ) {
 
+         return [String(dataUstensil.name).toLowerCase()];
+
+    }
+
+    return []
   }
 
-  const normalizeIngredient = (dataIngredient:any) : Ingredient[] => {
 
+  const normalizeIngredient = (dataIngredient:any) : Ingredient[] => {
 
      // Pas de tableau rendu
     if (!Array.isArray(dataIngredient) || dataIngredient === null ){
 
       return [];
-      
     } 
 
     if(Array.isArray(dataIngredient) && dataIngredient.length > 0) {
 
-      console.log('ok ?')
-      // Cas de rendu de l'API
-      if (typeof dataIngredient[0] === 'object' && 'ingredient' in dataIngredient[0]) {
+      const propExist = dataIngredient.filter((_,index:number)=>{
 
-        const extractIngredient = dataIngredient.map((element) => {
+            return dataIngredient[index] && dataIngredient[index].ingredient !== null
 
-          return {
-            ingredient : String(element.ingredient),
+      });
+
+      const filteredProp = propExist.map((element) =>{
+
+        return {
+            ingredient : String(element.ingredient.toLowerCase()),
             quantity : element.quantity  ? Number(element.quantity) : undefined,
             unit : element.unit ? String(element.unit) : undefined
           }
 
-        })
+      })
 
-        return extractIngredient;
+      return filteredProp
+    }
 
-      } 
+    if (typeof dataIngredient === "object" && !Array.isArray(dataIngredient) && dataIngredient.ingredient){
+
+
+      return [{
+            ingredient : String(dataIngredient.ingredient.toLowerCase()),
+            quantity : dataIngredient.quantity  ? Number(dataIngredient.quantity) : undefined,
+            unit : dataIngredient.unit ? String(dataIngredient.unit.toLowercase()) : undefined
+          }]
 
     }
 
