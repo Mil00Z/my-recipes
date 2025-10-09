@@ -5,7 +5,7 @@ export type Recipe = {
   image ?:string;
   title:string;
   servings:number;
-  ingredients: Ingredient[],
+  ingredients: Ingredient[];
   time:number;
   description:string;
   appliance:string;
