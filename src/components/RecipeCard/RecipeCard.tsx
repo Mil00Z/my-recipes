@@ -1,52 +1,18 @@
-import {useEffect} from 'react';
-
-
 import Link from "next/link";
 import Image from "next/image";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
 
-// @refresh reset
-
 //Styles
 import "./RecipeCard.scss";
 
 
-// Définition d'un type étendu qui peut inclure les propriétés de l'API avec des majuscules.
-type TempRecipe = Recipe & {
-  Ingredients?: Ingredient[];
-  Appliance?: { name: string }[] | string;
-  Ustensils?: { name: string }[] | string[];
-};
+const RecipeCard = ({ recipe }:{ recipe:Recipe}) => {
 
-const RecipeCard = ({ recipe }: { recipe: TempRecipe}) => {
-
-  const ingredientsToDisplay = recipe.ingredients || recipe.Ingredients;
-  const applianceToDisplay = recipe.appliance || recipe.Appliance;
-  const ustensilsToDisplay = recipe.ustensils || recipe.Ustensils;
-
-
-  const normalizeDatas = (data:any) => {
-
-    if (!data) return [];
-
-
-    if (Array.isArray(data)){
-       console.log('is array !!', data);
-
-    } else {
-      console.log('CLC ce projet');
-    }
-  }
-
-  useEffect(() =>{
-
-
-    normalizeDatas('coucou');
-
-  },[])
-
+  const displayIngredients = recipe.ingredients;
+  const displayAppliance = recipe.appliance;
+  const displayUstensils = recipe.ustensils;
 
   return (
     <article className="card-recipe" key={recipe.id} data-index={`${recipe.id}`}>
@@ -61,23 +27,23 @@ const RecipeCard = ({ recipe }: { recipe: TempRecipe}) => {
             <p className="recipe-description">{recipe.description}</p>
             <h3 className="recipe-subtitle">Ingrédients</h3> 
              <ul className="recipe-list">
-              {/* {displayIngredients.map((element:Ingredient) => {
+              {displayIngredients.map((element:Ingredient,index:number) => {
                 return (
-                  <li key={element.ingredient} className="recipe-ingredient">
+                  <li key={`${element.ingredient}-${index}`} className="recipe-ingredient">
                     {element.ingredient}
                     <span className="recipe-quantity">
                       {element.quantity} {element.unit ? element.unit : ''} 
                     </span>
                   </li>
                   )
-                })} */}
+                })}
             </ul>
-            <h3 className="recipe-subtitle">Appareils</h3>
-            {/* <p>{displayAppliance}</p> */}
+            <h3 className="recipe-subtitle">Appareil</h3>
+            <p>{displayAppliance}</p>
             <h3 className="recipe-subtitle">Ustensiles</h3>
-            {/* {displayUstensils.map((ustensil:string) => {
-              return <span key={ustensil} className="recipe-ustensil">{ustensil}</span>
-            })} */}
+            {displayUstensils.map((ustensil:string, index:number) => {
+              return <a key={`${ustensil}-${index}`} href={`http://www.google.fr/search?q=${recipe.title}+${ustensil}`} target={"_blank" }className="recipe-ustensil" data-inex={index}>{ustensil}</a>
+            })}
       </div>
     </article>
           

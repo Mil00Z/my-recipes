@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+import { normalizeRecipe } from '@/utils/normalizeRecipe'; 
+import type {RawRecipe} from '@/utils/normalizeRecipe'; 
+
+
 // Récupérer les variables d'environnement.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -18,7 +22,7 @@ export async function GET(request : Request) {
 
   try {
     // Récupérer toutes les recettes depuis la table 'recipes'
-    const { data : recipes, error } = await supabase.from('Recipe').select('*,Ingredient(ingredient,quantity,unit),Appliance(name),Ustensil(name)');
+    const { data : RawRecipes, error } : { data : RawRecipe[] | null, error : any} = await supabase.from('Recipe').select('*,Ingredient(ingredient,quantity,unit),Appliance(name),Ustensil(name)').limit(3);
 
     // Si Supabase renvoie une erreur, retourner une réponse avec un message clair
     if (error) {
@@ -31,8 +35,12 @@ export async function GET(request : Request) {
       );
     }
    
-    // Si la requête réussit, retournez les données sous forme de JSON
-    // console.log("Données récupérées avec succès :", recipes);
+    
+    //Normalisation des données entrantes
+    const recipes = RawRecipes?.map((recipe:RawRecipe) => {
+      return normalizeRecipe(recipe);
+    });
+
     return NextResponse.json(recipes);
 
   } catch (err) {
