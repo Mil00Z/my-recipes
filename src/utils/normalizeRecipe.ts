@@ -140,7 +140,7 @@ export const normalizeIngredient = (dataIngredient:RawRecipe) : Ingredient[] => 
 
 export function normalizeRecipe(rawRecipe:RawRecipe) : Recipe {
 
-  console.log(`Normalisation de la recette ID ${rawRecipe.id}: ${rawRecipe.title}, ${rawRecipe.time}`);
+  // console.log(`Normalisation de la recette ID ${rawRecipe.id}: ${rawRecipe.title}, ${rawRecipe.time}`);
 
   const cleanRecipe: Recipe = {
     id: rawRecipe.id,
