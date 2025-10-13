@@ -13,32 +13,36 @@ if (!supabaseUrl || !supabaseAnonKey) {
 // Créer le client Supabase avec la bonne clé de service
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Définir le gestionnaire de requête pour la méthode GET
+
 export async function GET(request : Request) {
 
   try {
-    // Récupérer toutes les recettes depuis la table 'recipes'
-    const { data : appliances, error } = await supabase.from('Appliance').select('*');
+  
+    const { data : RawAppliances, error } = await supabase.from('Appliances').select('*');
 
-    // Si Supabase renvoie une erreur, retourner une réponse avec un message clair
-    if (error) {
+    // Si de soucis de donnéés
+    if (!RawAppliances) {
+      return NextResponse.json({ error: 'Appliances not found' }, { status: 404 });
+    }
+   
+    else if (error) {
       console.error("❌ Erreur de connexion ou de requête Supabase:", error);
       
       return NextResponse.json(
-        { error: 'Erreur lors de la récupération des données..#1' }
+        { message: 'Erreur de connexion ou de requête Supabase:',
+          error : error
+         } 
       );
     }
    
-    // Si la requête réussit, retournez les données sous forme de JSON
-    console.log("Données récupérées avec succès :", appliances);
-
-    return NextResponse.json(appliances);
+    return NextResponse.json(RawAppliances);
 
   } catch (err) {
-    // Gérer les erreurs inattendues, comme un problème de connexion
+
     console.error('Erreur inattendue dans la route API:', err);
+
     return NextResponse.json(
-      { error: 'Une erreur serveur est survenue...#2' },
+      { error: 'Une erreur serveur est survenue...'},
       { status: 500 }
     );
   }

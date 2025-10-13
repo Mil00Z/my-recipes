@@ -17,26 +17,32 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export async function GET(request : Request) {
 
   try {
-    // Récupérer toutes les recettes depuis la table 'recipes'
-    const { data : ustensils, error } = await supabase.from('Ustensil').select('*');
+   
+    const { data : RawUstensils, error } = await supabase.from('Ustensils').select('*');
 
-    // Si Supabase renvoie une erreur, retourner une réponse avec un message clair
-    if (error) {
-      console.error("❌ Erreur de connexion ou de requête Supabase:", error);
+   // Si de soucis de donnéés
+    if (!RawUstensils) {
+      return NextResponse.json({ error: 'Ustensils not found' }, { status: 404 });
+    }
+
+    else if (error) {
+       console.error("❌ Erreur de connexion ou de requête Supabase:", error);
+
       return NextResponse.json(
-        { error: 'Erreur lors de la récupération des données..#3' }
+        { message: 'Erreur de connexion ou de requête Supabase:',
+          error : error
+         } 
       );
     }
    
-    // Si la requête réussit, retournez les données sous forme de JSON
-    console.log("Données récupérées avec succès :", ustensils);
-    return NextResponse.json(ustensils);
+    return NextResponse.json(RawUstensils);
 
   } catch (err) {
-    // Gérer les erreurs inattendues, comme un problème de connexion
+   
     console.error('Erreur inattendue dans la route API:', err);
+
     return NextResponse.json(
-      { error: 'Une erreur serveur est survenue...#2' },
+      { error: 'Une erreur serveur est survenue...'},
       { status: 500 }
     );
   }

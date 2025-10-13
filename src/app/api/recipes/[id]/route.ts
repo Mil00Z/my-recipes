@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-// Récupérer les variables d'environnement.
+// Faire un fichier utils "supabaseConfig.ts"
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -16,33 +16,38 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Définir le gestionnaire de requête pour la méthode GET
 export async function GET(request : Request, { params } : {params : { id : string}}) {
 
+  //attention await 
   const { id } = params;
 
   try {
     // Récupérer toutes les recettes depuis la table 'recipes'
-    const { data : recipes, error } = await supabase.from('Recipe').select('*,Ingredient(ingredient,quantity,unit,updatedAt),Ustensil(name,updatedAt),Appliance(name,updatedAt)').eq('id',id).single();
+    const { data : RawRecipe, error } = await supabase.from('Recipes').select('*,Ingredients(ingredient,quantity,unit,updatedAt),Ustensils(name,updatedAt),Appliances(name,updatedAt)').eq('id',id).single();
 
-    // Si Supabase renvoie une erreur, retourner une réponse avec un message clair
-    if (error) {
-      console.error("❌ Erreur de connexion ou de requête Supabase:", error);
-
-      return NextResponse.json(
-        { message: 'Erreur lors de la récupération des données..#1',
-          error : error
-         }
-      );
-    }
    
-    // Si la requête réussit, retournez les données sous forme de JSON
-    console.log("Données récupérées avec succès :", recipes);
-    return NextResponse.json(recipes);
+      // Si de soucis de donnéés
+      if (!RawRecipe) {
+        return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
+      }
+
+      else if (error) {
+         console.error("❌ Erreur de connexion ou de requête Supabase:", error);
+
+        return NextResponse.json(
+          { message: 'Erreur de connexion ou de requête Supabase:',
+          error : error
+         } 
+        );
+      }
+    
+    return NextResponse.json(RawRecipe, { status: 200 }); 
+    
 
   } catch (err) {
-    // Gérer les erreurs inattendues, comme un problème de connexion
+   
     console.error('Erreur inattendue dans la route API:', err);
     
     return NextResponse.json(
-      { error: 'Une erreur serveur est survenue...#2' },
+      { error: 'Une erreur serveur est survenue...' },
       { status: 500 }
     );
   }
