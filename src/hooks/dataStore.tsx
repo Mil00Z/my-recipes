@@ -19,6 +19,7 @@ type Store = {
   updateTags: (tag:Tag) => void;
   removeTag: (tag:Tag) => void;
   resetTags: () => void;
+  fetchRecipes: () => Promise<void>;
 };  
 
 
@@ -55,8 +56,29 @@ export const useStore = create<Store>()(
       return {tags: updatedTags}
    
       }),
+
       resetTags: () => set(() => ({tags: []})),
-  }),{
+      fetchRecipes: async () => {
+
+        try {
+          
+          const response = await fetch('/api/recipes');
+
+          if (!response) {
+            throw new Error('Failed to fetch Recipes');
+          }  
+
+          const fetchedRecipes = await response.json();
+
+          console.log('data Store',fetchedRecipes);
+
+          set((state) => ({recipes: fetchedRecipes}))
+          
+        } catch (error) {
+           console.error("Erreur lors de la récupération des recettes:", error);
+        }
+      }
+    }),{
     name:'recipes-stored',
     }
   ))
