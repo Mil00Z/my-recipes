@@ -44,17 +44,20 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-  const {recipes,matchingRecipes,updateResults,resetTags} = useStore();
-
+  const {recipes,fetchRecipes,matchingRecipes,updateResults,resetTags} = useStore();
 
 
   useEffect(() => {
 
     // PATCH : clean UI on reload | navigation
-    updateResults(recipes);
-    resetTags();
+    // updateResults(recipes);
+    // resetTags();
+
+    fetchRecipes();
 
   }, []);
+
+  console.log("loading recipes",recipes);
 
 return(
  
@@ -64,10 +67,10 @@ return(
           <form action="/" className="form-select">
             <div className="filters-group">
 
-              {FiltersDatas.map((filter:Filter) => {
+              {/* {FiltersDatas.map((filter:Filter) => {
 
                   return(<FilterSearch key={filter.type} type={filter.type} title={filter.title} method={filter.method} />)
-              })}
+              })} */}
 
               <ResetTag />
 
