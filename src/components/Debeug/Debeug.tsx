@@ -5,7 +5,7 @@ import "./Debeug.scss"
 
 const StoreDebbuger = () => {
 
- const {matchingRecipes,tags} = useStore();
+ const {recipes,matchingRecipes,tags} = useStore();
 
 return(
    <div className="store-debbuger">
@@ -15,6 +15,12 @@ return(
         {JSON.stringify({ tags }, null, 1)}
       </pre>
 
+
+      <h3>Store - API Recipes: <span>{recipes.length}</span></h3>
+
+      <pre>
+        {JSON.stringify({ recipes }, null, 1)}
+      </pre>
 
       <h3>Store - Active Recipes: <span>{matchingRecipes.length}</span></h3>
   
