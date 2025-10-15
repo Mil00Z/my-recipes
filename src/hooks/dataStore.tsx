@@ -4,8 +4,9 @@ import { persist } from 'zustand/middleware';
 import type { Recipe } from '@/types/recipe.types';
 import type { Tag	 } from '@/types/tag.types';
 
+
 //Datas
-import {recipes as initialRecipes} from '@/datas/recipes.json';
+// import {recipes as initialRecipes} from '@/datas/recipes.json';
 
 
 type Store = {
@@ -26,8 +27,8 @@ type Store = {
 export const useStore = create<Store>()(
 
   persist((set) => ({
-      recipes: initialRecipes,
-      count:initialRecipes.length,
+      recipes: [],
+      count:0,
       matchingRecipes: [],
       tags: [],
       incrementCount: () => set((state) => ({ count: state.count + 1})),
@@ -37,7 +38,7 @@ export const useStore = create<Store>()(
       })),
       resetResults: () => set(() => ({ 
       matchingRecipes: [],
-      count: initialRecipes.length
+      count: recipes.length
       })),
       updateTags: (tag:Tag) => set((state) => {
 
@@ -61,18 +62,15 @@ export const useStore = create<Store>()(
       fetchRecipes: async () => {
 
         try {
-          
           const response = await fetch('/api/recipes');
 
-          if (!response) {
+          if (!response.ok) {
             throw new Error('Failed to fetch Recipes');
           }  
 
           const fetchedRecipes = await response.json();
 
-          console.log('data Store',fetchedRecipes);
-
-          set((state) => ({recipes: fetchedRecipes}))
+          set((state) => ({recipes: fetchedRecipes}));
           
         } catch (error) {
            console.error("Erreur lors de la récupération des recettes:", error);
