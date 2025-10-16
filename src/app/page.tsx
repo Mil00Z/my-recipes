@@ -9,6 +9,8 @@ import type { Filter } from "@/types/filter.types";
 
 //UI
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
+import Loading from '@/components/Loading/Loading';
+import Error from '@/components/Error/Error';
 import FilterSearch from "@/components/Filters/Filter";
 import ResetTag from "@/components/ResetTag/ResetTag";
 import RecipesList from "@/components/RecipesList/RecipesList";
@@ -44,7 +46,9 @@ const FiltersDatas : Filter[] = [
 
 const Home = () => {
 
-  const {recipes,fetchRecipes,matchingRecipes,updateResults,resetTags} = useStore();
+  const {recipes,isLoading,isError,fetchRecipes,matchingRecipes,updateResults,resetTags} = useStore();
+
+
 
 
   useEffect(() => {
@@ -57,13 +61,31 @@ const Home = () => {
 
   }, []);
 
-  console.log("loading recipes",recipes);
+
+if(isLoading) {
+
+  return (
+    <PageWrapper layout="home" >
+        <Loading />
+     </PageWrapper>
+    )
+}
+
+ if (isError) {
+    return (
+      <PageWrapper>
+        <Error dataType={'recipes'} />
+      </PageWrapper>
+    );
+  }
+
 
 return(
  
     <PageWrapper layout="home" >
 
       <section className="recipes-filter">
+
           <form action="/" className="form-select">
             <div className="filters-group">
 
@@ -80,17 +102,14 @@ return(
               <TagElement element="tag" />
             </div>
 
-            </form>
+          </form>
 
-
-            <Counter value={matchingRecipes.length} />
-            
+          <Counter value={matchingRecipes.length} />
+          
       </section>
 
-      
       <RecipesList recipes={recipes} matchingRecipes={matchingRecipes} />
     
-
     </PageWrapper>
 
 )
