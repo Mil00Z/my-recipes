@@ -4,6 +4,8 @@ import type { Filter } from "@/types/filter.types";
 import type { Recipe } from "@/types/recipe.types";
 import type { Tag } from "@/types/tag.types";
 import type { Ingredient } from "@/types/ingredient.types";
+import type { Ustensil } from '@/types/ustensil.types';
+import type { Appliance } from '@/types/appliance.types';
 
 import { useStore } from "@/hooks/dataStore";
 
@@ -24,11 +26,7 @@ const FilterSearch = ({type,title}:Filter) => {
         //update tag
         updateTags({type:type,value:value});
 
-        // filter tag
-        // console.log('before',matchingRecipes)
-
         const filteredResults = filteredData(type,value);
-        // console.log('after',filteredResults);
         
         //Update results
         updateResults(filteredResults);
@@ -60,27 +58,29 @@ const FilterSearch = ({type,title}:Filter) => {
 
                     if (typeof tag.value === 'string'){
 
-                    return recipe.ingredients.some(ing => 
-                        ing.ingredient.toLowerCase() === tag.value
-                    );
+                        return recipe.ingredients.some(ing => 
+                            ing.ingredient.toLowerCase() === tag.value
+                        );
 
                     }
                     return false;
-
+            
                     case 'ustensils':
                     if (typeof tag.value === 'string'){
+                        // console.log(recipe.ustensils);
                         return recipe.ustensils.includes(tag.value);
                     }
                     return false;
                     
                     case 'appliances':
                     if(typeof tag.value === 'string'){
-                        return recipe.appliance.toLowerCase() === tag.value;
+                        console.log(recipe.appliances);
+                        return recipe.appliances.toLowerCase() === tag.value;
                     }
                     return false;
 
                     case 'timing':
-                    console.log(tag.value,typeof tag.value);  
+                    // console.log(tag.value,typeof tag.value);  
                     return recipe.time === parseInt(String(tag.value));
 
                     default:
@@ -98,8 +98,8 @@ const FilterSearch = ({type,title}:Filter) => {
                 case 'ustensils':
                 return recipe.ustensils.includes(value);
 
-                case 'appliances':
-                return recipe.appliance.toLowerCase() === value;
+                // case 'appliances':
+                // return recipe.appliances.toLowerCase() === value;
 
                 case 'timing':
                 return recipe.time === parseInt(value);
@@ -123,13 +123,15 @@ const FilterSearch = ({type,title}:Filter) => {
         //Outils
         case 'appliances':{
             
-            const allAppliances = matchingRecipes.map((recipe:Recipe) => recipe.appliance.toLowerCase());
-           
-            // /Get distinct item of a collection of values
-            const filtersDatas : string[] = Array.from(new Set(allAppliances)).sort((a,b) => {
+            const appliancesList : Appliance[] = matchingRecipes.flatMap((recipe : Recipe) => recipe.appliances);
+
+
+            const applianceData = appliancesList.map((appliance:Appliance) => appliance.name.toLowerCase());
+
+            const filtersDatas = Array.from(new Set(applianceData)).sort((a,b) => {
                 return a.localeCompare(b);
             });
-    
+
             return filtersDatas;
         }
 
@@ -149,27 +151,16 @@ const FilterSearch = ({type,title}:Filter) => {
         //Ustensiles
         case "ustensils": {
 
-            let ustenList: string[] = [];
-    
-            const ustensilsArrays : string[][] = matchingRecipes.map((recipe:Recipe) => recipe.ustensils);
-    
-            ustensilsArrays.forEach((singleUstensilArray:string[]) => {
-    
-                const singleUstensil = singleUstensilArray.map((element:string) =>{
-                    return element.toLowerCase();
-                });
-    
-                ustenList = ustenList.concat(singleUstensil);
-    
-            });
-    
-           
-            const filtersDatas: string[] = Array.from(new Set(ustenList)).sort((a,b) => {
+            const ustenList : Appliance[] = matchingRecipes.flatMap((recipe : Recipe) => recipe.ustensils);
+
+
+            const ustenData = ustenList.map((ustensil:Ustensil) => ustensil.name.toLowerCase());
+
+            const filtersDatas = Array.from(new Set(ustenData)).sort((a,b) => {
                 return a.localeCompare(b);
             });
-           
-            return filtersDatas;
 
+            return filtersDatas;
         }
 
         //Ingrédients
