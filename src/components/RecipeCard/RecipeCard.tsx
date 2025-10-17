@@ -3,6 +3,8 @@ import Image from "next/image";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
+import type { Ustensil } from "@/types/ustensil.types";
+import type { Appliance } from "@/types/appliance.types";
 
 //Styles
 import "./RecipeCard.scss";
@@ -10,9 +12,6 @@ import "./RecipeCard.scss";
 
 const RecipeCard = ({ recipe }:{ recipe:Recipe}) => {
 
-  const displayIngredients = recipe.ingredients;
-  const displayAppliance = recipe.appliance;
-  const displayUstensils = recipe.ustensils;
 
   return (
     <article className="card-recipe" key={recipe.id} data-index={`${recipe.id}`}>
@@ -27,7 +26,7 @@ const RecipeCard = ({ recipe }:{ recipe:Recipe}) => {
             <p className="recipe-description">{recipe.description}</p>
             <h3 className="recipe-subtitle">Ingrédients</h3> 
              <ul className="recipe-list">
-              {displayIngredients.map((element:Ingredient,index:number) => {
+              {recipe.ingredients.map((element:Ingredient,index:number) => {
                 return (
                   <li key={`${element.ingredient}-${index}`} className="recipe-ingredient">
                     {element.ingredient}
@@ -39,10 +38,12 @@ const RecipeCard = ({ recipe }:{ recipe:Recipe}) => {
                 })}
             </ul>
             <h3 className="recipe-subtitle">Appareil</h3>
-            <p>{displayAppliance}</p>
+            {recipe.appliances.map((appliance:Appliance, index:number) => {
+              return <p key={`${appliance}-${index}`} className="recipe-appliance">{appliance.name}</p>
+            })}
             <h3 className="recipe-subtitle">Ustensiles</h3>
-            {displayUstensils.map((ustensil:string, index:number) => {
-              return <a key={`${ustensil}-${index}`} href={`http://www.google.fr/search?q=${recipe.title}+${ustensil}`} target={"_blank" }className="recipe-ustensil" data-inex={index}>{ustensil}</a>
+            {recipe.ustensils.map((ustensil:Ustensil, index:number) => {
+              return <a key={`${ustensil}-${index}`} href={`http://www.google.fr/search?q=${recipe.title}+${ustensil.name}`} target={"_blank" }className="recipe-ustensil" data-inex={index}>{ustensil.name}</a>
             })}
       </div>
     </article>
