@@ -4,6 +4,8 @@ import { persist } from 'zustand/middleware';
 import type { Recipe } from '@/types/recipe.types';
 import type { Tag	 } from '@/types/tag.types';
 
+import { normalizeRecipe } from '@/utils/normalizeRecipeApi';
+
 
 //Datas
 // import {recipes as initialRecipes} from '@/datas/recipes.json';
@@ -14,6 +16,8 @@ type Store = {
   count:number;
   matchingRecipes: Recipe[];
   tags: Tag[];
+  isLoading:boolean;
+  isError:boolean;
   incrementCount: () => void;
   updateResults: (results: Recipe[]) => void;
   resetResults: () => void;
@@ -31,14 +35,16 @@ export const useStore = create<Store>()(
       count:0,
       matchingRecipes: [],
       tags: [],
+      isLoading:true,
+      isError:false,
       incrementCount: () => set((state) => ({ count: state.count + 1})),
       updateResults: (results:Recipe[]) => set((state) => ({    
       matchingRecipes:results,
       count: results?.length ?? state.recipes.length
       })),
-      resetResults: () => set(() => ({ 
-      matchingRecipes: [],
-      count: recipes.length
+      resetResults: () => set((state) => ({ 
+      matchingRecipes: state.recipes,
+      count: state.recipes.length
       })),
       updateTags: (tag:Tag) => set((state) => {
 
@@ -70,10 +76,28 @@ export const useStore = create<Store>()(
 
           const fetchedRecipes = await response.json();
 
-          set((state) => ({recipes: fetchedRecipes}));
+          console.log('Données BRUTES reçues de l\'API:', fetchedRecipes);
+
+          const cleanRecipes = fetchedRecipes.map((rawRecipe) => normalizeRecipe(rawRecipe))
+          
+          set(() => ({
+            recipes: cleanRecipes,
+            matchingRecipes: cleanRecipes,
+            isLoading:false,
+            isError:false
+            }
+          ));
           
         } catch (error) {
-           console.error("Erreur lors de la récupération des recettes:", error);
+
+          set(() => ({
+              isLoading:false,
+              isError:true
+              }
+          )); 
+
+          console.error("Erreur lors de la récupération des recettes:", error);
+           
         }
       }
     }),{
