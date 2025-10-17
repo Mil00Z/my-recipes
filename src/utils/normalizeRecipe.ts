@@ -150,8 +150,11 @@ export function normalizeRecipe(rawRecipe:RawRecipe) : Recipe {
     description: rawRecipe.description,
     image:rawRecipe.image,
     //Normalisation / Case Check
+    // appliance: rawRecipe.Appliances,
     appliance: normalizeAppliance(rawRecipe.Appliance || rawRecipe.appliance),
+    // ustensils: rawRecipe.Ustensils,
     ustensils: normalizeUstensil(rawRecipe.Ustensil || rawRecipe.ustensils),
+    // ingredients: rawRecipe.Ingredients,
     ingredients: normalizeIngredient(rawRecipe.Ingredient || rawRecipe.ingredients)
   };
  
