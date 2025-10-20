@@ -79,14 +79,20 @@ const TagElement = ({element} : TagProps) => {
           return recipe.ingredients.some(ing =>
             ing.ingredient.toLowerCase() === String(tag.value).toLowerCase()
           );
+
         case 'ustensils':
-          return recipe.ustensils
-            .map(u => u.toLowerCase())
-            .includes(String(tag.value).toLowerCase());
+          return recipe.ustensils.some(ustensil => 
+            ustensil.name.toLowerCase() === String(tag.value).toLowerCase()
+          );
+         
         case 'appliances':
-          return recipe.appliance.toLowerCase() === String(tag.value).toLowerCase();
+          return recipe.appliances.some(appliance => 
+            appliance.name.toLowerCase() === String(tag.value).toLowerCase()
+          );
+
         case 'timing':
           return recipe.time === parseInt(String(tag.value));
+
         default:
           return false;
       }

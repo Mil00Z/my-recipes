@@ -96,7 +96,7 @@ return(
             </div>
                 
             <div className="recipe-taglist">
-              {/* <TagElement element="tag" /> */}
+              <TagElement element="tag" />
             </div>
 
           </form>
