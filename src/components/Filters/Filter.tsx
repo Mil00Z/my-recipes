@@ -55,11 +55,10 @@ const FilterSearch = ({type,title}:Filter) => {
                 switch(tag.type) {
 
                     case 'ingredients':
-
                     if (typeof tag.value === 'string'){
 
-                        return recipe.ingredients.some(ing => 
-                            ing.ingredient.toLowerCase() === tag.value
+                        return recipe.ingredients.some(element => 
+                           element.ingredient.toLowerCase() === tag.value
                         );
 
                     }
@@ -67,20 +66,21 @@ const FilterSearch = ({type,title}:Filter) => {
             
                     case 'ustensils':
                     if (typeof tag.value === 'string'){
-                        // console.log(recipe.ustensils);
-                        return recipe.ustensils.includes(tag.value);
+                       return recipe.ustensils.some(ustensil => 
+                        ustensil.name.toLowerCase()  == tag.value
+                       )
                     }
                     return false;
                     
                     case 'appliances':
                     if(typeof tag.value === 'string'){
-                        console.log(recipe.appliances);
-                        return recipe.appliances.toLowerCase() === tag.value;
+                       return recipe.appliances.some(appliance => 
+                        appliance.name.toLowerCase()  == tag.value
+                       )
                     }
                     return false;
 
                     case 'timing':
-                    // console.log(tag.value,typeof tag.value);  
                     return recipe.time === parseInt(String(tag.value));
 
                     default:
@@ -95,11 +95,16 @@ const FilterSearch = ({type,title}:Filter) => {
                 return recipe.ingredients.some(ing => 
                     ing.ingredient.toLowerCase() === value
                 );
+                
                 case 'ustensils':
-                return recipe.ustensils.includes(value);
-
-                // case 'appliances':
-                // return recipe.appliances.toLowerCase() === value;
+                return recipe.ustensils.some(ustensil => 
+                    ustensil.name.toLowerCase() === value
+                );
+                
+                case 'appliances':
+                return recipe.appliances.some(appliance => 
+                    appliance.name.toLowerCase() === value
+                );
 
                 case 'timing':
                 return recipe.time === parseInt(value);
