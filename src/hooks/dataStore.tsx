@@ -4,7 +4,9 @@ import { persist } from 'zustand/middleware';
 import type { Recipe } from '@/types/recipe.types';
 import type { Tag	 } from '@/types/tag.types';
 
+
 import { normalizeRecipe } from '@/utils/normalizeRecipeApi';
+import type { RawRecipe } from '@/utils/normalizeRecipe';
 
 
 //Datas
@@ -13,12 +15,10 @@ import { normalizeRecipe } from '@/utils/normalizeRecipeApi';
 
 type Store = {
   recipes: Recipe[];
-  count:number;
   matchingRecipes: Recipe[];
   tags: Tag[];
   isLoading:boolean;
   isError:boolean;
-  incrementCount: () => void;
   updateResults: (results: Recipe[]) => void;
   resetResults: () => void;
   updateTags: (tag:Tag) => void;
@@ -32,19 +32,15 @@ export const useStore = create<Store>()(
 
   persist((set) => ({
       recipes: [],
-      count:0,
       matchingRecipes: [],
       tags: [],
       isLoading:true,
       isError:false,
-      incrementCount: () => set((state) => ({ count: state.count + 1})),
-      updateResults: (results:Recipe[]) => set((state) => ({    
-      matchingRecipes:results,
-      count: results?.length ?? state.recipes.length
+      updateResults: (results:Recipe[]) => set(() => ({    
+      matchingRecipes:results
       })),
       resetResults: () => set((state) => ({ 
-      matchingRecipes: state.recipes,
-      count: state.recipes.length
+      matchingRecipes: state.recipes
       })),
       updateTags: (tag:Tag) => set((state) => {
 
@@ -78,7 +74,7 @@ export const useStore = create<Store>()(
 
           console.log('Données BRUTES reçues de l\'API:', fetchedRecipes);
 
-          const cleanRecipes = fetchedRecipes.map((rawRecipe) => normalizeRecipe(rawRecipe))
+          const cleanRecipes = fetchedRecipes.map((rawRecipe:RawRecipe) => normalizeRecipe(rawRecipe))
           
           set(() => ({
             recipes: cleanRecipes,
