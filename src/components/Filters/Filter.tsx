@@ -26,10 +26,10 @@ const FilterSearch = ({type,title}:Filter) => {
         //update tag
         updateTags({type:type,value:value});
 
-        const filteredResults = filteredData(type,value);
+        // const filteredResults = filteredData(type,value);
         
         //Update results
-        updateResults(filteredResults);
+        // updateResults(filteredResults);
        
     }
 
@@ -95,7 +95,7 @@ const FilterSearch = ({type,title}:Filter) => {
                 return recipe.ingredients.some(ing => 
                     ing.ingredient.toLowerCase() === value
                 );
-                
+
                 case 'ustensils':
                 return recipe.ustensils.some(ustensil => 
                     ustensil.name.toLowerCase() === value
