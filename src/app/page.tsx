@@ -19,26 +19,21 @@ import Counter from "@/components/Counter/Counter";
 
 
 const FiltersDatas : Filter[] = [
-
   {
     type : 'ingredients',
     title: 'Ingrédients',
-    method : (value:string) => console.log(value)
   },
   {
     type : 'appliances',
     title: 'Appareils',
-    method : (value:string) => console.log(value)
   },
   {
     type : 'ustensils',
     title: 'Ustensiles',
-    method : (value:string) => console.log(value)
   },
   {
     type : 'timing',
     title: 'Minutages',
-    method : (value:string) => console.log(value)
   }
 ]
 
@@ -79,7 +74,7 @@ if(isLoading) {
 
 return(
  
-    <PageWrapper layout="home" >
+    <PageWrapper layout="home">
 
       <section className="recipes-filter">
 
@@ -87,8 +82,7 @@ return(
             <div className="filters-group">
 
               {FiltersDatas.map((filter:Filter) => {
-
-                  return(<FilterSearch key={filter.type} type={filter.type} title={filter.title} method={filter.method} />)
+                  return(<FilterSearch key={filter.type} type={filter.type} title={filter.title} />)
               })}
 
               <ResetTag />
