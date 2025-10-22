@@ -3,13 +3,16 @@ import Image from "next/image";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
+import type { Ustensil } from "@/types/ustensil.types";
+import type { Appliance } from "@/types/appliance.types";
 
 //Styles
 import "./RecipeCard.scss";
 
-const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
 
-  
+const RecipeCard = ({ recipe }:{ recipe:Recipe}) => {
+
+
   return (
     <article className="card-recipe" key={recipe.id} data-index={`${recipe.id}`}>
       <span className="recipe-badge">{recipe.id}</span>
@@ -23,9 +26,9 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
             <p className="recipe-description">{recipe.description}</p>
             <h3 className="recipe-subtitle">Ingrédients</h3> 
              <ul className="recipe-list">
-              {recipe.ingredients.map((element:Ingredient) => {
+              {recipe.ingredients.map((element:Ingredient,index:number) => {
                 return (
-                  <li key={element.ingredient} className="recipe-ingredient">
+                  <li key={`${element.ingredient}-${index}`} className="recipe-ingredient">
                     {element.ingredient}
                     <span className="recipe-quantity">
                       {element.quantity} {element.unit ? element.unit : ''} 
@@ -34,11 +37,13 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
                   )
                 })}
             </ul>
-            <h3 className="recipe-subtitle">Appareils</h3>
-            <p>{recipe.appliance}</p>
+            <h3 className="recipe-subtitle">Appareil</h3>
+            {recipe.appliances.map((appliance:Appliance, index:number) => {
+              return <p key={`${appliance}-${index}`} className="recipe-appliance">{appliance.name}</p>
+            })}
             <h3 className="recipe-subtitle">Ustensiles</h3>
-            {recipe.ustensils.map((ustensil:string) => {
-              return <span key={ustensil} className="recipe-ustensil">{ustensil}</span>
+            {recipe.ustensils.map((ustensil:Ustensil, index:number) => {
+              return <a key={`${ustensil}-${index}`} href={`http://www.google.fr/search?q=${recipe.title}+${ustensil.name}`} target={"_blank" }className="recipe-ustensil" data-inex={index}>{ustensil.name}</a>
             })}
       </div>
     </article>

@@ -18,7 +18,7 @@ return(
 
     <h1 className="hero-title">cherchez parmi plus de <span className="initial-count">{recipes?.length ?? 0}</span> recettes<br/>du quotidien,simples et délicieuses</h1>
 
-    <SearchForm recipes={recipes} />
+    <SearchForm />
 
   </div>
   </>

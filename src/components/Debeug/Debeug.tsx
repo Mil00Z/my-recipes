@@ -12,6 +12,7 @@ const StoreDebbuger = () => {
  //Live Reload Store Update
  useSyncDataTabs('recipes-stored'); 
 
+ const {recipes,matchingRecipes,tags} = useStore();
 
 return(
    <div className="store-debbuger">
@@ -24,6 +25,13 @@ return(
        <h3>Store - Activ tags: <span>{tags.length}</span></h3>
       <pre>
         {JSON.stringify({ tags }, null, 1)}
+      </pre>
+
+
+      <h3>Store - API Recipes: <span>{recipes.length}</span></h3>
+
+      <pre>
+        {JSON.stringify({ recipes }, null, 1)}
       </pre>
 
       <h3>Store - Active Recipes: <span>{matchingRecipes.length}</span></h3>
