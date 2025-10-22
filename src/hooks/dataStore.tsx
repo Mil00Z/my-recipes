@@ -4,39 +4,43 @@ import { persist } from 'zustand/middleware';
 import type { Recipe } from '@/types/recipe.types';
 import type { Tag	 } from '@/types/tag.types';
 
+
+import { normalizeRecipe } from '@/utils/normalizeRecipeApi';
+import type { RawRecipe } from '@/utils/normalizeRecipe';
+
+
 //Datas
-import {recipes as initialRecipes} from '@/datas/recipes.json';
+// import {recipes as initialRecipes} from '@/datas/recipes.json';
 
 
 type Store = {
   recipes: Recipe[];
-  count:number;
   matchingRecipes: Recipe[];
   tags: Tag[];
-  incrementCount: () => void;
+  isLoading:boolean;
+  isError:boolean;
   updateResults: (results: Recipe[]) => void;
   resetResults: () => void;
   updateTags: (tag:Tag) => void;
   removeTag: (tag:Tag) => void;
   resetTags: () => void;
+  fetchRecipes: () => Promise<void>;
 };  
 
 
 export const useStore = create<Store>()(
 
   persist((set) => ({
-      recipes: initialRecipes,
-      count:initialRecipes.length,
+      recipes: [],
       matchingRecipes: [],
       tags: [],
-      incrementCount: () => set((state) => ({ count: state.count + 1})),
-      updateResults: (results:Recipe[]) => set((state) => ({    
-      matchingRecipes:results,
-      count: results?.length ?? state.recipes.length
+      isLoading:true,
+      isError:false,
+      updateResults: (results:Recipe[]) => set(() => ({    
+      matchingRecipes:results
       })),
-      resetResults: () => set(() => ({ 
-      matchingRecipes: [],
-      count: initialRecipes.length
+      resetResults: () => set((state) => ({ 
+      matchingRecipes: state.recipes
       })),
       updateTags: (tag:Tag) => set((state) => {
 
@@ -55,8 +59,44 @@ export const useStore = create<Store>()(
       return {tags: updatedTags}
    
       }),
+
       resetTags: () => set(() => ({tags: []})),
-  }),{
+      fetchRecipes: async () => {
+
+        try {
+          const response = await fetch('/api/recipes');
+
+          if (!response.ok) {
+            throw new Error('Failed to fetch Recipes');
+          }  
+
+          const fetchedRecipes = await response.json();
+
+          console.log('Données BRUTES reçues de l\'API:', fetchedRecipes);
+
+          const cleanRecipes = fetchedRecipes.map((rawRecipe:RawRecipe) => normalizeRecipe(rawRecipe))
+          
+          set(() => ({
+            recipes: cleanRecipes,
+            matchingRecipes: cleanRecipes,
+            isLoading:false,
+            isError:false
+            }
+          ));
+          
+        } catch (error) {
+
+          set(() => ({
+              isLoading:false,
+              isError:true
+              }
+          )); 
+
+          console.error("Erreur lors de la récupération des recettes:", error);
+           
+        }
+      }
+    }),{
     name:'recipes-stored',
     }
   ))

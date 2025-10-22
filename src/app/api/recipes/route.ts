@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-import { normalizeRecipe } from '@/utils/normalizeRecipe'; 
-import type {RawRecipe} from '@/utils/normalizeRecipe'; 
 
+ 
 
 // Récupérer les variables d'environnement.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -21,34 +20,32 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export async function GET(request : Request) {
 
   try {
-    // Récupérer toutes les recettes depuis la table 'recipes'
-    const { data : RawRecipes, error } : { data : RawRecipe[] | null, error : any} = await supabase.from('Recipe').select('*,Ingredient(ingredient,quantity,unit),Appliance(name),Ustensil(name)').limit(3);
+   
+    const { data : RawRecipes, error } = await supabase.from('Recipes').select('*,Ingredients(ingredient,quantity,unit),Appliances(name),Ustensils(name)');
 
-    // Si Supabase renvoie une erreur, retourner une réponse avec un message clair
-    if (error) {
+    // Si de soucis de donnéés
+    if (!RawRecipes) {
+      return NextResponse.json({ error: 'Recipes not found' }, { status: 404 });
+    }
+
+    else if (error) {
       console.error("❌ Erreur de connexion ou de requête Supabase:", error);
 
       return NextResponse.json(
-        { message: 'Erreur lors de la récupération des données..#1',
+        { message: 'Erreur de connexion ou de requête Supabase:',
           error : error
-         }
+         }  
       );
     }
    
+    return NextResponse.json(RawRecipes);
     
-    //Normalisation des données entrantes
-    const recipes = RawRecipes?.map((recipe:RawRecipe) => {
-      return normalizeRecipe(recipe);
-    });
-
-    return NextResponse.json(recipes);
-
   } catch (err) {
-    // Gérer les erreurs inattendues, comme un problème de connexion
+ 
     console.error('Erreur inattendue dans la route API:', err);
-    
+
     return NextResponse.json(
-      { error: 'Une erreur serveur est survenue...#2' },
+      { error: 'Une erreur serveur est survenue...' },
       { status: 500 }
     );
   }

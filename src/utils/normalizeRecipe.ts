@@ -140,7 +140,7 @@ export const normalizeIngredient = (dataIngredient:RawRecipe) : Ingredient[] => 
 
 export function normalizeRecipe(rawRecipe:RawRecipe) : Recipe {
 
-  console.log(`Normalisation de la recette ID ${rawRecipe.id}: ${rawRecipe.title}, ${rawRecipe.time}`);
+  // console.log(`Normalisation de la recette ID ${rawRecipe.id}: ${rawRecipe.title}, ${rawRecipe.time}`);
 
   const cleanRecipe: Recipe = {
     id: rawRecipe.id,
@@ -150,8 +150,11 @@ export function normalizeRecipe(rawRecipe:RawRecipe) : Recipe {
     description: rawRecipe.description,
     image:rawRecipe.image,
     //Normalisation / Case Check
+    // appliance: rawRecipe.Appliances,
     appliance: normalizeAppliance(rawRecipe.Appliance || rawRecipe.appliance),
+    // ustensils: rawRecipe.Ustensils,
     ustensils: normalizeUstensil(rawRecipe.Ustensil || rawRecipe.ustensils),
+    // ingredients: rawRecipe.Ingredients,
     ingredients: normalizeIngredient(rawRecipe.Ingredient || rawRecipe.ingredients)
   };
  

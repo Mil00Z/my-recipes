@@ -1,59 +1,27 @@
-
 import { useStore } from "@/hooks/dataStore";
+
+import { filterRecipesByTags } from '@/utils/filterRecipesByTags';
+
 import type { Recipe } from "@/types/recipe.types";
-import type { Tag } from "@/types/tag.types";
 
 import "./SearchForm.scss";
 
+// interface SearchFormProps {
+  //   recipes: Recipe[];
+// } 
 
-interface SearchFormProps {
-  recipes: Recipe[];
-} 
+const SearchForm = () => {
 
-const SearchForm = ({recipes}:SearchFormProps) => {
+  const {recipes,updateResults,tags} = useStore();
 
-  const {updateResults,tags} = useStore();
-
+  //Constant Rules
   const minimumQueryLength = 3;
-
-  //Factoriser ce call avec un hook (identique à Tag.tsx)
-  function filterRecipesByTags(sourceData: Recipe[], tags: Tag[]) {
-      return sourceData.filter((recipe) =>
-        tags.every((tag) => {
-          switch (tag.type) {
-            case 'ingredients':
-              return recipe.ingredients.some(ing =>
-                ing.ingredient.toLowerCase() === String(tag.value).toLowerCase()
-              );
-            case 'ustensils':
-              return recipe.ustensils
-                .map(u => u.toLowerCase())
-                .includes(String(tag.value).toLowerCase());
-            case 'appliances':
-              return recipe.appliance.toLowerCase() === String(tag.value).toLowerCase();
-            case 'timing':
-              return recipe.time === parseInt(String(tag.value));
-            default:
-              return false;
-          }
-        })
-      );
-    }
-    
 
 
   //Checking Datas
   function MainSearch(element:string) {
 
-    // const baseSource = matchingRecipes.length > 0 ? matchingRecipes : recipes;
     let baseSource = recipes;
-
-    // if(element.length === 0) {
-
-    //   updateResults(recipes);
-    //   return ;
-
-    // }
 
     // complete feature search tags + Main Search
     if (tags.length > 0) {
@@ -62,11 +30,12 @@ const SearchForm = ({recipes}:SearchFormProps) => {
   
     }
 
-
     if (element.length < minimumQueryLength) {
           updateResults(baseSource); 
           return; 
     }
+
+
     //Search
     const searchValue = element.toLowerCase();
 
