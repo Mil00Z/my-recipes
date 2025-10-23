@@ -1,14 +1,14 @@
 'use client';
 
-import {useState} from "react";
 import { useStore } from "@/hooks/dataStore";
-import useFormList from "@/hooks/useFormList"
+import useFormList from "@/hooks/useFormList";
+
+import {v4 as uuid} from "uuid";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
-
-
-import {v4 as uuid} from "uuid";
+import type { Ustensil } from "@/types/ustensil.types";
+import type { Appliance } from "@/types/appliance.types";
 
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
@@ -16,27 +16,33 @@ import RecipeCard from "@/components/RecipeCard/RecipeCard";
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
-import "./updateRecipe.scss";
+import "./createRecipe.scss";
 
 
 const AddRecipePage = () => {
 
   //Store
-  const {newRecipes,addRecipe} = useStore();
+  const {recipes,newRecipes,addRecipe} = useStore();
 
-  const [newRecipeData, setNewRecipeData] = useState<Recipe[]>([]);
-
-
+ 
  const createNewIngredient = () : Ingredient => ({
     ingredient :'',
     quantity:undefined,
     unit:undefined
-  })
+  });
  const [ingredients,addIngredient,removeIngredient] = useFormList<Ingredient>(createNewIngredient)
 
 
- const createNewUstensil = () : string => ('');
- const [ustensils,addUstensil,removeUstensil] = useFormList<string>(createNewUstensil)
+ const createNewUstensil = () : Ustensil => ({
+  name:''
+ });
+ const [ustensils,addUstensil,removeUstensil] = useFormList<Ustensil>(createNewUstensil)
+
+ const createNewAppliance = () : Appliance => ({
+    name:''
+ })
+
+//  const [appliances,addAppliance,RemoveAppliance] = useFormList<Appliance>(createNewAppliance);
 
   // Submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
@@ -55,25 +61,23 @@ const AddRecipePage = () => {
             quantity: Number(formData.get(`quantity-${index}`)),
             unit: formData.get(`unit-${index}`) as string,
         })),
-      appliance: formData.get("appliance") as string,
-      ustensils: ustensils.map((_, index: number) => formData.get(`ustensil-${index}`) as string),
+      appliances: [{ name: formData.get("appliance") as string }],
+      ustensils: ustensils.map((_, index:number) => ({
+            name: formData.get(`ustensil-${index}`) as string
+        })),
       time: Number(formData.get("time")),
       image: formData.get("image") as string,
   };
-
-    //State Storage
-    setNewRecipeData((newRecipeData : Recipe[]) => [...newRecipeData,newRecipe]);
 
     //Store Storage
     addRecipe(newRecipe);
 
     //Quick reset
     e.target.reset();
-    
+  
   }
   
  
-
   return (
     <>
       <PageWrapper>
@@ -156,15 +160,17 @@ const AddRecipePage = () => {
         </form>
 
         <div className="update-container debeug">
+          
+          <h3>Nombre Total de recettes : API ({recipes.length}) + ajouts ({newRecipes.length}) = {recipes.length + newRecipes.length}</h3>
 
           <h2>Updated Datas <span className="counter">({newRecipes?.length})</span></h2>
         
             {newRecipes?.map((recipe:Recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
-        
-        </div>
 
+        </div>
+          
 
       </PageWrapper>
 
