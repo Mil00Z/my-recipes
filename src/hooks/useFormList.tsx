@@ -9,7 +9,7 @@ const useFormList = <T,>(createNewItem : () => T) =>  {
 
     const addItem = () => {
 
-      setItems((prevItems) =>[...prevItems,createNewItem()]);
+      setItems((prevItems:T[]) =>[...prevItems,createNewItem()]);
     }
 
     const removeItem = (index:number) => {
