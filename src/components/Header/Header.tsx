@@ -19,9 +19,9 @@ return (
         <Link href="/" aria-label={"lien vers la Homepage"} tabIndex={0}>
           <Image src="/logo.svg" alt="logo de My-Recipes" width={180} height={38} priority title="V2" />
         </Link>
-        {/* <Link href="/update" aria-label={"lien vers l'update de recettes"} className="link">
-            UPDATE
-        </Link> */}
+        <Link href="/create" aria-label={"lien vers le create de recettes"} className="link">
+            Ajouter recette
+        </Link>
     </div> 
 
     {layout === "home" && <Hero />}
