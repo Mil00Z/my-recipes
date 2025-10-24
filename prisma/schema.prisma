@@ -13,12 +13,12 @@ datasource db {
 
 
 model Recipe {
-  id  String  @id @default(uuid())
+  id  String  @id
   image String? 
   title String @db.VarChar(55) 
   description String 
   servings Int @default(2)
-  appliance Appliance[] @relation(name:"RecipeAppliances") 
+  appliances Appliance[] @relation(name:"RecipeAppliances") 
   ustensils Ustensil[] @relation(name:"RecipeUstensils")
   ingredients Ingredient[] @relation(name:"RecipeIngredients")
   time Int
