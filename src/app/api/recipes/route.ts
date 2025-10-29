@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+
 import type { Recipe } from '@/types/recipe.types';
+import type { Appliance } from '@/types/appliance.types';
+import {v4 as uuid} from "uuid";
 
 
  
@@ -25,7 +28,7 @@ export async function GET(request : Request) {
     const { data : RawRecipes, error } = await supabase
     .from('Recipes')
     .select('*,Ingredients(ingredient,quantity,unit),Appliances(name),Ustensils(name)')
-    // .order('createdAt',{ascending:false});
+    .order('createdAt',{ascending:false});
 
     // Si de soucis de donnéés
     if (!RawRecipes) {
@@ -62,25 +65,64 @@ export async function POST(request : Request) {
 
     const newRecipeData = await request.json();
 
-    const { data : insertedRecipe, error } = await supabase
+    const {appliances,ustensils,ingredients,...recipeDataOnly} = newRecipeData 
+
+    //Insert Recipe
+    const { data: insertedRecipe, error: insertedRecipeError } = await supabase
     .from('Recipes')
-    .insert([newRecipeData])
+    .insert([recipeDataOnly])
     .select()
     .single()
 
-    if(error){
-      console.error("❌ Erreur Supabase lors de l'insertion:", error);
-      return NextResponse.json({ message: 'Erreur lors de la création de la recette.', error }, { status: 500 });
+      if(insertedRecipeError){
+        console.error("❌ Erreur Supabase lors de l'insertion:", insertedRecipeError);
+        return NextResponse.json({ message: 'Erreur lors de la création de la recette.', insertedRecipeError }, { status: 500 });
+      }
+
+    console.log("Recette partielle crée ajoutée :", insertedRecipe);
+    
+
+    //Set Appliance
+    if(appliances && appliances.length > 0){
+
+      const appliancesToInsert = appliances.map((applianceToInsert:Appliance) => ({
+        id:uuid(),
+        name:applianceToInsert.name}
+      ))
+
+      // Add new Appliance
+      const {data:appliancesInserted,error:appliancesInsertedError} = await supabase.from('Appliances')
+      .insert(appliancesToInsert)
+      .select('id')
+  
+        if(appliancesInsertedError) throw new Error('Creation of appliance Ids Failed');
+        
+
+      const jointsToInsert = appliancesInserted.map((applianceInserted) =>({
+        A:applianceInserted.id,
+        B:insertedRecipe.id
+       }))
+
+
+      // Create Joints Links
+      const {data:applianceJoints,error:applianceJointsError} = await supabase.from('_RecipeAppliances').insert(jointsToInsert)
+      .select()
+ 
+      if(applianceJointsError) throw new Error('Creation of appliance Ids Failed');
+
     }
 
-  console.log("Recette créée avec succès :", insertedRecipe);
+
+  //Check Full Success
+  console.log("Recette complete créée avec succès :", insertedRecipe);
+
   return NextResponse.json(insertedRecipe ? insertedRecipe : { message: 'Recette créée' }, { status: 201 });
 
-  } catch(error){
-      console.error('Erreur inattendue dans la route POST:', error);
+  } catch(insertedRecipeError){
+      console.error('Erreur inattendue dans la route POST:', insertedRecipeError);
       return NextResponse.json(
           { message: 'Erreur de connexion ou de requête Supabase:',
-            error : error
+            error : insertedRecipeError
           },
           { status: 500 }
         );
