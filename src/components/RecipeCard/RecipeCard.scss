@@ -10,6 +10,14 @@
     overflow: hidden;
     transition: var(--regular-transi);
     position: relative;
+
+    @media all and (max-width:1060px){
+    width:100%;
+  }
+
+   @media all and (min-width:1061px) and (max-width:1200px){
+    width:45%;
+  }
 }
 
 .card-recipe > a {

@@ -120,4 +120,9 @@
   display:flex;
   justify-content: space-evenly;
   margin-block: 2vh;
+
+  @media all and (max-width:1060px){
+    flex-direction: column;
+    row-gap:1rem;
+  }
 }
