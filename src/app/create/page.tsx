@@ -1,5 +1,5 @@
 'use client';
-
+import {useState} from 'react';
 import { useStore } from "@/hooks/dataStore";
 import useFormList from "@/hooks/useFormList";
 
@@ -21,10 +21,11 @@ import "./createRecipe.scss";
 
 const AddRecipePage = () => {
 
+  
   //Store
   const {recipes,newRecipes,addRecipe} = useStore();
 
- 
+
  const createNewIngredient = () : Ingredient => ({
     ingredient :'',
     quantity:undefined,
@@ -42,17 +43,18 @@ const AddRecipePage = () => {
     name:''
  })
 
+
 //  const [appliances,addAppliance,RemoveAppliance] = useFormList<Appliance>(createNewAppliance);
 
   // Submit
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>{
+  const  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
 
     e.preventDefault()
    
     const formData = new FormData(e.target as HTMLFormElement)
 
     const newRecipe : Recipe = {
-      id : uuid(),
+      id : `${recipes.length + 1}`,
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       servings : 2,
@@ -69,10 +71,41 @@ const AddRecipePage = () => {
       image: formData.get("image") as string,
   };
 
-    //Store Storage
+  const recipeToSend = {...newRecipe};
+
+  console.log('cloned cleaned recipe',recipeToSend)
+
+  
+  try{
+
+    const response = await fetch('/api/recipes',{
+      method:'post',
+      headers : {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(recipeToSend)
+    })
+
+    if (!response.ok){
+
+      throw new Error('Failed to fetch Recipes')
+
+    } 
+
+    console.log('Recette envoyée avec succès !');
+
+    const result = await response.json(); // Récupérer la réponse du serveur (la recette créée)
+    console.log('Réponse du serveur:', result);
+
+  } catch(error){
+    console.error('Erreur réseau ou autre:', error);
+  }
+ 
+
+  //Store Storage
     addRecipe(newRecipe);
 
-    //Quick reset
+  //Quick reset
     e.target.reset();
   
   }
@@ -83,14 +116,14 @@ const AddRecipePage = () => {
       <PageWrapper>
       
           <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
-          <h2>Ajouter une recette</h2>
+          <h2 title={`${recipes.length} recettes existantes`}>Ajouter une recette</h2>
           <label>
             Titre
-            <input type="text" name="title" required />
+            <input type="text" name="title" defaultValue={`recette test ${recipes.length + 1}`} required />
           </label>
           <label>
             Description
-            <textarea name="description" required />
+            <textarea name="description" required defaultValue={`une recette de test de numéro ${recipes.length + 1}`} />
           </label>
           <fieldset>
             <legend>Ingrédients ({ingredients.length})</legend>
@@ -100,9 +133,9 @@ const AddRecipePage = () => {
 
                 <div key={`ingred-item-${index}`}  className="ingred-item" data-index={`ingred-item-${index}`}>
 
-                  <input type="text" name={`ingredient-${index}`} placeholder="Ingrédient" required />
-                  <input type="text" name={`quantity-${index}`} placeholder="Quantité" />
-                  <input type="text" name={`unit-${index}`} placeholder="Unité" />
+                  <input type="text" name={`ingredient-${index}`} placeholder="Ingrédient" defaultValue={`ingredient ${recipes.length + 1}`} required />
+                  <input type="text" name={`quantity-${index}`} placeholder="Quantité" defaultValue={`${recipes.length + 1}`} />
+                  <input type="text" name={`unit-${index}`} placeholder="Unité" defaultValue={`AL`} />
 
                   <button type="button" className="remove btn manage-ingred" onClick={() => removeIngredient(index)}>- Suppr ingrédient
                   </button>
@@ -118,7 +151,7 @@ const AddRecipePage = () => {
 
           <label>
             Appareil
-            <input type="text" name="appliance" required />
+            <input type="text" name="appliance" required defaultValue={`appliance ${recipes.length + 1}`} />
           </label>
           <fieldset>
             <legend>Ustensiles ({ustensils.length})</legend>
@@ -129,9 +162,8 @@ const AddRecipePage = () => {
 
               <div key={`ustensil-item-${index}`}  className="ustensil-item" data-index={`ustensil-item-${index}`}>
 
-                  <input type="text" name={`ustensil-${index}`} placeholder="Ustensile" required />
+                  <input type="text" name={`ustensil-${index}`} placeholder="Ustensile" required defaultValue={`ustensil ${recipes.length + 1}`} />
                 
-
                   <button type="button" className="remove btn manage-ustensil" onClick={() => removeUstensil(index)}>- Suppr Ustensil
                   </button>
 
@@ -145,11 +177,11 @@ const AddRecipePage = () => {
           </fieldset>
           <label>
             Temps (minutes)
-            <input type="number" name="time" min="1" required />
+            <input type="number" name="time" min="0" required defaultValue={Math.ceil(Math.random() * recipes.length)} />
           </label>
           <label>
             Image (URL)
-            <input type="text" name="image" defaultValue="/hf/default.recipe.jpg" readOnly/>
+            <input type="text" name="image" defaultValue="/hf/default-recipe.jpg" readOnly/>
           </label>
           <div className="letsgo">
             <button type="submit" className="btn"> 💾 Enregistrer la recette</button>
