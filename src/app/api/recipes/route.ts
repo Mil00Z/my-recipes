@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 import type { Recipe } from '@/types/recipe.types';
+import type { Ingredient } from '@/types/ingredient.types';
 import type { Appliance } from '@/types/appliance.types';
 import type { Ustensil } from '@/types/ustensil.types';
 
@@ -115,7 +116,8 @@ export async function POST(request : Request) {
       console.log(`〰 ${appliancesInserted.length} appareils liés.`);
     }
 
-    //set Ustensils
+  
+    //Set Ustensils
     if(ustensils && ustensils.length > 0){
 
       const ustensilsToInsert = ustensils.map((ustensilToInsert:Ustensil) =>({
@@ -146,7 +148,39 @@ export async function POST(request : Request) {
     }
 
 
-  
+    //Set Ingredients
+    if(ingredients && ingredients.length > 0){
+
+      const ingredientsToInsert = ingredients.map((ingredientToInsert:Ingredient) =>({
+        id:uuid(),
+        ingredient:ingredientToInsert.ingredient,
+        quantity:ingredientToInsert.quantity,
+        unit:ingredientToInsert.unit
+      }))
+
+      //Add new ustensil
+      const {data:ingredientsInserted,error:ingredientsInsertedError} = await supabase.from('Ingredients').insert(ingredientsToInsert).select('id')
+
+      if(ingredientsInsertedError) throw new Error('Creation of Ingredients Ids Failed');
+
+     
+
+      const jointsToInsert = ingredientsInserted.map((ingredientInserted) =>({
+        A:insertedRecipe.id,
+        B:ingredientInserted.id
+       }))
+
+
+      // Create Joints Links
+      const {data:ingredientsJoints,error:ingredientsJointsError} = await supabase.from('_RecipeIngredients').insert(jointsToInsert)
+      .select()
+
+
+      if(ingredientsJointsError) throw new Error('Creation of Ingredients joints Ids Failed');
+
+    console.log(`〰 ${ingredientsInserted.length} ingrédients liés.`);
+    }
+
   //Check Full Success
   console.log(`✅ Requête POST pour la recette ${insertedRecipe.id} terminée.`);
 
