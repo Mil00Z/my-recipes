@@ -3,11 +3,12 @@ import { createClient } from '@supabase/supabase-js';
 
 import type { Recipe } from '@/types/recipe.types';
 import type { Appliance } from '@/types/appliance.types';
+import type { Ustensil } from '@/types/ustensil.types';
+
 import {v4 as uuid} from "uuid";
 
 
  
-
 // Récupérer les variables d'environnement.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -67,7 +68,7 @@ export async function POST(request : Request) {
 
     const {appliances,ustensils,ingredients,...recipeDataOnly} = newRecipeData 
 
-    //Insert Recipe
+    //Insert Simple part of Recipe
     const { data: insertedRecipe, error: insertedRecipeError } = await supabase
     .from('Recipes')
     .insert([recipeDataOnly])
@@ -79,7 +80,7 @@ export async function POST(request : Request) {
         return NextResponse.json({ message: 'Erreur lors de la création de la recette.', insertedRecipeError }, { status: 500 });
       }
 
-    console.log("Recette partielle crée ajoutée :", insertedRecipe);
+      console.log(`✅ Recette créée avec ID: ${insertedRecipe.id}`);
     
 
     //Set Appliance
@@ -99,8 +100,8 @@ export async function POST(request : Request) {
         
 
       const jointsToInsert = appliancesInserted.map((applianceInserted) =>({
-        A:applianceInserted.id,
-        B:insertedRecipe.id
+        A:insertedRecipe.id,
+        B:applianceInserted.id
        }))
 
 
@@ -108,13 +109,46 @@ export async function POST(request : Request) {
       const {data:applianceJoints,error:applianceJointsError} = await supabase.from('_RecipeAppliances').insert(jointsToInsert)
       .select()
  
-      if(applianceJointsError) throw new Error('Creation of appliance Ids Failed');
+      if(applianceJointsError) throw new Error('Creation of appliance joints Ids Failed');
 
+
+      console.log(`〰 ${appliancesInserted.length} appareils liés.`);
+    }
+
+    //set Ustensils
+    if(ustensils && ustensils.length > 0){
+
+      const ustensilsToInsert = ustensils.map((ustensilToInsert:Ustensil) =>({
+        id:uuid(),
+        name:ustensilToInsert.name
+      }))
+
+      //Add new ustensil
+      const {data:ustensilsInserted,error:ustensilsInsertedError} = await supabase.from('Ustensils').insert(ustensilsToInsert).select('id')
+
+      if(ustensilsInsertedError) throw new Error('Creation of Ustensils Ids Failed');
+
+
+      const jointsToInsert = ustensilsInserted.map((ustensilInserted) =>({
+        A:insertedRecipe.id,
+        B:ustensilInserted.id
+       }))
+
+
+      // Create Joints Links
+      const {data:ustensilJoints,error:ustensilJointsError} = await supabase.from('_RecipeUstensils').insert(jointsToInsert)
+      .select()
+
+
+      if(ustensilJointsError) throw new Error('Creation of ustensils joints Ids Failed');
+
+    console.log(`〰 ${ustensilsInserted.length} ustensiles liés.`);
     }
 
 
+  
   //Check Full Success
-  console.log("Recette complete créée avec succès :", insertedRecipe);
+  console.log(`✅ Requête POST pour la recette ${insertedRecipe.id} terminée.`);
 
   return NextResponse.json(insertedRecipe ? insertedRecipe : { message: 'Recette créée' }, { status: 201 });
 
