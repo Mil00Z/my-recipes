@@ -154,27 +154,39 @@ export async function POST(request : Request) {
       const ingredientsToInsert = ingredients.map((ingredientToInsert:Ingredient) =>({
         id:uuid(),
         ingredient:ingredientToInsert.ingredient,
-        quantity:ingredientToInsert.quantity,
-        unit:ingredientToInsert.unit
       }))
 
       //Add new ustensil
-      const {data:ingredientsInserted,error:ingredientsInsertedError} = await supabase.from('Ingredients').insert(ingredientsToInsert).select('id')
+      const {data:ingredientsInserted,error:ingredientsInsertedError} = await supabase.from('Ingredients').insert(ingredientsToInsert).select()
 
       if(ingredientsInsertedError) throw new Error('Creation of Ingredients Ids Failed');
 
-     
-
-      const jointsToInsert = ingredientsInserted.map((ingredientInserted) =>({
-        A:insertedRecipe.id,
-        B:ingredientInserted.id
-       }))
+      console.log(`〰 ${ingredientsInserted.length} ingrédients partiellement ajouté.`);
 
 
-      // Create Joints Links
+      const jointsToInsert = ingredients.map((ingredForm:Ingredient) => {
+
+          const matchedIngredient = ingredientsInserted.find((element:{id:string,ingredient:string}) => {
+
+            console.log(element.id,element.ingredient);
+
+            return element.ingredient.toLowerCase().trim() === ingredForm.ingredient.toLowerCase().trim()
+
+            })
+
+        return {
+            A:insertedRecipe.id,
+            B:matchedIngredient.id,
+            quantity:ingredForm.quantity,
+            unit:ingredForm.unit
+          }
+      })
+
+       console.log(jointsToInsert);
+
+    //   // Create Joints Links
       const {data:ingredientsJoints,error:ingredientsJointsError} = await supabase.from('_RecipeIngredients').insert(jointsToInsert)
       .select()
-
 
       if(ingredientsJointsError) throw new Error('Creation of Ingredients joints Ids Failed');
 
