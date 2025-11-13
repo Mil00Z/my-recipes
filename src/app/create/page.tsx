@@ -1,5 +1,6 @@
 'use client';
-import {useState} from 'react';
+import {useEffect} from 'react';
+import { useRouter } from 'next/navigation';
 import { useStore } from "@/hooks/dataStore";
 import useFormList from "@/hooks/useFormList";
 
@@ -21,30 +22,32 @@ import "./createRecipe.scss";
 
 const AddRecipePage = () => {
 
+  // const router = useRouter();
+
   
   //Store
-  const {recipes,newRecipes,addRecipe} = useStore();
+  const {recipes,newRecipes,addRecipe,fetchRecipes} = useStore();
 
 
- const createNewIngredient = () : Ingredient => ({
-    ingredient :'',
-    quantity:undefined,
-    unit:undefined
-  });
- const [ingredients,addIngredient,removeIngredient] = useFormList<Ingredient>(createNewIngredient)
+  const createNewIngredient = () : Ingredient => ({
+      ingredient :'',
+      quantity:undefined,
+      unit:undefined
+    });
+  const [ingredients,addIngredient,removeIngredient] = useFormList<Ingredient>(createNewIngredient)
 
 
- const createNewUstensil = () : Ustensil => ({
-  name:''
- });
- const [ustensils,addUstensil,removeUstensil] = useFormList<Ustensil>(createNewUstensil)
-
- const createNewAppliance = () : Appliance => ({
+  const createNewUstensil = () : Ustensil => ({
     name:''
- })
+  });
+  const [ustensils,addUstensil,removeUstensil] = useFormList<Ustensil>(createNewUstensil)
 
+  const createNewAppliance = () : Appliance => ({
+      name:''
+  })
 
 //  const [appliances,addAppliance,RemoveAppliance] = useFormList<Appliance>(createNewAppliance);
+
 
   // Submit
   const  handleSubmit = async (e: React.FormEvent<HTMLFormElement>) =>{
@@ -88,11 +91,9 @@ const AddRecipePage = () => {
 
     if (!response.ok){
 
-      throw new Error('Failed to fetch Recipes')
+      throw new Error('Failed to Send New Recipe')
 
     } 
-
-    console.log('Recette envoyée avec succès !');
 
     const result = await response.json(); // Récupérer la réponse du serveur (la recette créée)
     console.log('Réponse du serveur:', result);
@@ -101,14 +102,23 @@ const AddRecipePage = () => {
     console.error('Erreur réseau ou autre:', error);
   }
  
-
   //Store Storage
     addRecipe(newRecipe);
 
   //Quick reset
     e.target.reset();
-  
+
+  // // Reload
+  //   router.refresh();
   }
+
+
+  // Force Page to Re fresh Datas from DB
+  useEffect(() =>{
+
+    fetchRecipes();
+
+  },[newRecipes]);
   
  
   return (
@@ -191,7 +201,7 @@ const AddRecipePage = () => {
           </div>
         </form>
 
-        <div className="update-container debeug">
+        {/* <div className="update-container debeug">
           
           <h3>Nombre Total de recettes : API ({recipes.length}) + ajouts ({newRecipes.length}) = {recipes.length + newRecipes.length}</h3>
 
@@ -201,7 +211,7 @@ const AddRecipePage = () => {
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
 
-        </div>
+        </div> */}
           
 
       </PageWrapper>
