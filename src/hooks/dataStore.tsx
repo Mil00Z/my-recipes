@@ -72,8 +72,8 @@ export const useStore = create<Store>()(
           }  
 
           const fetchedRecipes = await response.json();
-          console.log('Données BRUTES reçues de l\'API:', fetchedRecipes);
 
+          
           const cleanRecipes = fetchedRecipes.map((rawRecipe:RawRecipe) => normalizeRecipe(rawRecipe));
           
           set(() => ({
