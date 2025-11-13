@@ -150,25 +150,66 @@ export async function POST(request : Request) {
 
     //Set Ingredients
     if(ingredients && ingredients.length > 0){
+      
+     // Get datas raws
+      const ingredientsToCheck = ingredients.map((ingredientToCheck:Ingredient) => (
 
-      const ingredientsToInsert = ingredients.map((ingredientToInsert:Ingredient) =>({
-        id:uuid(),
-        ingredient:ingredientToInsert.ingredient,
-      }))
+        ingredientToCheck.ingredient.toLowerCase().trim()
 
-      //Add new ustensil
-      const {data:ingredientsInserted,error:ingredientsInsertedError} = await supabase.from('Ingredients').insert(ingredientsToInsert).select()
+      ))
 
-      if(ingredientsInsertedError) throw new Error('Creation of Ingredients Ids Failed');
+      // When : Check ingredients exist
+      const {data:checkedIngredients,error:checkedIngredientsError} = await supabase
+      .from('Ingredients')
+      .select()
+      .in('ingredient',ingredientsToCheck);
 
-      console.log(`〰 ${ingredientsInserted.length} ingrédients partiellement ajouté.`);
+       
+      if(checkedIngredientsError) throw new Error('Checking similary Ingredient Failed');
 
+
+      //Isoler les données existantes en base
+      const existingIngredients = checkedIngredients.map((checkedIngredient)=> checkedIngredient.ingredient
+      );
+
+      // Filtrer les valeurs existantes en Db avec celle du formulaire
+      const newIngredientsToCreate = ingredients.filter((formItem:Ingredient) => {
+
+        // valeure fixe pour "tester" l'idée
+        return !existingIngredients.includes(formItem.ingredient.toLocaleLowerCase().trim())
+        
+      });
+
+
+      let insertedIngredients = [];
+      // Then : Create ingredients
+      if(newIngredientsToCreate.length > 0) {
+
+        const ingredientsToInsert = newIngredientsToCreate.map((ingredientToInsert:Ingredient) =>({
+          id:uuid(),
+          ingredient:ingredientToInsert.ingredient.toLocaleLowerCase().trim(),
+        }))
+
+        console.log(`Ingrédients connus : ${existingIngredients} // `,'Nouveaux Ingrédients :', newIngredientsToCreate);
+    
+
+        const {data:inserted,error:insertedError} = await supabase
+        .from('Ingredients')
+        .insert(ingredientsToInsert)
+        .select()
+
+        if(insertedError) throw new Error('Creation of Ingredients Failed');
+
+        insertedIngredients = inserted;
+
+        console.log(`〰 ${insertedIngredients.length} ingrédients partiellement ajouté.`);
+      }
+
+      const allIngredients = [...checkedIngredients,...insertedIngredients];
 
       const jointsToInsert = ingredients.map((ingredForm:Ingredient) => {
 
-          const matchedIngredient = ingredientsInserted.find((element:{id:string,ingredient:string}) => {
-
-            console.log(element.id,element.ingredient);
+          const matchedIngredient = allIngredients.find((element:{id:string,ingredient:string}) => {
 
             return element.ingredient.toLowerCase().trim() === ingredForm.ingredient.toLowerCase().trim()
 
@@ -180,17 +221,20 @@ export async function POST(request : Request) {
             quantity:ingredForm.quantity,
             unit:ingredForm.unit
           }
-      })
+        })
 
-       console.log(jointsToInsert);
 
-    //   // Create Joints Links
-      const {data:ingredientsJoints,error:ingredientsJointsError} = await supabase.from('_RecipeIngredients').insert(jointsToInsert)
-      .select()
+      // Create Joints Links
+        const {data:ingredientsJoints,error:ingredientsJointsError} = await supabase
+        .from('_RecipeIngredients')
+        .insert(jointsToInsert)
+        .select()
 
-      if(ingredientsJointsError) throw new Error('Creation of Ingredients joints Ids Failed');
+        if(ingredientsJointsError) throw new Error('Creation of Ingredients joints Ids Failed');
 
-    console.log(`〰 ${ingredientsInserted.length} ingrédients liés.`);
+
+        console.log(`〰 ${ingredientsJoints.length} ingrédients liés.`);
+
     }
 
   //Check Full Success
