@@ -26,7 +26,7 @@ const RecipeCard = ({ recipe }:{ recipe:Recipe}) => {
             <p className="recipe-description">{recipe.description}</p>
             <h3 className="recipe-subtitle">Ingrédients</h3> 
              <ul className="recipe-list">
-              {recipe.ingredients.map((element:Ingredient,index:number) => {
+              {recipe.ingredients?.map((element:Ingredient,index:number) => {
                 return (
                   <li key={`${element.ingredient}-${index}`} className="recipe-ingredient">
                     {element.ingredient}
@@ -38,11 +38,11 @@ const RecipeCard = ({ recipe }:{ recipe:Recipe}) => {
                 })}
             </ul>
             <h3 className="recipe-subtitle">Appareil</h3>
-            {recipe.appliances.map((appliance:Appliance, index:number) => {
+            {recipe.appliances?.map((appliance:Appliance, index:number) => {
               return <p key={`${appliance}-${index}`} className="recipe-appliance">{appliance.name}</p>
             })}
             <h3 className="recipe-subtitle">Ustensiles</h3>
-            {recipe.ustensils.map((ustensil:Ustensil, index:number) => {
+            {recipe.ustensils?.map((ustensil:Ustensil, index:number) => {
               return <a key={`${ustensil}-${index}`} href={`http://www.google.fr/search?q=${recipe.title}+${ustensil.name}`} target={"_blank" }className="recipe-ustensil" data-inex={index}>{ustensil.name}</a>
             })}
       </div>

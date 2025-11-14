@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
+    padding: .8rem;
     color:var(--white-color);
     border:none;
     border-radius: var(--radius);
@@ -32,12 +32,35 @@
         }
     }
 
-    //reset
-    &.reset-tag{
+  
+
+    &[class*="reset"]{
         padding: .55rem;
         font-size: 1.25rem;
-        color: var(--secondary-color);
-        background-color: var(--third-color);
+
+        &:hover{
+        color: var(--black-color);
+        background-color: var(--secondary-color);
+        }
+
+    }
+
+    
+    &[class*="manage"]{
+        padding: .8rem 0;
+        font {
+            size: 1.1rem;
+        }
+        color: var(--white-color);
+
+        &.add{
+            background-color: var(--primary-color);
+            font-weight: var(--weight-bold); 
+        }
+
+        &.remove{
+            background-color: var(--color-debeug);
+        }
     }
 }
 
@@ -46,5 +69,21 @@
     background-color: var(--black-color);
     color:var(--white-color);
     cursor: pointer;
+}
+
+
+button[type="submit"] {
+
+font-size: 1rem;
+font-weight: var(--weight-bold);
+color:var(--white-color);
+background: var(--primary-color);
+cursor: pointer;
+transition: all 0.2s ease-in-out;
+
+    &:hover {
+    
+    background-color: var(--black-color);
+    }
 }
 
