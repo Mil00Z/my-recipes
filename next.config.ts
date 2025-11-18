@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     webpackMemoryOptimizations: true,
+    typedRoutes: true,
   },
   watchOptions: {
     pollIntervalMs: 500, // Check for changes every second
