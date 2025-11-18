@@ -14,14 +14,14 @@ if (!supabaseUrl || !supabaseAnonKey) {
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Définir le gestionnaire de requête pour la méthode GET
-export async function GET(request : Request, { params } : {params : { id : string}}) {
+export async function GET(request: Request, { params } : {params: {id:string}}) {
 
   //attention await 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     // Récupérer toutes les recettes depuis la table 'recipes'
-    const { data : RawRecipe, error } = await supabase.from('Recipes').select('*,Ingredients(ingredient,quantity,unit,updatedAt),Ustensils(name,updatedAt),Appliances(name,updatedAt)').eq('id',id).single();
+    const {data: RawRecipe, error} = await supabase.from('Recipes').select('*,_RecipeIngredients(quantity,unit,Ingredients(ingredient,updatedAt)),Ustensils(name,updatedAt),Appliances(name,updatedAt)').eq('id',id).single();
 
    
       // Si de soucis de donnéés
@@ -40,15 +40,16 @@ export async function GET(request : Request, { params } : {params : { id : strin
       }
     
     return NextResponse.json(RawRecipe, { status: 200 }); 
-    
 
   } catch (err) {
    
     console.error('Erreur inattendue dans la route API:', err);
     
     return NextResponse.json(
-      { error: 'Une erreur serveur est survenue...' },
-      { status: 500 }
+      {error:'Une erreur serveur est survenue...'},
+      {status:500}
     );
   }
 }
+
+
