@@ -53,3 +53,95 @@ export async function GET(request: Request, { params } : {params: {id:string}}) 
 }
 
 
+export async function DELETE(request: Request, context: { params: { id: string } } 
+  ){
+
+  const params = await context.params;
+  const currentRecipeId = params.id;
+
+  if(!currentRecipeId) {
+    console.error('Error On ID recipe');
+    return NextResponse.json(
+      {error:"Erreure sur l'id de la recette"},
+      {status:500}
+    ); 
+  }
+
+  try{
+    // liens Appliances
+    const { error: errorAppliances, count } = await supabase
+      .from('_RecipeAppliances')
+      .delete({count:"exact"})
+      .eq('A', currentRecipeId);
+      
+    if(errorAppliances){
+      throw new Error(`Delete Jointed Appliances Failed: ${errorAppliances.message}`);
+    }
+
+    if (count === 0) {
+      console.warn(`Aucun lien d'appliance trouvé pour la recette ${currentRecipeId}`);
+    }
+    console.log(`...Liens Appliances pour ${currentRecipeId} supprimés.`);
+
+
+    // liens Ustensils 
+    const { error: errorUstensils } = await supabase
+      .from('_RecipeUstensils')
+      .delete({count:"exact"})
+      .eq('A', currentRecipeId);
+      
+    if(errorUstensils){
+      throw new Error(`Delete Jointed Ustensils Failed: ${errorUstensils.message}`);
+    }
+
+    if (count === 0) {
+      console.warn(`Aucun lien d'ustensile trouvé pour la recette ${currentRecipeId}`);
+    }
+    console.log(`...Liens Ustensils pour ${currentRecipeId} supprimés.`);
+
+
+    //liens Ingredients
+    const { error: errorIngredients } = await supabase
+      .from('_RecipeIngredients')
+      .delete({count:"exact"})
+      .eq('A', currentRecipeId);
+      
+    if(errorIngredients){
+      throw new Error(`Delete Jointed Ingredients Failed: ${errorIngredients.message}`);
+    }
+
+    if(count === 0) {
+      console.warn(`Aucun lien d'ingrédient trouvé pour la recette ${currentRecipeId}`);
+    }
+    console.log(`...Liens Ingrédients pour ${currentRecipeId} supprimés.`);
+
+
+    // Recipe
+    const { error: errorRecipe } = await supabase
+      .from('Recipes')
+      .delete()
+      .eq('id', currentRecipeId);
+
+    if(errorRecipe){
+      throw new Error(`Delete Recipe Failed: ${errorRecipe.message}`);
+    }
+
+    // Finaly 
+    console.log(`✅ Recette ${currentRecipeId} supprimée avec succès.`);
+    
+    return NextResponse.json(
+      {message:`Recette ${currentRecipeId} supprimée`},
+      {status:200}
+    );
+
+  } catch(err){
+    console.error('Erreur inattendue dans la route API:', err);
+    
+    return NextResponse.json(
+      {error:'Une erreur serveur est survenue...'},
+      {status:500}
+    );
+  }
+}
+
+
