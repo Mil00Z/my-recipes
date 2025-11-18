@@ -4,7 +4,7 @@ import type { Appliance } from "./appliance.types";
 
 export type Recipe = {
   id:string;
-  image ?:string;
+  image?:string;
   title:string;
   description:string;
   servings:number;
@@ -12,4 +12,5 @@ export type Recipe = {
   ingredients:Ingredient[];
   appliances:Appliance[];
   ustensils:Ustensil[];
+  updatedAt?:string;
 }
