@@ -1,71 +1,121 @@
 'use client';
 
+import {useState,useEffect} from 'react'
 import Image from "next/image";
-import { useStore } from "@/hooks/dataStore";
-import type { Recipe } from "@/types/recipe.types";
 import { useParams } from "next/navigation";
 
-
+import type { Recipe } from "@/types/recipe.types";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
-
+//Styles
 import "./Recipe.scss";
 
 
 const RecipeSingle = () => {
 
-  const {recipes} = useStore();
+  const [fetchedRecipe,setFetchedRecipe] = useState<Recipe | null>(null)
+  const [isLoading,setIsLoading] = useState<Boolean>(true);
+  const [isError,setIsError] = useState<Boolean>(false);
 
+  //Get Url Params
   const getParams = useParams();
 
-  const recipe = recipes.find((recipe:Recipe) => {
-    return recipe.id === getParams.id}
-  );
+
+  useEffect(() => {
+
+    if(!getParams.id){
+
+          setIsError(true);
+          return;
+
+      }
+
+    const fetchSingleRecipe = async() => {
+
+      try{
+
+        const response = await fetch(`/api/recipes/${getParams.id}`);
+
+        if (!response.ok) {
+          setIsLoading(false);
+          setIsError(true);
+          return;
+        }
+
+        const singleData = await response.json();
+        console.log(singleData);
+
+        setIsLoading(false);
+        setFetchedRecipe(singleData);
+
+      } catch(err) {
+
+          console.error(err);
+          setIsError(true);
+
+      }
+      
+    }
+
+    fetchSingleRecipe();
+
+  },[getParams.id])
 
 
- if (!recipes.length) {
+
+ if (isLoading) {
     return (
       <PageWrapper>
-          <div className="debeug recipe-loading">Loading Recipes...</div>
+          <div className="recipe-loading">Loading Requested Recipe...</div>
       </PageWrapper>
       
     )
   }
 
-  if (!recipe) {
+  if (!fetchedRecipe) {
     return (
       <PageWrapper>
-          <div className="recipe-not-found"> ❌ Recipe not found</div>
+          <div className="recipe-not-found"> 😭 Recipe not found</div>
       </PageWrapper>
       
     )
   }
+
+  if (isError) {
+    return (
+      <PageWrapper>
+          <div className="recipe-not-found"> ❌ Error with fetching Data Recipe </div>
+      </PageWrapper>
+      
+    )
+  }
+
 
 
   return (
   <>
       <PageWrapper>
 
-        <div className="recipe-single">
-          <h1>{recipe.title}</h1>
+        <article aria-label="recette" className="recipe-single">
+          <h1>{fetchedRecipe.title}</h1>
           <div className="recipe-container">
             <Image
-              src={recipe.image ? recipe.image :'/default.jpg'}
-              alt={recipe.title}
+              src={fetchedRecipe.image ? fetchedRecipe.image :'/default.jpg'}
+              alt={fetchedRecipe.title}
               width={800}
               height={600}
               className="recipe-cover"
             />
             <div className="recipe-datas">
-              <p>Kézako : {recipe.description}</p>
-              <p>Timing : {recipe.time} min(s)</p>
-              <p>Pour : {recipe.servings} gourmand(es)</p>
-              <p>Appareil principal : {recipe.appliance}</p>
-              <p>Ustensiles : {recipe.ustensils.join(' - ')}</p>
+              <p>Kézako : {fetchedRecipe.description}</p>
+              <p>Timing : {fetchedRecipe.time} min(s)</p>
+              <p>Pour : {fetchedRecipe.servings} gourmand(es)</p>
+              {/* <p>Appareil principal : {recipe.appliance}</p>
+              <p>Ustensiles : {recipe.ustensils.join(' - ')}</p> */}
             </div>
           </div>
-        </div>
+        </article>
 
       </PageWrapper>
       
