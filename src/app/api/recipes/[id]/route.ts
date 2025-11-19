@@ -117,14 +117,23 @@ export async function DELETE(request: Request, context: { params: { id: string }
 
 
     // Recipe
-    const { error: errorRecipe } = await supabase
+    const { error: errorRecipe, countRecipe } = await supabase
       .from('Recipes')
-      .delete()
+      .delete({ count: 'exact' })
       .eq('id', currentRecipeId);
 
     if(errorRecipe){
       throw new Error(`Delete Recipe Failed: ${errorRecipe.message}`);
     }
+
+    if (countRecipe === 0) {
+       return NextResponse.json(
+         { message: "Recette introuvable ou déjà supprimée." }, 
+         { status: 404 }
+       );
+    }
+
+
 
     // Finaly 
     console.log(`✅ Recette ${currentRecipeId} supprimée avec succès.`);
