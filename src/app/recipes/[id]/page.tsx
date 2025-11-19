@@ -174,7 +174,7 @@ const RecipeSingle = () => {
 
 
   // TimeOut delay
-  let timeOutTiming : number = 4300 ;
+  let timeOutTiming : number = 3000 ;
 
 
   const handleDeleteRecipe = async (element:Event) => {
@@ -201,7 +201,7 @@ const RecipeSingle = () => {
           
        
         //Redirect
-        // router.push('/');
+        router.push('/');
           
         }, timeOutTiming);
 
