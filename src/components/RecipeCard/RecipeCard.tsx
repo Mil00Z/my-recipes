@@ -16,7 +16,7 @@ const RecipeCard = ({ recipe }:{ recipe:Recipe}) => {
   return (
     <article className="card-recipe" key={recipe.id} data-index={`${recipe.id}`}>
       <span className="recipe-badge">{recipe.id}</span>
-      <Link href={`/recipe/${recipe.id}`} target="_blank">
+      <Link href={`/recipes/${recipe.id}`} target="_blank">
         <Image src={recipe.image ? recipe.image : '/default.jpg'} alt={recipe.title} width={500} height={250} className="recipe-thumbnail" />
       </Link>
      <div className="recipe-content"> 
