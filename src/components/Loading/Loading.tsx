@@ -5,9 +5,9 @@ import './Loading.scss';
 
 const Loading = () => {
 
-  const {recipes,isLoading} = useStore();
+  const {isLoading} = useStore();
 
-  console.log('start','is loading =>',isLoading);
+  // console.log('start','is loading =>',isLoading);
 
   return (
     <>
