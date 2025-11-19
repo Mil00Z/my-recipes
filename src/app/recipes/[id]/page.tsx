@@ -268,6 +268,10 @@ const RecipeSingle = () => {
     return (
       <PageWrapper>
           <div className="recipe-not-found"> 😭 Recipe not found</div>
+          <Link href="/" className="btn btn-back">
+              <span className="btn-icon">←</span>
+              Retour à l'accueil
+          </Link>
       </PageWrapper>
     )
   }
@@ -276,6 +280,10 @@ const RecipeSingle = () => {
     return (
       <PageWrapper>
           <div className="recipe-not-found"> ❌ Error with fetching Datas from Recipe </div>
+          <Link href="/" className="btn btn-back">
+              <span className="btn-icon">←</span>
+              Retour à l'accueil
+          </Link>
       </PageWrapper>
     )
   }
