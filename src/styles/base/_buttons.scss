@@ -32,7 +32,19 @@
         }
     }
 
-  
+    &-cta{
+    width: fit-content;
+    margin-block: 2rem;
+    padding: 1rem;
+    font {
+        size: 1.25rem;
+        weight: var(--weight-bold);
+    }
+    background-color: var(--corporate-color);
+    color:var(--white-color);
+    text-decoration: none;
+    }
+
 
     &[class*="reset"]{
         padding: .55rem;
@@ -62,6 +74,19 @@
             background-color: var(--color-debeug);
         }
     }
+
+    &[class*="delete"]{
+        width:100%;
+        padding: 1rem 0;
+        font {
+            size: 1.25rem;
+            weight: var(--weight-bold);
+        }
+        background-color: var(--corporate-color);
+        color:var(--white-color);
+        
+    }
+
 }
 
 .btn:hover,
@@ -74,12 +99,12 @@
 
 button[type="submit"] {
 
-font-size: 1rem;
-font-weight: var(--weight-bold);
-color:var(--white-color);
-background: var(--primary-color);
-cursor: pointer;
-transition: all 0.2s ease-in-out;
+    font-size: 1rem;
+    font-weight: var(--weight-bold);
+    color:var(--white-color);
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
     

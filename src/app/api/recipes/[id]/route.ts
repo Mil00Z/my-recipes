@@ -14,14 +14,14 @@ if (!supabaseUrl || !supabaseAnonKey) {
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Définir le gestionnaire de requête pour la méthode GET
-export async function GET(request : Request, { params } : {params : { id : string}}) {
+export async function GET(request: Request, { params } : {params: {id:string}}) {
 
   //attention await 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     // Récupérer toutes les recettes depuis la table 'recipes'
-    const { data : RawRecipe, error } = await supabase.from('Recipes').select('*,Ingredients(ingredient,quantity,unit,updatedAt),Ustensils(name,updatedAt),Appliances(name,updatedAt)').eq('id',id).single();
+    const {data: RawRecipe, error} = await supabase.from('Recipes').select('*,_RecipeIngredients(quantity,unit,Ingredients(ingredient,updatedAt)),Ustensils(name,updatedAt),Appliances(name,updatedAt)').eq('id',id).single();
 
    
       // Si de soucis de donnéés
@@ -40,15 +40,117 @@ export async function GET(request : Request, { params } : {params : { id : strin
       }
     
     return NextResponse.json(RawRecipe, { status: 200 }); 
-    
 
   } catch (err) {
    
     console.error('Erreur inattendue dans la route API:', err);
     
     return NextResponse.json(
-      { error: 'Une erreur serveur est survenue...' },
-      { status: 500 }
+      {error:'Une erreur serveur est survenue...'},
+      {status:500}
     );
   }
 }
+
+
+export async function DELETE(request: Request, context: { params: { id: string } } 
+  ){
+
+  const params = await context.params;
+  const currentRecipeId = params.id;
+
+  if(!currentRecipeId) {
+    console.error('Error On ID recipe');
+    return NextResponse.json(
+      {error:"Erreure sur l'id de la recette"},
+      {status:500}
+    ); 
+  }
+
+  try{
+    // liens Appliances
+    const { error: errorAppliances, count } = await supabase
+      .from('_RecipeAppliances')
+      .delete({count:"exact"})
+      .eq('A', currentRecipeId);
+      
+    if(errorAppliances){
+      throw new Error(`Delete Jointed Appliances Failed: ${errorAppliances.message}`);
+    }
+
+    if (count === 0) {
+      console.warn(`Aucun lien d'appliance trouvé pour la recette ${currentRecipeId}`);
+    }
+    console.log(`...Liens Appliances pour ${currentRecipeId} supprimés.`);
+
+
+    // liens Ustensils 
+    const { error: errorUstensils } = await supabase
+      .from('_RecipeUstensils')
+      .delete({count:"exact"})
+      .eq('A', currentRecipeId);
+      
+    if(errorUstensils){
+      throw new Error(`Delete Jointed Ustensils Failed: ${errorUstensils.message}`);
+    }
+
+    if (count === 0) {
+      console.warn(`Aucun lien d'ustensile trouvé pour la recette ${currentRecipeId}`);
+    }
+    console.log(`...Liens Ustensils pour ${currentRecipeId} supprimés.`);
+
+
+    //liens Ingredients
+    const { error: errorIngredients } = await supabase
+      .from('_RecipeIngredients')
+      .delete({count:"exact"})
+      .eq('A', currentRecipeId);
+      
+    if(errorIngredients){
+      throw new Error(`Delete Jointed Ingredients Failed: ${errorIngredients.message}`);
+    }
+
+    if(count === 0) {
+      console.warn(`Aucun lien d'ingrédient trouvé pour la recette ${currentRecipeId}`);
+    }
+    console.log(`...Liens Ingrédients pour ${currentRecipeId} supprimés.`);
+
+
+    // Recipe
+    const { error: errorRecipe, countRecipe } = await supabase
+      .from('Recipes')
+      .delete({ count: 'exact' })
+      .eq('id', currentRecipeId);
+
+    if(errorRecipe){
+      throw new Error(`Delete Recipe Failed: ${errorRecipe.message}`);
+    }
+
+    if (countRecipe === 0) {
+       return NextResponse.json(
+         { message: "Recette introuvable ou déjà supprimée." }, 
+         { status: 404 }
+       );
+    }
+
+
+
+    // Finaly 
+    console.log(`✅ Recette ${currentRecipeId} supprimée avec succès.`);
+    
+    return NextResponse.json(
+      {message:`Recette ${currentRecipeId} supprimée`},
+      {status:200}
+    );
+
+  } catch(err){
+    console.error('Erreur inattendue dans la route API:', err);
+    
+    return NextResponse.json(
+      {error:'Une erreur serveur est survenue...'},
+      {status:500}
+    );
+  }
+}
+
+
