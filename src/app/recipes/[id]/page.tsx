@@ -2,6 +2,7 @@
 
 import {useState,useEffect} from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
@@ -13,7 +14,8 @@ import type { Ustensil } from "@/types/ustensil.types";
 import { normalizeRecipe } from '@/utils/normalizeRecipeApi';
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import Loading from '@/components/Loading/Loading';
-import Link from 'next/link';
+import FeedbackBlock from '@/components/FeedbackBlock/FeedbackBlock';
+
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
@@ -292,11 +294,9 @@ const RecipeSingle = () => {
   if (deletedRecipe && deletedRecipe.message) {
     return (
       <PageWrapper>
-        <div className="success-message">
-            <h2>✅ {deletedRecipe.message} !</h2>
-            <p>Redirection dans {timeOutTiming / 1000} sec(s)...</p>
-            <Link href="/" className="link btn btn-cta">{`Retourner sur la page d'accueil`}</Link>
-        </div>
+
+        <FeedbackBlock type={'success'} message={`${deletedRecipe.message}`} content={`Redirection dans ${timeOutTiming / 1000} sec(s)...`} />
+
       </PageWrapper>
     )
   }
