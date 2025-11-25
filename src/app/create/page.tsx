@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useStore } from "@/hooks/dataStore";
 import useFormList from "@/hooks/useFormList";
 
-// import {v4 as uuid} from "uuid";
+
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
@@ -14,7 +15,7 @@ import type { Appliance } from "@/types/appliance.types";
 
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
-import RecipeCard from "@/components/RecipeCard/RecipeCard";
+import FeedbackBlock from '@/components/FeedbackBlock/FeedbackBlock';
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
@@ -23,9 +24,12 @@ import "./createRecipe.scss";
 
 const AddRecipePage = () => {
 
+  //Local
+  const [createdRecipe,setCreatedRecipe] = useState<Recipe | null>(null);
+
 
   //Store
-  const { recipes, newRecipes, addRecipe, fetchRecipes } = useStore();
+  const { recipes, addRecipe, fetchRecipes } = useStore();
 
   const createNewIngredient = (): Ingredient => ({
     ingredient: '',
@@ -51,7 +55,6 @@ const AddRecipePage = () => {
 
   // Auto Generation of new ID
   const maxId = Math.max(0, ...recipes.map((recipe: Recipe) => Number(recipe.id)));
-
 
 
   // Submit
@@ -97,36 +100,34 @@ const AddRecipePage = () => {
 
 
       const result = await response.json();
-      console.log(result);
-
       //Refresh Datas
       await fetchRecipes();
 
       //Store Storage
       addRecipe(newRecipe);
 
-      //Quick reset
+      //Local State 
+      setCreatedRecipe(newRecipe);
+
+      //Quick reset Form
       e.target.reset();
 
-      //Redirect
-      // router.push('/');
-
-
     } catch (error) {
-      console.error('Erreur de création de recete :', error);
+      console.error('Erreur de création de la recete :', error);
+
       alert("Impossible de créer la recette. Veuillez réessayer.");
     }
 
   }
 
 
-  useEffect(() => {
-
-    //Prepare Re Routing
-    router.prefetch('/');
-
-  }, []);
-
+  if(createdRecipe){
+    return(
+      <PageWrapper>
+         <FeedbackBlock type={'success'} message={`"${createdRecipe.title}" ajoutée avec succès !`} actionLink={`/recipes/${createdRecipe.id}`} actionLabel={`Voir la recette`} btnClass={'btn-go'} />
+      </PageWrapper>
+    )
+  }
 
   return (
     <>
