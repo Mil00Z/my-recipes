@@ -1,16 +1,10 @@
 .btn  {
-    // --sizes:45px;
-    // width:var(--sizes);
-    // height:var(--sizes);
-    // position: absolute;
-    // top:50%;
-    // right:8px;
-    // transform: translate(0,-50%);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: .8rem;
     color:var(--white-color);
+    text-decoration: none;
     border:none;
     border-radius: var(--radius);
     background-color: var(--black-color);
@@ -43,6 +37,32 @@
     background-color: var(--corporate-color);
     color:var(--white-color);
     text-decoration: none;
+    
+        &:hover {
+        transform: translateY(-2px);
+        background: var(--primary-color);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        
+        .btn-icon {
+        transform: translateX(-10px);
+        }
+  }
+
+    
+    }
+
+    &-go{
+        flex-direction: row-reverse;
+        
+        .btn-icon{
+            transform:rotateY(180deg);
+        }
+    }
+
+    &-icon {
+        margin-inline:5px;
+        font-size: 1.55rem;
+        transition: var(--regular-transi);
     }
 
 
