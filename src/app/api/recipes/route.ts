@@ -29,7 +29,7 @@ export async function GET(request : Request) {
    
     const { data : RawRecipes, error } = await supabase
     .from('Recipes')
-    .select('*,_RecipeIngredients(quantity,unit,Ingredients(ingredient)),Appliances(name),Ustensils(name)')
+    .select('*,_RecipeIngredients(quantity,unit,Ingredients(ingredient)),Appliances(id,name),Ustensils(id,name)')
     .order('createdAt',{ascending:false});
 
     // Si de soucis de donnéés
