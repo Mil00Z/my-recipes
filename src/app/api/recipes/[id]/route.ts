@@ -21,7 +21,7 @@ export async function GET(request: Request, { params } : {params: {id:string}}) 
 
   try {
     // Récupérer toutes les recettes depuis la table 'recipes'
-    const {data: RawRecipe, error} = await supabase.from('Recipes').select('*,_RecipeIngredients(quantity,unit,Ingredients(ingredient,updatedAt)),Ustensils(name,updatedAt),Appliances(name,updatedAt)').eq('id',id).single();
+    const {data: RawRecipe, error} = await supabase.from('Recipes').select('*,_RecipeIngredients(quantity,unit,Ingredients(ingredient,updatedAt)),Ustensils(id,name,updatedAt),Appliances(id,name,updatedAt)').eq('id',id).single();
 
    
       // Si de soucis de donnéés
