@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 
 import type { Appliance } from '@/types/appliance.types';
 import type { Ustensil } from '@/types/ustensil.types';
-import type { Ingredient } from '@/types/ingredient.types';
+// import type { Ingredient } from '@/types/ingredient.types';
 
 
 // Faire un fichier utils "supabaseConfig.ts"
@@ -219,41 +219,37 @@ export async function DELETE(request: Request, context: { params: { id: string }
         console.log(`〰 ${appliancesToInsert.length} appareils liés.`);
       }
 
-      
-      
       //Ustensils
-      // if(ustensils && ustensils.length > 0){
+      if(ustensils && ustensils.length > 0){
 
-      //   // Clear Existing Joints
-      //   const {error:deleteUstensilsError} = await supabase
-      //   .from('_RecipeUstensils')
-      //   .delete()
-      //   .eq('A',currentRecipeId)
+        // Clear Existing Joints
+        const {error:deleteUstensilsError} = await supabase
+        .from('_RecipeUstensils')
+        .delete()
+        .eq('A',currentRecipeId)
 
-      //   if(deleteUstensilsError){
-      //     throw new Error(`Update Joints Appliances Failed`);
-      //   }   
+        if(deleteUstensilsError){
+          throw new Error(`Update Joints Ustensils Failed`);
+        }   
 
-      //   const ustensilsToInsert = ustensils.map((ustensil:Ustensil) => ({
-      //     A:currentRecipeId,
-      //     B:ustensil.id
-      //   }))
+        const ustensilsToInsert = ustensils.map((ustensil:Ustensil) => ({
+          A:currentRecipeId,
+          B:ustensil.id
+        }))
 
-      //   // Insert new Link Appliances
-      //   const {error:appliancesInsertError} = await supabase
-      //   .from('_RecipeUstensils')
-      //   .insert(ustensilsToInsert)
+        // Insert new Link Appliances
+        const {error:ustensilsInsertError} = await supabase
+        .from('_RecipeUstensils')
+        .insert(ustensilsToInsert)
         
         
-      //   if(appliancesInsertError){
-      //     throw new Error(`Insert Joints Ustensils Failed`);
-      //   }
+        if(ustensilsInsertError){
+          throw new Error(`Insert Joints Ustensils Failed`);
+        }
 
-      //   console.log(`〰 ${ustensilsToInsert.length} appareils liés.`);
+        console.log(`〰 ${ustensilsToInsert.length} appareils liés.`);
 
-
-
-      // }
+      }
       
       //Ingredients
       // if(ingredients && ingredients.length > 0){
