@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+import type { Appliance } from '@/types/appliance.types';
+import type { Ustensil } from '@/types/ustensil.types';
+import type { Ingredient } from '@/types/ingredient.types';
+
+
 // Faire un fichier utils "supabaseConfig.ts"
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -183,26 +188,78 @@ export async function DELETE(request: Request, context: { params: { id: string }
 
     console.log(`✅ Recette ${currentRecipeId} partiellement modifiée avec succès.`);
 
-
-
-    //Appliances
+      //Appliances
       if(appliances && appliances.length > 0){
-          console.log("Non updated datas",appliances);
+
+        // Clear Existing Joints
+        const {error:deleteAppliancesError} = await supabase
+        .from('_RecipeAppliances')
+        .delete()
+        .eq('A',currentRecipeId)
+
+        if(deleteAppliancesError){
+          throw new Error(`Update Joints Appliances Failed`);
+        }   
+
+        const appliancesToInsert = appliances.map((appliance:Appliance) => ({
+          A:currentRecipeId,
+          B:appliance.id
+        }))
+
+        // Insert new Link Appliances
+        const {error:appliancesInsertError} = await supabase
+        .from('_RecipeAppliances')
+        .insert(appliancesToInsert)
+        
+        
+        if(appliancesInsertError){
+          throw new Error(`Insert Joints Appliances Failed`);
+        }
+
+        console.log(`〰 ${appliancesToInsert.length} appareils liés.`);
       }
+
+      
       
       //Ustensils
-      if(ustensils && ustensils.length > 0){
-        console.log("Non updated datas",ustensils);
-      }
+      // if(ustensils && ustensils.length > 0){
+
+      //   // Clear Existing Joints
+      //   const {error:deleteUstensilsError} = await supabase
+      //   .from('_RecipeUstensils')
+      //   .delete()
+      //   .eq('A',currentRecipeId)
+
+      //   if(deleteUstensilsError){
+      //     throw new Error(`Update Joints Appliances Failed`);
+      //   }   
+
+      //   const ustensilsToInsert = ustensils.map((ustensil:Ustensil) => ({
+      //     A:currentRecipeId,
+      //     B:ustensil.id
+      //   }))
+
+      //   // Insert new Link Appliances
+      //   const {error:appliancesInsertError} = await supabase
+      //   .from('_RecipeUstensils')
+      //   .insert(ustensilsToInsert)
+        
+        
+      //   if(appliancesInsertError){
+      //     throw new Error(`Insert Joints Ustensils Failed`);
+      //   }
+
+      //   console.log(`〰 ${ustensilsToInsert.length} appareils liés.`);
+
+
+
+      // }
       
       //Ingredients
-      if(ingredients && ingredients.length > 0){
-        console.log("Non updated datas",ingredients);
-      }
+      // if(ingredients && ingredients.length > 0){
+      //   console.log("Non updated datas",ingredients);
+      // }
 
-
-    
-    
     // Finaly 
     return NextResponse.json(
       {message:`Recette ${currentRecipeId} modifiée !`},
