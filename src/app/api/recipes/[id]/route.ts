@@ -154,3 +154,69 @@ export async function DELETE(request: Request, context: { params: { id: string }
 }
 
 
+
+
+ export async function PATCH(request: Request, context: { params: { id: string } } ){
+
+  const params = await context.params;
+  const currentRecipeId = params.id;
+
+  // console.log("Receipe Id",currentRecipeId);
+
+  try{
+
+    const newRecipeDatas = await request.json();
+    const {ingredients,appliances,ustensils,...recipeDataOnly} = newRecipeDatas;
+
+
+    const {data:updatedRecipeData,error:updatedRecipeError} = await supabase
+      .from('Recipes')
+      .update(recipeDataOnly)
+      .eq('id',currentRecipeId)
+      .select()
+      .single();
+
+
+    if(updatedRecipeError){
+      throw new Error(`Update Recipe Failed: ${updatedRecipeError.message}`);
+    }
+
+    console.log(`✅ Recette ${currentRecipeId} partiellement modifiée avec succès.`);
+
+
+
+    //Appliances
+      if(appliances && appliances.length > 0){
+          console.log("Non updated datas",appliances);
+      }
+      
+      //Ustensils
+      if(ustensils && ustensils.length > 0){
+        console.log("Non updated datas",ustensils);
+      }
+      
+      //Ingredients
+      if(ingredients && ingredients.length > 0){
+        console.log("Non updated datas",ingredients);
+      }
+
+
+    
+    
+    // Finaly 
+    return NextResponse.json(
+      {message:`Recette ${currentRecipeId} modifiée !`},
+      {status:200}
+    );
+
+  }catch(err){
+    console.error('Erreur inattendue dans la route API:', err);
+    
+    return NextResponse.json(
+      {error:'Une erreur serveur est survenue...'},
+      {status:500}
+    );
+  }
+
+}
+
