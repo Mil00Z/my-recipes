@@ -12,14 +12,14 @@ export type RawRecipe = {
   time:number;
   _RecipeIngredients: {
     Ingredients: {
-      ingredient: string;
+      ingredient:string;
     };
-    quantity: number | undefined;
-    unit: string | undefined;
+    quantity:number | undefined;
+    unit:string | undefined;
   }[];
   Appliances:Appliance[];
   Ustensils:Ustensil[];
-  updatedAt?: string;
+  updatedAt?:string;
 }
 
 export function normalizeRecipe(rawRecipe:RawRecipe) : Recipe {
