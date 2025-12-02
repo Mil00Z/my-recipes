@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 
 import type { Appliance } from '@/types/appliance.types';
 import type { Ustensil } from '@/types/ustensil.types';
-// import type { Ingredient } from '@/types/ingredient.types';
+import type { Ingredient } from '@/types/ingredient.types';
 
 
 // Faire un fichier utils "supabaseConfig.ts"
@@ -160,7 +160,6 @@ export async function DELETE(request: Request, context: { params: { id: string }
 
 
 
-
  export async function PATCH(request: Request, context: { params: { id: string } } ){
 
   const params = await context.params;
@@ -252,9 +251,38 @@ export async function DELETE(request: Request, context: { params: { id: string }
       }
       
       //Ingredients
-      // if(ingredients && ingredients.length > 0){
-      //   console.log("Non updated datas",ingredients);
-      // }
+      if(ingredients && ingredients.length > 0){
+       
+        // Clear Existing Joints
+        const {error:deleteIngredientsError} = await supabase
+        .from('_RecipeIngredients')
+        .delete()
+        .eq('A',currentRecipeId)
+
+        if(deleteIngredientsError){
+          throw new Error(`Update Joints Ingredients Failed`);
+        }   
+
+        const ingredientsToInsert = ingredients.map((ingredient:Ingredient) => ({
+          A:currentRecipeId,
+          B:ingredient.id,
+          quantity:ingredient.quantity,
+          unit:ingredient.unit
+        }))
+
+        // Insert new Link Ingredients
+        const {error:ingredientsInsertError} = await supabase
+        .from('_RecipeIngredients')
+        .insert(ingredientsToInsert)
+        
+        
+        if(ingredientsInsertError){
+          throw new Error(`Insert Joints Ingredients Failed`);
+        }
+
+        console.log(`〰 ${ingredientsToInsert.length} ingrédients liés.`);
+        
+      }
 
     // Finaly 
     return NextResponse.json(
