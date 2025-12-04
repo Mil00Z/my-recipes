@@ -1,12 +1,10 @@
-'use client';
+"use client";
 
-import { useState,useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useStore } from "@/hooks/dataStore";
 import useFormList from "@/hooks/useFormList";
-
-
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
@@ -15,38 +13,36 @@ import type { Appliance } from "@/types/appliance.types";
 
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
-import FeedbackBlock from '@/components/FeedbackBlock/FeedbackBlock';
+import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
 import "./createRecipe.scss";
 
-
 const AddRecipePage = () => {
-
   //Local
-  const [createdRecipe,setCreatedRecipe] = useState<Recipe | null>(null);
-
+  const [createdRecipe, setCreatedRecipe] = useState<Recipe | null>(null);
 
   //Store
   const { recipes, addRecipe, fetchRecipes } = useStore();
 
   const createNewIngredient = (): Ingredient => ({
-    ingredient: '',
+    ingredient: "",
     quantity: undefined,
-    unit: undefined
+    unit: undefined,
   });
-  const [ingredients, addIngredient, removeIngredient] = useFormList<Ingredient>(createNewIngredient)
-
+  const [ingredients, addIngredient, removeIngredient] =
+    useFormList<Ingredient>(createNewIngredient);
 
   const createNewUstensil = (): Ustensil => ({
-    name: ''
+    name: "",
   });
-  const [ustensils, addUstensil, removeUstensil] = useFormList<Ustensil>(createNewUstensil)
+  const [ustensils, addUstensil, removeUstensil] =
+    useFormList<Ustensil>(createNewUstensil);
 
   const createNewAppliance = (): Appliance => ({
-    name: ''
-  })
+    name: "",
+  });
 
   //  const [appliances,addAppliance,RemoveAppliance] = useFormList<Appliance>(createNewAppliance);
 
@@ -54,15 +50,16 @@ const AddRecipePage = () => {
   const router = useRouter();
 
   // Auto Generation of new ID
-  const maxId = Math.max(0, ...recipes.map((recipe: Recipe) => Number(recipe.id)));
-
+  const maxId = Math.max(
+    0,
+    ...recipes.map((recipe: Recipe) => Number(recipe.id))
+  );
 
   // Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    e.preventDefault()
-
-    const formData = new FormData(e.target as HTMLFormElement)
+    const formData = new FormData(e.target as HTMLFormElement);
 
     const newRecipe: Recipe = {
       id: `${maxId + 1}`,
@@ -76,7 +73,7 @@ const AddRecipePage = () => {
       })),
       appliances: [{ name: formData.get("appliance") as string }],
       ustensils: ustensils.map((_, index: number) => ({
-        name: formData.get(`ustensil-${index}`) as string
+        name: formData.get(`ustensil-${index}`) as string,
       })),
       time: Number(formData.get("time")),
       image: formData.get("image") as string,
@@ -85,19 +82,17 @@ const AddRecipePage = () => {
     const recipeToSend = { ...newRecipe };
 
     try {
-
-      const response = await fetch('/api/recipes', {
-        method: 'post',
+      const response = await fetch("/api/recipes", {
+        method: "post",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(recipeToSend)
-      })
+        body: JSON.stringify(recipeToSend),
+      });
 
       if (!response.ok) {
-        throw new Error('Failed to Send New Recipe')
+        throw new Error("Failed to Send New Recipe");
       }
-
 
       const result = await response.json();
       //Refresh Datas
@@ -106,115 +101,187 @@ const AddRecipePage = () => {
       //Store Storage
       addRecipe(newRecipe);
 
-      //Local State 
+      //Local State
       setCreatedRecipe(newRecipe);
 
       //Quick reset Form
       e.target.reset();
-
     } catch (error) {
-      console.error('Erreur de création de la recete :', error);
+      console.error("Erreur de création de la recete :", error);
 
       alert("Impossible de créer la recette. Veuillez réessayer.");
     }
+  };
 
-  }
-
-
-  if(createdRecipe){
-    return(
+  if (createdRecipe) {
+    return (
       <PageWrapper>
-         <FeedbackBlock type={'success'} message={`"${createdRecipe.title}" ajoutée avec succès !`} actionLink={`/recipes/${createdRecipe.id}`} actionLabel={`Voir la recette`} btnClass={'btn-go'} />
+        <FeedbackBlock
+          type={"success"}
+          message={`"${createdRecipe.title}" ajoutée avec succès !`}
+          actionLink={`/recipes/${createdRecipe.id}`}
+          actionLabel={`Voir la recette`}
+          btnClass={"btn-go"}
+        />
       </PageWrapper>
-    )
+    );
   }
 
   return (
     <>
       <PageWrapper>
-
         <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
           <h2 title={`${maxId} recettes existantes`}>Ajouter une recette</h2>
           <label>
             Titre
-            <input type="text" name="title" defaultValue={`recette test ${maxId + 1}`} required />
+            <input
+              type="text"
+              name="title"
+              defaultValue={`recette test ${maxId + 1}`}
+              required
+            />
           </label>
           <label>
             Description
-            <textarea name="description" required defaultValue={`une recette de test de numéro ${maxId + 1}`} />
+            <textarea
+              name="description"
+              required
+              defaultValue={`une recette de test de numéro ${maxId + 1}`}
+            />
           </label>
           <fieldset>
             <legend>Ingrédients ({ingredients.length})</legend>
 
             <div className="ingred-list">
               {ingredients?.map((_, index: number) => (
+                <div
+                  key={`ingred-item-${index}`}
+                  className="ingred-item"
+                  data-index={`ingred-item-${index}`}
+                >
+                  <input
+                    type="text"
+                    name={`ingredient-${index}`}
+                    placeholder="Ingrédient"
+                    defaultValue={`ingredient ${maxId + 1}`}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name={`quantity-${index}`}
+                    placeholder="Quantité"
+                    defaultValue={`${maxId + 1}`}
+                  />
+                  <input
+                    type="text"
+                    name={`unit-${index}`}
+                    placeholder="Unité"
+                    defaultValue={`AL`}
+                  />
 
-                <div key={`ingred-item-${index}`} className="ingred-item" data-index={`ingred-item-${index}`}>
-
-                  <input type="text" name={`ingredient-${index}`} placeholder="Ingrédient" defaultValue={`ingredient ${maxId + 1}`} required />
-                  <input type="text" name={`quantity-${index}`} placeholder="Quantité" defaultValue={`${maxId + 1}`} />
-                  <input type="text" name={`unit-${index}`} placeholder="Unité" defaultValue={`AL`} />
-
-                  <button type="button" className="remove btn manage-ingred" onClick={() => removeIngredient(index)}>- Suppr ingrédient
+                  <button
+                    type="button"
+                    className="remove btn manage-ingred"
+                    onClick={() => removeIngredient(index)}
+                  >
+                    - Suppr ingrédient
                   </button>
-
                 </div>
               ))}
             </div>
 
-            <button type="button" className="add btn manage-ingred" onClick={() => addIngredient()}>
+            <button
+              type="button"
+              className="add btn manage-ingred"
+              onClick={() => addIngredient()}
+            >
               + Ajouter ingrédient
             </button>
           </fieldset>
 
           <label>
             Appareil
-            <input type="text" name="appliance" required defaultValue={`appliance ${maxId + 1}`} />
+            <input
+              type="text"
+              name="appliance"
+              required
+              defaultValue={`appliance ${maxId + 1}`}
+            />
           </label>
           <fieldset>
             <legend>Ustensiles ({ustensils.length})</legend>
 
             <div className="ustensil-list">
-
               {ustensils?.map((_, index: number) => (
+                <div
+                  key={`ustensil-item-${index}`}
+                  className="ustensil-item"
+                  data-index={`ustensil-item-${index}`}
+                >
+                  <input
+                    type="text"
+                    name={`ustensil-${index}`}
+                    placeholder="Ustensile"
+                    required
+                    defaultValue={`ustensil ${maxId + 1}`}
+                  />
 
-                <div key={`ustensil-item-${index}`} className="ustensil-item" data-index={`ustensil-item-${index}`}>
-
-                  <input type="text" name={`ustensil-${index}`} placeholder="Ustensile" required defaultValue={`ustensil ${maxId + 1}`} />
-
-                  <button type="button" className="remove btn manage-ustensil" onClick={() => removeUstensil(index)}>- Suppr Ustensil
+                  <button
+                    type="button"
+                    className="remove btn manage-ustensil"
+                    onClick={() => removeUstensil(index)}
+                  >
+                    - Suppr Ustensil
                   </button>
-
                 </div>
               ))}
             </div>
 
-            <button type="button" className="add btn manage-ustensil" onClick={() => addUstensil()}>
+            <button
+              type="button"
+              className="add btn manage-ustensil"
+              onClick={() => addUstensil()}
+            >
               + Ajouter Ustensile
             </button>
           </fieldset>
           <label>
             Temps (minutes)
-            <input type="number" name="time" min="0" required defaultValue={Math.ceil(Math.random() * maxId)} />
+            <input
+              type="number"
+              name="time"
+              min="0"
+              required
+              defaultValue={Math.ceil(Math.random() * maxId)}
+            />
           </label>
           <label>
             Image (URL)
-            <input type="text" name="image" defaultValue="/hf/default-recipe.jpg" readOnly />
+            <input
+              type="text"
+              name="image"
+              defaultValue="/hf/default-recipe.jpg"
+              readOnly
+            />
           </label>
           <div className="letsgo">
-            <button type="submit" className="btn"> 💾 Enregistrer la recette</button>
-            <button type="button" className="btn reset-recipe" onClick={(e) => e.target.closest('form').reset()}>
+            <button type="submit" className="btn">
+              {" "}
+              💾 Enregistrer la recette
+            </button>
+            <button
+              type="button"
+              className="btn reset-recipe"
+              onClick={(e) => e.target.closest("form").reset()}
+            >
               💥 Clear
             </button>
           </div>
         </form>
-
       </PageWrapper>
 
       <StoreDebbuger />
-
     </>
-
-  )
-}
+  );
+};
 export default AddRecipePage;
