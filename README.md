@@ -26,11 +26,11 @@ Le cycle de développement a intégré plusieurs challenges techniques majeurs :
 4. **Approche "From Scratch" :** Volonté de ne pas utiliser de solutions "magiques" (comme les hooks tout faits de Supabase au début) pour comprendre la mécanique interne du fetching et du state management.
 
 ## ✨ Fonctionnalités Clés
-* 🔍 **Moteur de Recherche :** Algorithme de filtrage croisé (Texte + Tags multiples).
-* ⚡ **Performance :** Optimisation des rendus via React Server Components et gestion fine du client-side state.
-* 💾 **CRUD Complet :** Création, Lecture, Mise à jour et Suppression de recettes connectées à la BDD.
-* 🛡 **Normalisation :** Pattern de transformation des données Back-end (Jointures SQL) vers Front-end (UI simplifiée).
-* 🛠 **Interface d'Administration (Back-office) :** Feature "Porte", actuellement simplifiée pour la gestion CRUD des recettes (focus sur la manipulation des données plutôt que la gestion utilisateur complexe).
+*  **Moteur de Recherche :** Algorithme de filtrage croisé (Texte + Tags multiples).
+*  **Performance :** Optimisation des rendus via React Server Components et gestion fine du client-side state.
+*  **CRUD Complet :** Création, Lecture, Mise à jour et Suppression de recettes connectées à la BDD.
+*  **Normalisation :** Pattern de transformation des données Back-end (Jointures SQL) vers Front-end (UI simplifiée).
+*  **Interface d'Administration (Back-office) :** Feature "Porte", actuellement simplifiée pour la gestion CRUD des recettes (focus sur la manipulation des données plutôt que la gestion utilisateur complexe).
 
 ## 🚀 État du projet
 * **Statut :** En cours de finalisation CRUD (Focus actuel : Feature Update & UI Polish).
