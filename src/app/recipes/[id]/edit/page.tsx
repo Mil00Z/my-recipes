@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
+
 
 import { normalizeRecipe } from "@/utils/normalizeRecipeApi";
 
@@ -13,13 +15,13 @@ import type { Appliance } from "@/types/appliance.types";
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import RecipeCard from "@/components/RecipeCard/RecipeCard";
+import Loading from "@/components/Loading/Loading";
 import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 // import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
 import "./createRecipe.scss";
-import Link from "next/link";
-import Loading from "@/components/Loading/Loading";
+
 
 const UpdateRecipePage = () => {
   //Local
@@ -31,16 +33,71 @@ const UpdateRecipePage = () => {
   //Get Url Params
   const getParams = useParams();
 
+  // Submit
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   const formData = new FormData(e.target as HTMLFormElement);
+
+  //   const patchRecipe: Recipe = {
+  //     id: `${maxId + 1}`,
+  //     title: formData.get("title") as string,
+  //     description: formData.get("description") as string,
+  //     servings: 2,
+  //     ingredients: ingredients.map((_, index: number) => ({
+  //       ingredient: formData.get(`ingredient-${index}`) as string,
+  //       quantity: Number(formData.get(`quantity-${index}`)),
+  //       unit: formData.get(`unit-${index}`) as string,
+  //     })),
+  //     appliances: [{ name: formData.get("appliance") as string }],
+  //     ustensils: ustensils.map((_, index: number) => ({
+  //       name: formData.get(`ustensil-${index}`) as string,
+  //     })),
+  //     time: Number(formData.get("time")),
+  //     image: formData.get("image") as string,
+  //   };
+
+  //   const recipeToSend = { ...patchRecipe };
+
+  //   try {
+  //     const response = await fetch(`/api/recipes/${getParams.id}`, {
+  //       method: "patch",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(recipeToSend),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to Send New Recipe");
+  //     }
+
+  //     const result = await response.json();
+  //     //Refresh Datas
+  //     await fetchRecipes();
+
+  //     //Local State
+  //     setUpdatedRecipe(newRecipe);
+  //     setIsUpdatedRecipe(true);
+
+  //     //Quick reset Form
+  //     e.target.reset();
+  //   } catch (error) {
+  //     console.error("Erreur de création de la recete :", error);
+
+  //     alert("Impossible de créer la recette. Veuillez réessayer.");
+  //   }
+  // };
+
+
   useEffect(() => {
+
     if (!getParams.id) {
-      throw new Error("id error");
+        setIsError(true);
+        return;
     }
 
     const getUpdateRecipe = async () => {
-      if (!getParams.id) {
-        setIsError(true);
-        return;
-      }
 
       try {
         const response = await fetch(`/api/recipes/${getParams.id}`);
@@ -87,7 +144,6 @@ const UpdateRecipePage = () => {
     );
   }
 
-  // Guard
   // if (isUpdated) {
   //   return (
   //     <PageWrapper>
@@ -102,10 +158,13 @@ const UpdateRecipePage = () => {
   //   );
   // }
 
+ 
   return (
     <>
       <PageWrapper>
-        <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
+        <section className="update-layout">
+
+        <form className="add-recipe-form">
           <h2>Mise à jour de la recette {updatedRecipe?.title}</h2>
           <label>
             Titre
@@ -232,7 +291,7 @@ const UpdateRecipePage = () => {
               name="time"
               min="0"
               required
-              defaultValue={updatedRecipe.time}
+              defaultValue={updatedRecipe?.time}
             />
           </label>
           <label>
@@ -259,9 +318,11 @@ const UpdateRecipePage = () => {
           </div>
         </form>
 
-        <section className="debeug">
-          {updatedRecipe ?? <RecipeCard recipe={updatedRecipe}></RecipeCard>}
-        </section>
+        <div className="update-recipe debeug">
+          {updatedRecipe && <RecipeCard recipe={updatedRecipe}></RecipeCard>}
+        </div>
+
+      </section>
       </PageWrapper>
     </>
   );
