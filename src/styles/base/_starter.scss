@@ -70,6 +70,13 @@ body{
 
 .wrapper {
     width:var(--skeleton);
+
+    &:has(.update-layout){
+        --skeleton:100%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
 }
 
 

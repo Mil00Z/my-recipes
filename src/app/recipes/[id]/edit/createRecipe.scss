@@ -126,3 +126,18 @@
     row-gap:1rem;
   }
 }
+
+.update-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap; 
+}
+
+.update-recipe{
+
+   .card-recipe {
+    width: 100%;
+   }
+
+}
