@@ -65,7 +65,7 @@ const AddRecipePage = () => {
       id: `${maxId + 1}`,
       title: formData.get("title") as string,
       description: formData.get("description") as string,
-      servings: 2,
+      servings: Number(formData.get("servings")),
       ingredients: ingredients.map((_, index: number) => ({
         ingredient: formData.get(`ingredient-${index}`) as string,
         quantity: Number(formData.get(`quantity-${index}`)),
@@ -253,6 +253,15 @@ const AddRecipePage = () => {
               min="0"
               required
               defaultValue={Math.ceil(Math.random() * maxId)}
+            />
+          </label>
+          <label>
+            Quantités
+            <input
+              type="number"
+              name="servings"
+              required
+              defaultValue={`2`}
             />
           </label>
           <label>
