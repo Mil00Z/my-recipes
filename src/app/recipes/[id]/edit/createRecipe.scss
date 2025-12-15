@@ -1,5 +1,5 @@
 .add-recipe-form {
-  max-width: 55%;
+  max-width: 60%;
   margin: 5dvh auto;
   padding: 2rem 2.5rem;
   background: #fff;
@@ -132,6 +132,24 @@
   gap: 2rem;
   align-items: center;
   flex-wrap: wrap; 
+  position: relative;
+}
+
+.update-info{
+  --radius:5px;
+  display: inline-flex;
+  position: absolute;
+  top:3dvh;
+  left:-3dvh;
+  padding:.9rem;
+  background: var(--white-color);
+  border-radius: var(--radius);
+  z-index: 999;
+
+  span{
+    font-size: 1rem;
+    color: var(--secondary-color);
+  }
 }
 
 .update-recipe{
