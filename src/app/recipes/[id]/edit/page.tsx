@@ -5,9 +5,8 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 
 
-
 import { normalizeRecipe } from "@/utils/normalizeRecipeApi";
-
+import useFormList from "@/hooks/useFormList";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
@@ -26,14 +25,36 @@ import "./createRecipe.scss";
 
 
 const UpdateRecipePage = () => {
+
   //Local
   const [updatedRecipe, setUpdatedRecipe] = useState<Recipe | null>(null);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [isError, setIsError] = useState<Boolean>(false);
   const [isUpdated, setIsUpdated] = useState<Boolean>(false);
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [ustensils, setUstensils] = useState<Ustensil[]>([]);
-  const [appliances, setAppliances] = useState<Appliance[]>([]);
+
+
+  const createNewIngredient = (): Ingredient => ({
+    ingredient: "",
+    quantity: 0,
+    unit: "",
+  });
+
+  const createNewUstensil = (): Ustensil => ({
+    name: "",
+  });
+
+  const createNewAppliance = (): Appliance => ({
+    name: "",
+  });
+
+
+  const [ingredients, addIngredient, removeIngredient,_cleanIngredients,setIngredients] = 
+  useFormList<Ingredient>(createNewIngredient);
+  const [ustensils, addUstensil,removeUstensil,_cleanUstensils,setUstensils] = 
+  useFormList<Ustensil>(createNewUstensil);
+  const [appliances,_addAppliance,_removeAppliance,_cleanAppliances,setAppliances] = 
+  useFormList<Appliance>(createNewAppliance);
+
 
   //Get Url Params
   const getParams = useParams();
@@ -119,15 +140,22 @@ const UpdateRecipePage = () => {
         }
 
         const getRecipe = await response.json();
-        setIsLoading(false);
+       
 
+        //Clean Datas from API
         const normalizeDatas = normalizeRecipe(getRecipe)
 
         setUpdatedRecipe(normalizeDatas);
-        setAppliances(normalizeDatas.appliances || []);
-        setIngredients(normalizeDatas.ingredients || []);
-        setUstensils(normalizeDatas.ustensils || []);
-         
+
+        //Set Local States for Form Management
+        setIngredients(normalizeDatas.ingredients);
+        setAppliances(normalizeDatas.appliances);
+        setUstensils(normalizeDatas.ustensils);
+        
+
+        // Disable Loading after datas fullfill local states
+        setIsLoading(false);
+        
         } catch (err) {
         console.error(err);
         setIsError(true);
@@ -184,17 +212,20 @@ const UpdateRecipePage = () => {
     );
   }
  
+  console.log("Rendering Update Form", ingredients, ustensils, appliances);
+
+
   return (
     <>
-      <PageWrapper>
-        <section className="update-layout">
+      <PageWrapper layout={"update"}>
 
+        <section className="update-layout">
           <div className="update-info">
             <span>{new Date(updatedRecipe?.updatedAt).toLocaleDateString()}</span>
           </div>
 
         <form className="add-recipe-form" onSubmit={(e)=>handleSubmit(e)}>
-          <h2>Modifier la recette '{updatedRecipe?.title}'</h2>
+          <h2>{updatedRecipe?.title}'</h2>
           <label>
             Titre
             <input
@@ -217,7 +248,7 @@ const UpdateRecipePage = () => {
             <legend>Ingrédients ({updatedRecipe?.ingredients?.length})</legend>
 
             <div className="ingred-list">
-              {updatedRecipe?.ingredients?.map((ingredient:Ingredient, index: number) => (
+              {ingredients?.map((ingredient:Ingredient, index: number) => (
                 <div
                   key={`ingred-item-${index}`}
                   className="ingred-item"
@@ -257,6 +288,7 @@ const UpdateRecipePage = () => {
             <button
               type="button"
               className="add btn manage-ingred"
+              onClick={() => addIngredient()}
             >
               + Ajouter ingrédient
             </button>
@@ -265,19 +297,21 @@ const UpdateRecipePage = () => {
   
           <label>
             Appareil
-            <input
-              type="text"
-              name="appliance"
-              required
-              defaultValue={updatedRecipe?.appliances[0]?.name}
-            />
+            {appliances?.map((appliance:Appliance, index:number) => (
+              <div
+                key={`appliance-item-${index}`}>
+
+                <input type="text" name="appliance" required defaultValue={appliance.name} />
+
+              </div>))}
+            
           </label>
 
           <fieldset>
             <legend>Ustensiles ({updatedRecipe?.ustensils?.length})</legend>
 
             <div className="ustensil-list">
-              {updatedRecipe?.ustensils?.map((ustensil:Ustensil, index: number) => (
+              {ustensils?.map((ustensil:Ustensil, index: number) => (
                 <div
                   key={`ustensil-item-${index}`}
                   className="ustensil-item"
@@ -294,6 +328,7 @@ const UpdateRecipePage = () => {
                   <button
                     type="button"
                     className="remove btn manage-ustensil"
+                    onClick={() => removeUstensil(index)}
                   >
                     - Suppr Ustensil
                   </button>
@@ -304,6 +339,7 @@ const UpdateRecipePage = () => {
             <button
               type="button"
               className="add btn manage-ustensil"
+              onClick={() => addUstensil()}
             >
               + Ajouter Ustensile
             </button>
