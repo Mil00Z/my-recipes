@@ -71,15 +71,18 @@ const UpdateRecipePage = () => {
       description: formData.get("description") as string,
       servings: Number(formData.get("servings")),
       ingredients: ingredients.map((_, index: number) => ({
+        id: formData.get(`ingredient-id-${index}`) as string,
         ingredient: formData.get(`ingredient-${index}`) as string,
         quantity: Number(formData.get(`quantity-${index}`)),
         unit: formData.get(`unit-${index}`) as string,
       })), 
       ustensils: ustensils.map((_, index: number) => ({
-         name: formData.get(`ustensil-${index}`) as string,
+        id: formData.get(`ustensil-id-${index}`) as string,
+        name: formData.get(`ustensil-${index}`) as string,
       })), 
       appliances: appliances.map((_, index: number) => ({
-         name: formData.get(`appliance-${index}`) as string,
+        id: formData.get(`appliance-id-${index}`) as string,
+        name: formData.get(`appliance-${index}`) as string,
       })), 
       time: Number(formData.get("time")),
       image: formData.get("image") as string,
@@ -140,7 +143,6 @@ const UpdateRecipePage = () => {
         }
 
         const getRecipe = await response.json();
-       
 
         //Clean Datas from API
         const normalizeDatas = normalizeRecipe(getRecipe)
@@ -212,9 +214,6 @@ const UpdateRecipePage = () => {
     );
   }
  
-  console.log("Rendering Update Form", ingredients, ustensils, appliances);
-
-
   return (
     <>
       <PageWrapper layout={"update"}>
@@ -254,6 +253,11 @@ const UpdateRecipePage = () => {
                   className="ingred-item"
                   data-index={`ingred-item-${index}`}
                 >
+                  <input 
+                  type="hidden" 
+                  name={`ingredient-id-${index}`} 
+                  value={ingredient.id} 
+                  />
                   <input
                     type="text"
                     name={`ingredient-${index}`}
@@ -301,7 +305,17 @@ const UpdateRecipePage = () => {
               <div
                 key={`appliance-item-${index}`}>
 
-                <input type="text" name="appliance" required defaultValue={appliance.name} />
+                <input 
+                type="hidden" 
+                name={`appliance-id-${index}`} 
+                value={appliance.id} 
+                />
+                <input 
+                type="text" 
+                name="appliance" 
+                required 
+                defaultValue={appliance.name} 
+                />
 
               </div>))}
             
@@ -317,6 +331,11 @@ const UpdateRecipePage = () => {
                   className="ustensil-item"
                   data-index={`ustensil-item-${index}`}
                 >
+                  <input 
+                  type="hidden" 
+                  name={`ustensil-id-${index}`} 
+                  value={ustensil.id} 
+                  />
                   <input
                     type="text"
                     name={`ustensil-${index}`}
