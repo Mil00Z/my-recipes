@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useStore } from "@/hooks/dataStore";
-import useFormList from "@/hooks/useFormList";
+import { useParams } from "next/navigation";
+
+import { normalizeRecipe } from "@/utils/normalizeRecipeApi";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
@@ -13,131 +12,107 @@ import type { Appliance } from "@/types/appliance.types";
 
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
+import RecipeCard from "@/components/RecipeCard/RecipeCard";
 import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
-import StoreDebbuger from "@/components/Debeug/Debeug";
+// import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
 import "./createRecipe.scss";
+import Link from "next/link";
+import Loading from "@/components/Loading/Loading";
 
-const AddRecipePage = () => {
+const UpdateRecipePage = () => {
   //Local
-  const [createdRecipe, setCreatedRecipe] = useState<Recipe | null>(null);
+  const [updatedRecipe, setUpdatedRecipe] = useState<Recipe | null>(null);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [isError, setIsError] = useState<Boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<Boolean>(false);
 
-  //Store
-  const { recipes, addRecipe, fetchRecipes } = useStore();
+  //Get Url Params
+  const getParams = useParams();
 
-  const createNewIngredient = (): Ingredient => ({
-    ingredient: "",
-    quantity: undefined,
-    unit: undefined,
-  });
-  const [ingredients, addIngredient, removeIngredient] =
-    useFormList<Ingredient>(createNewIngredient);
+  useEffect(() => {
+    if (!getParams.id) {
+      throw new Error("id error");
+    }
 
-  const createNewUstensil = (): Ustensil => ({
-    name: "",
-  });
-  const [ustensils, addUstensil, removeUstensil] =
-    useFormList<Ustensil>(createNewUstensil);
-
-  const createNewAppliance = (): Appliance => ({
-    name: "",
-  });
-
-  //  const [appliances,addAppliance,RemoveAppliance] = useFormList<Appliance>(createNewAppliance);
-
-  // Routing Scenario
-  const router = useRouter();
-
-  // Auto Generation of new ID
-  const maxId = Math.max(
-    0,
-    ...recipes.map((recipe: Recipe) => Number(recipe.id))
-  );
-
-  // Submit
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target as HTMLFormElement);
-
-    const newRecipe: Recipe = {
-      id: `${maxId + 1}`,
-      title: formData.get("title") as string,
-      description: formData.get("description") as string,
-      servings: 2,
-      ingredients: ingredients.map((_, index: number) => ({
-        ingredient: formData.get(`ingredient-${index}`) as string,
-        quantity: Number(formData.get(`quantity-${index}`)),
-        unit: formData.get(`unit-${index}`) as string,
-      })),
-      appliances: [{ name: formData.get("appliance") as string }],
-      ustensils: ustensils.map((_, index: number) => ({
-        name: formData.get(`ustensil-${index}`) as string,
-      })),
-      time: Number(formData.get("time")),
-      image: formData.get("image") as string,
-    };
-
-    const recipeToSend = { ...newRecipe };
-
-    try {
-      const response = await fetch("/api/recipes", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(recipeToSend),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to Send New Recipe");
+    const getUpdateRecipe = async () => {
+      if (!getParams.id) {
+        setIsError(true);
+        return;
       }
 
-      const result = await response.json();
-      //Refresh Datas
-      await fetchRecipes();
+      try {
+        const response = await fetch(`/api/recipes/${getParams.id}`);
 
-      //Store Storage
-      addRecipe(newRecipe);
+        if (!response.ok) {
+          throw new Error("Failed to Get Recipe");
+        }
 
-      //Local State
-      setCreatedRecipe(newRecipe);
+        const getRecipe = await response.json();
 
-      //Quick reset Form
-      e.target.reset();
-    } catch (error) {
-      console.error("Erreur de création de la recete :", error);
+        setIsLoading(false);
 
-      alert("Impossible de créer la recette. Veuillez réessayer.");
-    }
-  };
+        setUpdatedRecipe(normalizeRecipe(getRecipe));
+      } catch (err) {
+        console.error(err);
+        setIsError(true);
+      }
+    };
 
-  if (createdRecipe) {
+    getUpdateRecipe();
+  }, [getParams.id]);
+
+  //Guard
+  if (isLoading) {
     return (
       <PageWrapper>
-        <FeedbackBlock
-          type={"success"}
-          message={`"${createdRecipe.title}" ajoutée avec succès !`}
-          actionLink={`/recipes/${createdRecipe.id}`}
-          actionLabel={`Voir la recette`}
-          btnClass={"btn-go"}
-        />
+        <Loading />
       </PageWrapper>
     );
   }
+
+  if (isError) {
+    return (
+      <PageWrapper>
+        <div className="recipe-not-found">
+          {" "}
+          ❌ Error with fetching Datas from Recipe{" "}
+        </div>
+        <Link href="/" className="btn btn-back">
+          <span className="btn-icon">←</span>
+          Retour à l'accueil
+        </Link>
+      </PageWrapper>
+    );
+  }
+
+  // Guard
+  // if (isUpdated) {
+  //   return (
+  //     <PageWrapper>
+  //       <FeedbackBlock
+  //         type={"success"}
+  //         message={`"${updatedRecipe.title}" ajoutée avec succès !`}
+  //         actionLink={`/recipes/${updatedRecipe.id}`}
+  //         actionLabel={`Voir la recette`}
+  //         btnClass={"btn-go"}
+  //       />
+  //     </PageWrapper>
+  //   );
+  // }
 
   return (
     <>
       <PageWrapper>
         <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
-          <h2 title={`${maxId} recettes existantes`}>Ajouter une recette</h2>
+          <h2>Mise à jour de la recette {updatedRecipe?.title}</h2>
           <label>
             Titre
             <input
               type="text"
               name="title"
-              defaultValue={`recette test ${maxId + 1}`}
+              defaultValue={updatedRecipe?.title}
               required
             />
           </label>
@@ -146,11 +121,12 @@ const AddRecipePage = () => {
             <textarea
               name="description"
               required
-              defaultValue={`une recette de test de numéro ${maxId + 1}`}
+              defaultValue={updatedRecipe?.description}
             />
           </label>
-          <fieldset>
-            <legend>Ingrédients ({ingredients.length})</legend>
+
+          {/* <fieldset>
+            <legend>Ingrédients ({ingredients?.length})</legend>
 
             <div className="ingred-list">
               {ingredients?.map((_, index: number) => (
@@ -199,16 +175,19 @@ const AddRecipePage = () => {
             </button>
           </fieldset>
 
+           */}
+
           <label>
             Appareil
             <input
               type="text"
               name="appliance"
               required
-              defaultValue={`appliance ${maxId + 1}`}
+              defaultValue={`appliance`}
             />
           </label>
-          <fieldset>
+
+          {/* <fieldset>
             <legend>Ustensiles ({ustensils.length})</legend>
 
             <div className="ustensil-list">
@@ -244,7 +223,8 @@ const AddRecipePage = () => {
             >
               + Ajouter Ustensile
             </button>
-          </fieldset>
+          </fieldset> */}
+
           <label>
             Temps (minutes)
             <input
@@ -252,7 +232,7 @@ const AddRecipePage = () => {
               name="time"
               min="0"
               required
-              defaultValue={Math.ceil(Math.random() * maxId)}
+              defaultValue={updatedRecipe.time}
             />
           </label>
           <label>
@@ -267,7 +247,7 @@ const AddRecipePage = () => {
           <div className="letsgo">
             <button type="submit" className="btn">
               {" "}
-              💾 Enregistrer la recette
+              💾 Enregistrer les modificatio
             </button>
             <button
               type="button"
@@ -278,10 +258,12 @@ const AddRecipePage = () => {
             </button>
           </div>
         </form>
-      </PageWrapper>
 
-      <StoreDebbuger />
+        <section className="debeug">
+          {updatedRecipe ?? <RecipeCard recipe={updatedRecipe}></RecipeCard>}
+        </section>
+      </PageWrapper>
     </>
   );
 };
-export default AddRecipePage;
+export default UpdateRecipePage;

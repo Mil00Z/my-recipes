@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+import type { Appliance } from '@/types/appliance.types';
+import type { Ustensil } from '@/types/ustensil.types';
+import type { Ingredient } from '@/types/ingredient.types';
+
+
 // Faire un fichier utils "supabaseConfig.ts"
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -21,7 +26,7 @@ export async function GET(request: Request, { params } : {params: {id:string}}) 
 
   try {
     // Récupérer toutes les recettes depuis la table 'recipes'
-    const {data: RawRecipe, error} = await supabase.from('Recipes').select('*,_RecipeIngredients(quantity,unit,Ingredients(ingredient,updatedAt)),Ustensils(name,updatedAt),Appliances(name,updatedAt)').eq('id',id).single();
+    const {data: RawRecipe, error} = await supabase.from('Recipes').select('*,_RecipeIngredients(quantity,unit,Ingredients(ingredient,updatedAt)),Ustensils(id,name,updatedAt),Appliances(id,name,updatedAt)').eq('id',id).single();
 
    
       // Si de soucis de donnéés
@@ -153,4 +158,146 @@ export async function DELETE(request: Request, context: { params: { id: string }
   }
 }
 
+
+
+ export async function PATCH(request: Request, context: { params: { id: string } } ){
+
+  const params = await context.params;
+  const currentRecipeId = params.id;
+
+  // console.log("Receipe Id",currentRecipeId);
+
+  try{
+
+    const newRecipeDatas = await request.json();
+    const {ingredients,appliances,ustensils,...recipeDataOnly} = newRecipeDatas;
+
+
+    const {data:updatedRecipeData,error:updatedRecipeError} = await supabase
+      .from('Recipes')
+      .update(recipeDataOnly)
+      .eq('id',currentRecipeId)
+      .select()
+      .single();
+
+
+    if(updatedRecipeError){
+      throw new Error(`Update Recipe Failed: ${updatedRecipeError.message}`);
+    }
+
+    console.log(`✅ Recette ${currentRecipeId} partiellement modifiée avec succès.`);
+
+      //Appliances
+      if(appliances && appliances.length > 0){
+
+        // Clear Existing Joints
+        const {error:deleteAppliancesError} = await supabase
+        .from('_RecipeAppliances')
+        .delete()
+        .eq('A',currentRecipeId)
+
+        if(deleteAppliancesError){
+          throw new Error(`Update Joints Appliances Failed`);
+        }   
+
+        const appliancesToInsert = appliances.map((appliance:Appliance) => ({
+          A:currentRecipeId,
+          B:appliance.id
+        }))
+
+        // Insert new Link Appliances
+        const {error:appliancesInsertError} = await supabase
+        .from('_RecipeAppliances')
+        .insert(appliancesToInsert)
+        
+        
+        if(appliancesInsertError){
+          throw new Error(`Insert Joints Appliances Failed`);
+        }
+
+        console.log(`〰 ${appliancesToInsert.length} appareils liés.`);
+      }
+
+      //Ustensils
+      if(ustensils && ustensils.length > 0){
+
+        // Clear Existing Joints
+        const {error:deleteUstensilsError} = await supabase
+        .from('_RecipeUstensils')
+        .delete()
+        .eq('A',currentRecipeId)
+
+        if(deleteUstensilsError){
+          throw new Error(`Update Joints Ustensils Failed`);
+        }   
+
+        const ustensilsToInsert = ustensils.map((ustensil:Ustensil) => ({
+          A:currentRecipeId,
+          B:ustensil.id
+        }))
+
+        // Insert new Link Appliances
+        const {error:ustensilsInsertError} = await supabase
+        .from('_RecipeUstensils')
+        .insert(ustensilsToInsert)
+        
+        
+        if(ustensilsInsertError){
+          throw new Error(`Insert Joints Ustensils Failed`);
+        }
+
+        console.log(`〰 ${ustensilsToInsert.length} appareils liés.`);
+
+      }
+      
+      //Ingredients
+      if(ingredients && ingredients.length > 0){
+       
+        // Clear Existing Joints
+        const {error:deleteIngredientsError} = await supabase
+        .from('_RecipeIngredients')
+        .delete()
+        .eq('A',currentRecipeId)
+
+        if(deleteIngredientsError){
+          throw new Error(`Update Joints Ingredients Failed`);
+        }   
+
+        const ingredientsToInsert = ingredients.map((ingredient:Ingredient) => ({
+          A:currentRecipeId,
+          B:ingredient.id,
+          quantity:ingredient.quantity,
+          unit:ingredient.unit
+        }))
+
+        // Insert new Link Ingredients
+        const {error:ingredientsInsertError} = await supabase
+        .from('_RecipeIngredients')
+        .insert(ingredientsToInsert)
+        
+        
+        if(ingredientsInsertError){
+          throw new Error(`Insert Joints Ingredients Failed`);
+        }
+
+        console.log(`〰 ${ingredientsToInsert.length} ingrédients liés.`);
+        
+      }
+
+    // Finaly 
+    return NextResponse.json(
+      {message:`Recette ${currentRecipeId} modifiée !`},
+      {status:200}
+    );
+
+  }catch(err){
+    console.error('Erreur inattendue dans la route API:', err);
+    
+    return NextResponse.json(
+      {error:'Une erreur serveur est survenue...'},
+      {status:500}
+    );
+  }
+
+}
 
