@@ -4,7 +4,7 @@ import Header from "@/components/Header/Header";
 
 type PageWrapperProps = {
   children: React.ReactNode;
-<q></q>  layout?: 'home' | 'create' | 'update' | undefined;
+  layout?: 'home' | 'create' | 'update' | undefined;
 };
 
 const PageWrapper = ({children,layout = undefined}:PageWrapperProps) =>{
