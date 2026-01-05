@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import {v4 as uuid} from "uuid";
 
 
 import { normalizeRecipe } from "@/utils/normalizeRecipeApi";
@@ -90,38 +91,37 @@ const UpdateRecipePage = () => {
 
     const recipeToSend = { ...patchRecipe };
 
-  
+    console.log("Recipe to Send :", recipeToSend);
+
     setUpdatedRecipe(patchRecipe);
-    setIsUpdated(true);
+    // setIsUpdated(true);
 
-    /* try {
-      const response = await fetch(`/api/recipes/${getParams.id}`, {
-        method: "patch",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(recipeToSend),
-      });
+    // try {
+    //   const response = await fetch(`/api/recipes/${getParams.id}`, {
+    //     method: "patch",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(recipeToSend),
+    //   });
 
-      if (!response.ok) {
-        throw new Error("Failed to Send New Recipe");
-      }
+    //   if (!response.ok) {
+    //     throw new Error("Failed to Send New Recipe");
+    //   }
 
-      const result = await response.json();
-      //Refresh Datas
-      await fetchRecipes();
+    //   const result = await response.json();
+    //   //Refresh Datas
+    
 
-      //Local State
-      setUpdatedRecipe(newRecipe);
-      setIsUpdatedRecipe(true);
+    //   //Local State
+    //   //setUpdatedRecipe(result);
+    //   // setIsUpdated(true);
 
-      //Quick reset Form
-      e.target.reset();
-    } catch (error) {
-      console.error("Erreur de création de la recete :", error);
+    // } catch (error) {
+    //   console.error("Erreur de l'update de la recete :", error);
 
-      alert("Impossible de créer la recette. Veuillez réessayer.");
-    } */
+    //   alert("Impossible de modifier la recette. Veuillez réessayer.");
+    // } 
   };
 
 
@@ -256,7 +256,7 @@ const UpdateRecipePage = () => {
                   <input 
                   type="hidden" 
                   name={`ingredient-id-${index}`} 
-                  value={ingredient.id} 
+                  value={ingredient.id || ""} 
                   />
                   <input
                     type="text"
@@ -308,11 +308,11 @@ const UpdateRecipePage = () => {
                 <input 
                 type="hidden" 
                 name={`appliance-id-${index}`} 
-                value={appliance.id} 
+                value={appliance.id || ""} 
                 />
                 <input 
                 type="text" 
-                name="appliance" 
+                name={`appliance-${index}`}
                 required 
                 defaultValue={appliance.name} 
                 />
@@ -334,7 +334,7 @@ const UpdateRecipePage = () => {
                   <input 
                   type="hidden" 
                   name={`ustensil-id-${index}`} 
-                  value={ustensil.id} 
+                  value={ustensil.id || ""} 
                   />
                   <input
                     type="text"
