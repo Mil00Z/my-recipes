@@ -129,9 +129,9 @@ const AddRecipePage = () => {
 
   return (
     <>
-      <PageWrapper>
+      <PageWrapper layout={"create"}>
         <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
-          <h2 title={`${maxId} recettes existantes`}>Ajouter une recette</h2>
+          <h2 title={`${maxId} recettes existantes`}></h2>
           <label>
             Titre
             <input
