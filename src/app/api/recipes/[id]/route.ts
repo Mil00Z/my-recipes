@@ -5,6 +5,8 @@ import type { Appliance } from '@/types/appliance.types';
 import type { Ustensil } from '@/types/ustensil.types';
 import type { Ingredient } from '@/types/ingredient.types';
 
+import { v4 as uuid } from 'uuid';
+
 
 // Faire un fichier utils "supabaseConfig.ts"
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -165,13 +167,12 @@ export async function DELETE(request: Request, context: { params: { id: string }
   const params = await context.params;
   const currentRecipeId = params.id;
 
-  // console.log("Receipe Id",currentRecipeId);
 
   try{
 
     const newRecipeDatas = await request.json();
     const {ingredients,appliances,ustensils,...recipeDataOnly} = newRecipeDatas;
-
+    console.log("👉 Payload reçu:", newRecipeDatas);
 
     const {data:updatedRecipeData,error:updatedRecipeError} = await supabase
       .from('Recipes')
@@ -252,6 +253,8 @@ export async function DELETE(request: Request, context: { params: { id: string }
       
       //Ingredients
       if(ingredients && ingredients.length > 0){
+
+        console.log("👉 Entrée dans le bloc ingrédients");
        
         // Clear Existing Joints
         const {error:deleteIngredientsError} = await supabase
@@ -263,24 +266,54 @@ export async function DELETE(request: Request, context: { params: { id: string }
           throw new Error(`Update Joints Ingredients Failed`);
         }   
 
-        const ingredientsToInsert = ingredients.map((ingredient:Ingredient) => ({
-          A:currentRecipeId,
-          B:ingredient.id,
-          quantity:ingredient.quantity,
-          unit:ingredient.unit
-        }))
 
-        // Insert new Link Ingredients
-        const {error:ingredientsInsertError} = await supabase
-        .from('_RecipeIngredients')
-        .insert(ingredientsToInsert)
-        
-        
-        if(ingredientsInsertError){
-          throw new Error(`Insert Joints Ingredients Failed`);
+        const ingredientsToInsert: Ingredient[] = [];
+
+        for( const item of ingredients ){
+
+          // Si l'ingrédient n'a pas d'ID, on le crée
+          let ingredientId = item.id;
+          
+          if(!ingredientId || ingredientId === ""){
+
+            console.log('ingrédient ID = ', ingredientId || 'no ID');
+            const generatedId = uuid();
+            
+            const { data: newIngredientData, error: insertIngredientError } = await supabase
+              .from('Ingredients')
+              .insert({ 
+                id: generatedId,
+                ingredient: item.ingredient 
+              })
+              .select()
+              .single();
+
+            if (insertIngredientError) {
+              throw new Error(`Insert Ingredient Failed: ${insertIngredientError.message}`);
+            }
+
+            console.log(newIngredientData);
+          }
         }
 
-        console.log(`〰 ${ingredientsToInsert.length} ingrédients liés.`);
+        // const ingredientsToInsert = ingredients.map((ingredient:Ingredient) => ({
+        //   A:currentRecipeId,
+        //   B:ingredient.id,
+        //   quantity:ingredient.quantity,
+        //   unit:ingredient.unit
+        // }))
+
+        // Insert new Link Ingredients
+        // const {error:ingredientsInsertError} = await supabase
+        // .from('_RecipeIngredients')
+        // .insert(ingredientsToInsert)
+        
+        
+        // if(ingredientsInsertError){
+        //   throw new Error(`Insert Joints Ingredients Failed`);
+        // }
+
+        // console.log(`〰 ${ingredientsToInsert.length} ingrédients liés.`);
         
       }
 
