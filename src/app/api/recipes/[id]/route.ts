@@ -254,8 +254,6 @@ export async function DELETE(request: Request, context: { params: { id: string }
       //Ingredients
       if(ingredients && ingredients.length > 0){
 
-        console.log("👉 Entrée dans le bloc ingrédients");
-       
         // Clear Existing Joints
         const {error:deleteIngredientsError} = await supabase
         .from('_RecipeIngredients')
@@ -266,24 +264,48 @@ export async function DELETE(request: Request, context: { params: { id: string }
           throw new Error(`Update Joints Ingredients Failed`);
         }   
 
+        // Looping to Update Datas
+        for(const item of ingredients ){
 
-        const ingredientsToInsert: Ingredient[] = [];
-
-        for( const item of ingredients ){
-
-          // Si l'ingrédient n'a pas d'ID, on le crée
+          // Get Id and Name FROM Payload
           let ingredientId = item.id;
-          
+          let ingredientName = item.ingredient.trim().toLowerCase();
+          let ingredientUnit = item.unit;
+          let ingredientQuantity = item.quantity;
+
+      // #1 Checking Name
+          const { data: existingIngredientData, error: fetchIngredientError } = await supabase
+            .from('Ingredients')
+            .select('id')
+            .eq('ingredient', ingredientName)
+            .maybeSingle();
+
+    
+           if(existingIngredientData) {
+
+            console.log('Ingrédient existant trouvé:', ingredientName);
+
+            ingredientId = existingIngredientData.id;
+
+           }
+
+
+          //Error
+          if (fetchIngredientError) {
+            throw new Error(`Fetch Ingredient Failed: ${fetchIngredientError.message}`);
+          }
+
+        
+      // #2 Checking ID exist or Create
           if(!ingredientId || ingredientId === ""){
 
-            console.log('ingrédient ID = ', ingredientId || 'no ID');
-            const generatedId = uuid();
+            ingredientId = uuid();
             
             const { data: newIngredientData, error: insertIngredientError } = await supabase
               .from('Ingredients')
               .insert({ 
-                id: generatedId,
-                ingredient: item.ingredient 
+                id: ingredientId,
+                ingredient: ingredientName
               })
               .select()
               .single();
@@ -292,28 +314,23 @@ export async function DELETE(request: Request, context: { params: { id: string }
               throw new Error(`Insert Ingredient Failed: ${insertIngredientError.message}`);
             }
 
-            console.log(newIngredientData);
           }
+
+          // Finally Insert Link
+           const { data: updateIngredientData, error: updateIngredientError } = await supabase
+            .from('_RecipeIngredients')
+            .insert({
+              A:currentRecipeId,
+              B:ingredientId,
+              quantity:ingredientQuantity,
+              unit:ingredientUnit 
+            })
+           
+            if(updateIngredientError){
+              throw new Error(`Update Ingredients Datas failed: ${updateIngredientError.message}`);
+            }
+
         }
-
-        // const ingredientsToInsert = ingredients.map((ingredient:Ingredient) => ({
-        //   A:currentRecipeId,
-        //   B:ingredient.id,
-        //   quantity:ingredient.quantity,
-        //   unit:ingredient.unit
-        // }))
-
-        // Insert new Link Ingredients
-        // const {error:ingredientsInsertError} = await supabase
-        // .from('_RecipeIngredients')
-        // .insert(ingredientsToInsert)
-        
-        
-        // if(ingredientsInsertError){
-        //   throw new Error(`Insert Joints Ingredients Failed`);
-        // }
-
-        // console.log(`〰 ${ingredientsToInsert.length} ingrédients liés.`);
         
       }
 
