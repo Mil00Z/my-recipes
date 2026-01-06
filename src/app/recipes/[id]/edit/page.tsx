@@ -93,35 +93,32 @@ const UpdateRecipePage = () => {
 
     console.log("Recipe to Send :", recipeToSend);
 
-    setUpdatedRecipe(patchRecipe);
-    // setIsUpdated(true);
-
-    // try {
-    //   const response = await fetch(`/api/recipes/${getParams.id}`, {
-    //     method: "patch",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(recipeToSend),
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error("Failed to Send New Recipe");
-    //   }
-
-    //   const result = await response.json();
-    //   //Refresh Datas
     
+     try {
+       const response = await fetch(`/api/recipes/${getParams.id}`, {
+         method: "PATCH",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify(recipeToSend),
+       });
 
-    //   //Local State
-    //   //setUpdatedRecipe(result);
-    //   // setIsUpdated(true);
+  
+       if (!response.ok) {
+         throw new Error("Failed to Send New Recipe");
+       }
 
-    // } catch (error) {
-    //   console.error("Erreur de l'update de la recete :", error);
+       const result = await response.json();
+    
+       //Local State
+       setUpdatedRecipe(result);
+       setIsUpdated(true);
 
-    //   alert("Impossible de modifier la recette. Veuillez réessayer.");
-    // } 
+     } catch (error) {
+       console.error("Erreur de l'update de la recete :", error);
+
+       alert("Impossible de modifier la recette. Veuillez réessayer.");
+     } 
   };
 
 
