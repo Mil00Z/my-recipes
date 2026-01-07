@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import {v4 as uuid} from "uuid";
 
 
 import { normalizeRecipe } from "@/utils/normalizeRecipeApi";
@@ -32,6 +31,7 @@ const UpdateRecipePage = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const [isError, setIsError] = useState<Boolean>(false);
   const [isUpdated, setIsUpdated] = useState<Boolean>(false);
+  const [formKey, setFormKey] = useState<number>(0);
 
 
   const createNewIngredient = (): Ingredient => ({
@@ -119,6 +119,20 @@ const UpdateRecipePage = () => {
 
        alert("Impossible de modifier la recette. Veuillez réessayer.");
      } 
+  };
+
+  // Reset
+  const handleReset = () => {
+   
+    if (!updatedRecipe) return;
+
+    
+    setIngredients(updatedRecipe.ingredients);
+    setUstensils(updatedRecipe.ustensils);
+    setAppliances(updatedRecipe.appliances);
+
+    setFormKey((prevKey) => (prevKey + 1));
+
   };
 
 
@@ -220,7 +234,7 @@ const UpdateRecipePage = () => {
             <span>{new Date(updatedRecipe?.updatedAt).toLocaleDateString()}</span>
           </div>
 
-        <form className="add-recipe-form" onSubmit={(e)=>handleSubmit(e)}>
+        <form className="add-recipe-form" onSubmit={(e)=>handleSubmit(e)} key={formKey}>
           <h2>{updatedRecipe?.title}'</h2>
           <label>
             Titre
@@ -396,9 +410,9 @@ const UpdateRecipePage = () => {
             <button
               type="button"
               className="btn reset-recipe"
-              onClick={(e) => e.target.closest("form").reset()}
+              onClick={() => handleReset()}
             >
-              Clear
+              Annuler les modifications
             </button>
           </div>
         </form>
