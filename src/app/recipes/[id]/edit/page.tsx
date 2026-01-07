@@ -241,7 +241,7 @@ const UpdateRecipePage = () => {
           </label>
 
           <fieldset>
-            <legend>Ingrédients ({updatedRecipe?.ingredients?.length})</legend>
+            <legend>Ingrédients ({ingredients?.length || 0})</legend>
 
             <div className="ingred-list">
               {ingredients?.map((ingredient:Ingredient, index: number) => (
@@ -297,7 +297,7 @@ const UpdateRecipePage = () => {
 
   
           <label>
-            Appareil
+            Appareil Principal
             {appliances?.map((appliance:Appliance, index:number) => (
               <div
                 key={`appliance-item-${index}`}>
@@ -319,8 +319,7 @@ const UpdateRecipePage = () => {
           </label>
 
           <fieldset>
-            <legend>Ustensiles ({updatedRecipe?.ustensils?.length})</legend>
-
+            <legend>Ustensiles ({ustensils?.length || 0})</legend>
             <div className="ustensil-list">
               {ustensils?.map((ustensil:Ustensil, index: number) => (
                 <div
