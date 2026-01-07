@@ -18,7 +18,7 @@ const useFormList = <T,>(createNewItem : () => T) =>  {
       const filteredItems = items.filter((_,i:number) => i !==index);
 
       setItems(filteredItems);
-      console.log('removed item at index:',index);
+     
     }
 
     const cleanItem = () => {
