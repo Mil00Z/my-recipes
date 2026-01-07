@@ -232,24 +232,89 @@ export async function DELETE(request: Request, context: { params: { id: string }
           throw new Error(`Update Joints Ustensils Failed`);
         }   
 
-        const ustensilsToInsert = ustensils.map((ustensil:Ustensil) => ({
-          A:currentRecipeId,
-          B:ustensil.id
-        }))
+        for (const ust of ustensils) {
+
+          // Get Id and Name FROM Payload
+          let ustensilId = ust.id;
+          let ustensilName = ust.name.trim().toLowerCase();
+
+          // #1 Checking Name
+          const { data: existingUstensilData, error: fetchUstensilError } = await supabase
+            .from('Ustensils')
+            .select('id')
+            .eq('name', ustensilName)
+            .limit(1)
+            .maybeSingle();
+
+    
+           if(existingUstensilData) {
+
+            console.log('Ustensil existant trouvé:', ustensilName);
+
+            ustensilId = existingUstensilData.id;
+
+           }
+
+          //Error
+          if (fetchUstensilError) {
+            throw new Error(`Fetch Ustensil Failed: ${fetchUstensilError.message}`);
+          }
+
+
+          // #2 Checking ID exist or Create
+          if(!ustensilId || ustensilId === ""){
+
+            ustensilId = uuid();
+                        
+            const { data: newUstensilData, error: insertUstensilError } = await supabase
+              .from('Ustensils')
+              .insert({ 
+                id: ustensilId,
+                name: ustensilName
+              })
+              .select()
+              .single();
+
+            console.log('Nouvel Ustensil crée :', newUstensilData);
+
+
+            if (insertUstensilError) {
+              throw new Error(`Insert Ingredient Failed: ${insertUstensilError.message}`);
+            }
+
+          }
+
+
+          // Finally Insert Link
+           const { data: updateUstensilData, error: updateUstensilError } = await supabase
+            .from('_RecipeUstensils')
+            .insert({
+              A:currentRecipeId,
+              B:ustensilId
+            })
+           
+            if(updateUstensilError){
+              throw new Error(`Update Ingredients Datas failed: ${updateUstensilError.message}`);
+            }
+
+
+
+
+
+
+
+        }
+ 
+      }
 
         // Insert new Link Appliances
-        const {error:ustensilsInsertError} = await supabase
-        .from('_RecipeUstensils')
-        .insert(ustensilsToInsert)
+        // const {error:ustensilsInsertError} = await supabase
+        // .from('_RecipeUstensils')
+        // .insert(ustensilsToInsert)
         
         
-        if(ustensilsInsertError){
-          throw new Error(`Insert Joints Ustensils Failed`);
-        }
 
-        console.log(`〰 ${ustensilsToInsert.length} appareils liés.`);
-
-      }
+        // console.log(`〰 ${ustensilsToInsert.length} appareils liés.`);
       
       //Ingredients
       if(ingredients && ingredients.length > 0){
@@ -265,13 +330,13 @@ export async function DELETE(request: Request, context: { params: { id: string }
         }   
 
         // Looping to Update Datas
-        for(const item of ingredients ){
+        for(const ing of ingredients ){
 
           // Get Id and Name FROM Payload
-          let ingredientId = item.id;
-          let ingredientName = item.ingredient.trim().toLowerCase();
-          let ingredientUnit = item.unit;
-          let ingredientQuantity = item.quantity;
+          let ingredientId = ing.id;
+          let ingredientName = ing.ingredient.trim().toLowerCase();
+          let ingredientUnit = ing.unit;
+          let ingredientQuantity = ing.quantity;
 
       // #1 Checking Name
           const { data: existingIngredientData, error: fetchIngredientError } = await supabase
