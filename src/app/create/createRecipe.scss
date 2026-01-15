@@ -4,18 +4,18 @@
   padding: 2rem 2.5rem;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   transition: all 0.33s ease-in-out;
   outline: 1px solid transparent;
 
-  &:focus-within, 
+  &:focus-within,
   &:hover {
     // outline-color:  var(--black-color);
-    transform:translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -36,7 +36,8 @@
 
 .add-recipe-form input[type="text"],
 .add-recipe-form input[type="number"],
-.add-recipe-form textarea {
+.add-recipe-form textarea,
+.add-recipe-form select {
   padding: 0.6rem 0.8rem;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
@@ -85,22 +86,23 @@
   -webkit-appearance: none;
   margin: 0;
 }
-.update-container{
-  --spacing:2rem;
-  padding:var(--spacing);
+
+.update-container {
+  --spacing: 2rem;
+  padding: var(--spacing);
 
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
 
-  & > h2 {
-    width:100%;
+  &>h2 {
+    width: 100%;
   }
 }
 
 .ingred-list,
-.ustensil-list{
-  --spacing:.9rem;
+.ustensil-list {
+  --spacing: .9rem;
   display: flex;
   flex-flow: row wrap;
   gap: var(--spacing) calc(var(--spacing) * 1.25);
@@ -116,13 +118,13 @@
 }
 
 //submit//
-.letsgo{
-  display:flex;
+.letsgo {
+  display: flex;
   justify-content: space-evenly;
   margin-block: 2vh;
 
-  @media all and (max-width:1060px){
+  @media all and (max-width:1060px) {
     flex-direction: column;
-    row-gap:1rem;
+    row-gap: 1rem;
   }
 }

@@ -6,9 +6,9 @@
     margin-block: calc(1.5 * var(--regular-spacing));
 }
 
-.form-select{
-    --hidden:0;
-    width:80%;
+.form-select {
+    --hidden: 0;
+    width: 80%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
@@ -21,21 +21,21 @@
 
 
 .filters {
-    --radius:11px;
-    --gap:1rem;
+    --radius: 11px;
+    --gap: 1rem;
     width: 200px;
     display: flex;
     flex-direction: column;
     background: var(--white-color);
-    row-gap:var(--gap);
-    border-radius:var(--radius);
-  
-    height:120px;
+    row-gap: var(--gap);
+    border-radius: var(--radius);
+
+    height: 120px;
     overflow: hidden scroll;
     transition: height .15s ease-in-out;
 
-    &:focus-within{
-      height:fit-content;
+    &:focus-within {
+        height: fit-content;
     }
 
 
@@ -47,37 +47,35 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding:1rem;
+    padding: 1rem;
     font-size: 1.05rem;
-    font-weight:var(--weight-bold);
+    font-weight: var(--weight-bold);
 
-    &:hover ~ .search-results {
-    
-    }
+    &:hover~.search-results {}
 }
 
 
 .option {
-    padding:.5rem 1rem;
-    color:var(--black-color)
+    padding: .5rem 1rem;
+    color: var(--black-color)
 }
 
 .option:hover,
-.option:focus{
-    background:var(--secondary-color);
-    color:var(--white-color);
-    cursor:pointer;
+.option:focus {
+    background: var(--secondary-color);
+    color: var(--white-color);
+    cursor: pointer;
 }
 
 .search-filter {
-    --radius:4px;
+    --radius: 4px;
     display: block;
-    padding:.6rem;
-    margin-inline:1rem;
-    font-size:1rem;
-    color:var(--black-color);
-    font-weight:var(--weight-bold);
-    border-radius:var(--radius);
+    padding: .6rem;
+    margin-inline: 1rem;
+    font-size: 1rem;
+    color: var(--black-color);
+    font-weight: var(--weight-bold);
+    border-radius: var(--radius);
     border: 1px solid var(--grey-color);
     background-color: var(--white-color);
 }
@@ -85,39 +83,40 @@
 
 .filters:focus {
     background-color: var(--secondary-color);
-    color:var(--black-color);                   
-    cursor: pointer;    
+    color: var(--black-color);
+    cursor: pointer;
 }
 
 .filters:not(first-of-type),
 .filters:not(last-of-type) {
-    margin-right:1.5rem;
+    margin-right: 1.5rem;
 }
 
 .filters option {
-    font-size:1rem;
-    color:currentColor;
+    font-size: 1rem;
+    color: currentColor;
 }
 
 
 .search-results {
-  --gap: .45rem;
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--gap);
-  // height:25dvh;
-  // overflow: scroll;
-    
-  & > li,
-  .option{
-  padding: .5rem 1rem;
-  color: var(--black-color);
+    --gap: .45rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--gap);
+    // height:25dvh;
+    // overflow: scroll;
 
-    &:hover,
-    &:focus{
-      background: var(--secondary-color);
-      color: var(--black-color);
-      cursor: pointer;
+
+    &>li,
+    .option {
+        padding: .5rem 1rem;
+        color: var(--black-color);
+
+        &:hover,
+        &:focus {
+            background: var(--secondary-color);
+            color: var(--black-color);
+            cursor: pointer;
+        }
     }
-  }
 }
