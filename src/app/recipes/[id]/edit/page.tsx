@@ -126,14 +126,11 @@ const UpdateRecipePage = () => {
   const handleReset = () => {
 
     if (!updatedRecipe) return;
-
-
     setIngredients(updatedRecipe.ingredients);
     setUstensils(updatedRecipe.ustensils);
     setAppliances(updatedRecipe.appliances);
 
     setFormKey((prevKey) => (prevKey + 1));
-
   };
 
 
@@ -303,7 +300,7 @@ const UpdateRecipePage = () => {
               </button>
             </fieldset>
 
-            <SelectForm type={'appliances'} item={appliances ? appliances[0] : undefined} />
+            <SelectForm type={'appliances'} item={appliances?.[0]} />
 
             <fieldset>
               <legend>Ustensiles ({ustensils?.length || 0})</legend>
