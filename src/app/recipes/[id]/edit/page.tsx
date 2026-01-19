@@ -17,11 +17,14 @@ import type { Appliance } from "@/types/appliance.types";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import RecipeCard from "@/components/RecipeCard/RecipeCard";
 import Loading from "@/components/Loading/Loading";
+import SelectForm from "@/components/SelectForm/SelectForm";
 import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
-// import StoreDebbuger from "@/components/Debeug/Debeug";
+
 
 //Styles
-import "./createRecipe.scss";
+import "@/app/recipes/[id]/edit/updateRecipe.scss";
+import "@/components/RecipeFormEdit/RecipeFormEdit.scss";
+import "@/components/Filters/Filter.scss";
 
 
 const UpdateRecipePage = () => {
@@ -49,12 +52,12 @@ const UpdateRecipePage = () => {
   });
 
 
-  const [ingredients, addIngredient, removeIngredient,_cleanIngredients,setIngredients] = 
-  useFormList<Ingredient>(createNewIngredient);
-  const [ustensils, addUstensil,removeUstensil,_cleanUstensils,setUstensils] = 
-  useFormList<Ustensil>(createNewUstensil);
-  const [appliances,_addAppliance,_removeAppliance,_cleanAppliances,setAppliances] = 
-  useFormList<Appliance>(createNewAppliance);
+  const [ingredients, addIngredient, removeIngredient, _cleanIngredients, setIngredients] =
+    useFormList<Ingredient>(createNewIngredient);
+  const [ustensils, addUstensil, removeUstensil, _cleanUstensils, setUstensils] =
+    useFormList<Ustensil>(createNewUstensil);
+  const [appliances, _addAppliance, _removeAppliance, _cleanAppliances, setAppliances] =
+    useFormList<Appliance>(createNewAppliance);
 
 
   //Get Url Params
@@ -76,57 +79,55 @@ const UpdateRecipePage = () => {
         ingredient: formData.get(`ingredient-${index}`) as string,
         quantity: Number(formData.get(`quantity-${index}`)),
         unit: formData.get(`unit-${index}`) as string,
-      })), 
+      })),
       ustensils: ustensils.map((_, index: number) => ({
         id: formData.get(`ustensil-id-${index}`) as string,
         name: formData.get(`ustensil-${index}`) as string,
-      })), 
+      })),
       appliances: appliances.map((_, index: number) => ({
-        id: formData.get(`appliance-id-${index}`) as string,
-        name: formData.get(`appliance-${index}`) as string,
-      })), 
+        id: formData.get(`appliances-id-${index}`) as string,
+        name: formData.get(`appliances-${index}`) as string,
+      })),
       time: Number(formData.get("time")),
       image: formData.get("image") as string,
     };
 
     const recipeToSend = { ...patchRecipe };
 
-    console.log("Recipe to Send :", recipeToSend);
+    try {
+      const response = await fetch(`/api/recipes/${getParams.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recipeToSend),
+      });
 
-    
-     try {
-       const response = await fetch(`/api/recipes/${getParams.id}`, {
-         method: "PATCH",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify(recipeToSend),
-       });
 
-  
-       if (!response.ok) {
-         throw new Error("Failed to Send New Recipe");
-       }
+      if (!response.ok) {
+        throw new Error("Failed to Send New Recipe");
+      }
 
-       const result = await response.json();
-    
-       //Local State
-       setUpdatedRecipe(result);
-       setIsUpdated(true);
+      const result = await response.json();
 
-     } catch (error) {
-       console.error("Erreur de l'update de la recete :", error);
+      const optimsiticUpdatedRecipe = { ...updatedRecipe, ...patchRecipe } as Recipe;
+      //Local State
+      setUpdatedRecipe(optimsiticUpdatedRecipe);
+      setIsUpdated(true);
 
-       alert("Impossible de modifier la recette. Veuillez réessayer.");
-     } 
+    } catch (error) {
+      console.error("Erreur de l'update de la recete :", error);
+      alert("Impossible de modifier la recette. Veuillez réessayer.");
+    }
   };
+
 
   // Reset
   const handleReset = () => {
-   
+
     if (!updatedRecipe) return;
 
-    
+
     setIngredients(updatedRecipe.ingredients);
     setUstensils(updatedRecipe.ustensils);
     setAppliances(updatedRecipe.appliances);
@@ -140,8 +141,8 @@ const UpdateRecipePage = () => {
   useEffect(() => {
 
     if (!getParams.id) {
-        setIsError(true);
-        return;
+      setIsError(true);
+      return;
     }
 
     const getUpdateRecipe = async () => {
@@ -164,18 +165,19 @@ const UpdateRecipePage = () => {
         setIngredients(normalizeDatas.ingredients);
         setAppliances(normalizeDatas.appliances);
         setUstensils(normalizeDatas.ustensils);
-        
+
 
         // Disable Loading after datas fullfill local states
         setIsLoading(false);
-        
-        } catch (err) {
+
+      } catch (err) {
         console.error(err);
         setIsError(true);
       }
     };
 
     getUpdateRecipe();
+
   }, [getParams.id]);
 
   //Guard
@@ -205,26 +207,18 @@ const UpdateRecipePage = () => {
   if (isUpdated) {
     return (
       <PageWrapper>
-        {/* <FeedbackBlock
+
+        <FeedbackBlock
           type={"success"}
-          message={`"${updatedRecipe.title}" ajoutée avec succès !`}
-          actionLink={`/recipes/${updatedRecipe.id}`}
+          message={`"${updatedRecipe?.title}" modifiée avec succès !`}
+          actionLink={`/recipes/${updatedRecipe?.id}`}
           actionLabel={`Voir la recette`}
           btnClass={"btn-go"}
-        /> */}
-
-        <div className="">
-          <h2>Recette mise à jour avec succès !</h2>
-          <Link href={`/recipes/${getParams.id}`} className={`link btn btn-cta`}>
-          <span className="btn-icon">←</span>{"Fiche Recette"}</Link>
-        </div>
-        <div className="update-recipe">
-          {updatedRecipe && <RecipeCard recipe={updatedRecipe}></RecipeCard>}
-        </div>
+        />
       </PageWrapper>
     );
   }
- 
+
   return (
     <>
       <PageWrapper layout={"update"}>
@@ -234,196 +228,175 @@ const UpdateRecipePage = () => {
             <span>{new Date(updatedRecipe?.updatedAt).toLocaleDateString()}</span>
           </div>
 
-        <form className="add-recipe-form" onSubmit={(e)=>handleSubmit(e)} key={formKey}>
-          <h2>{updatedRecipe?.title}'</h2>
-          <label>
-            Titre
-            <input
-              type="text"
-              name="title"
-              defaultValue={updatedRecipe?.title}
-              required
-            />
-          </label>
-          <label>
-            Description
-            <textarea
-              name="description"
-              required
-              defaultValue={updatedRecipe?.description}
-            />
-          </label>
+          <form className="recipe-form" onSubmit={(e) => handleSubmit(e)} key={formKey}>
+            <h2>{updatedRecipe?.title}'</h2>
+            <label>
+              Titre
+              <input
+                type="text"
+                name="title"
+                defaultValue={updatedRecipe?.title}
+                required
+              />
+            </label>
+            <label>
+              Description
+              <textarea
+                name="description"
+                required
+                defaultValue={updatedRecipe?.description}
+              />
+            </label>
 
-          <fieldset>
-            <legend>Ingrédients ({ingredients?.length || 0})</legend>
+            <fieldset>
+              <legend>Ingrédients ({ingredients?.length || 0})</legend>
 
-            <div className="ingred-list">
-              {ingredients?.map((ingredient:Ingredient, index: number) => (
-                <div
-                  key={`ingred-item-${index}`}
-                  className="ingred-item"
-                  data-index={`ingred-item-${index}`}
-                >
-                  <input 
-                  type="hidden" 
-                  name={`ingredient-id-${index}`} 
-                  value={ingredient.id || ""} 
-                  />
-                  <input
-                    type="text"
-                    name={`ingredient-${index}`}
-                    placeholder="Ingrédient"
-                    defaultValue={ingredient.ingredient}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name={`quantity-${index}`}
-                    placeholder="Quantité"
-                    defaultValue={ingredient.quantity}
-                  />
-                  <input
-                    type="text"
-                    name={`unit-${index}`}
-                    placeholder="Unité"
-                    defaultValue={ingredient.unit}
-                  />
-
-                  <button
-                    type="button"
-                    className="remove btn manage-ingred"
-                    onClick={() => removeIngredient(index)}
+              <div className="ingred-list">
+                {ingredients?.map((ingredient: Ingredient, index: number) => (
+                  <div
+                    key={`ingred-item-${index}`}
+                    className="ingred-item"
+                    data-index={`ingred-item-${index}`}
                   >
-                    - Suppr ingrédient
-                  </button>
-                </div>
-              ))}
-            </div>
+                    <input
+                      type="hidden"
+                      name={`ingredient-id-${index}`}
+                      value={ingredient.id || ""}
+                    />
+                    <input
+                      type="text"
+                      name={`ingredient-${index}`}
+                      placeholder="Ingrédient"
+                      defaultValue={ingredient.ingredient}
+                      required
+                    />
+                    <input
+                      type="text"
+                      name={`quantity-${index}`}
+                      placeholder="Quantité"
+                      defaultValue={ingredient.quantity}
+                    />
+                    <input
+                      type="text"
+                      name={`unit-${index}`}
+                      placeholder="Unité"
+                      defaultValue={ingredient.unit}
+                    />
 
-            <button
-              type="button"
-              className="add btn manage-ingred"
-              onClick={() => addIngredient()}
-            >
-              + Ajouter ingrédient
-            </button>
-          </fieldset>
+                    <button
+                      type="button"
+                      className="remove btn manage-ingred"
+                      onClick={() => removeIngredient(index)}
+                    >
+                      - Suppr ingrédient
+                    </button>
+                  </div>
+                ))}
+              </div>
 
-  
-          <label>
-            Appareil Principal
-            {appliances?.map((appliance:Appliance, index:number) => (
-              <div
-                key={`appliance-item-${index}`}>
+              <button
+                type="button"
+                className="add btn manage-ingred"
+                onClick={() => addIngredient()}
+              >
+                + Ajouter ingrédient
+              </button>
+            </fieldset>
 
-                <input 
-                type="hidden" 
-                name={`appliance-id-${index}`} 
-                value={appliance.id || ""} 
-                />
-                <input 
-                type="text" 
-                name={`appliance-${index}`}
-                required 
-                defaultValue={appliance.name} 
-                />
+            <SelectForm type={'appliances'} item={appliances ? appliances[0] : undefined} />
 
-              </div>))}
-            
-          </label>
-
-          <fieldset>
-            <legend>Ustensiles ({ustensils?.length || 0})</legend>
-            <div className="ustensil-list">
-              {ustensils?.map((ustensil:Ustensil, index: number) => (
-                <div
-                  key={`ustensil-item-${index}`}
-                  className="ustensil-item"
-                  data-index={`ustensil-item-${index}`}
-                >
-                  <input 
-                  type="hidden" 
-                  name={`ustensil-id-${index}`} 
-                  value={ustensil.id || ""} 
-                  />
-                  <input
-                    type="text"
-                    name={`ustensil-${index}`}
-                    placeholder="Ustensile"
-                    required
-                    defaultValue={ustensil.name}
-                  />
-
-                  <button
-                    type="button"
-                    className="remove btn manage-ustensil"
-                    onClick={() => removeUstensil(index)}
+            <fieldset>
+              <legend>Ustensiles ({ustensils?.length || 0})</legend>
+              <div className="ustensil-list">
+                {ustensils?.map((ustensil: Ustensil, index: number) => (
+                  <div
+                    key={`ustensil-item-${index}`}
+                    className="ustensil-item"
+                    data-index={`ustensil-item-${index}`}
                   >
-                    - Suppr Ustensil
-                  </button>
-                </div>
-              ))}
+                    <input
+                      type="hidden"
+                      name={`ustensil-id-${index}`}
+                      value={ustensil.id || ""}
+                    />
+                    <input
+                      type="text"
+                      name={`ustensil-${index}`}
+                      placeholder="Ustensile"
+                      required
+                      defaultValue={ustensil.name}
+                    />
+
+                    <button
+                      type="button"
+                      className="remove btn manage-ustensil"
+                      onClick={() => removeUstensil(index)}
+                    >
+                      - Suppr Ustensil
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="add btn manage-ustensil"
+                onClick={() => addUstensil()}
+              >
+                + Ajouter Ustensile
+              </button>
+            </fieldset>
+
+            <label>
+              Temps (minutes)
+              <input
+                type="number"
+                name="time"
+                min="0"
+                required
+                defaultValue={updatedRecipe?.time}
+              />
+            </label>
+            <label>
+              Quantités
+              <input
+                type="number"
+                name="servings"
+                min="1"
+                required
+                defaultValue={updatedRecipe?.servings}
+              />
+            </label>
+            <label>
+              Image (URL)
+              <input
+                type="text"
+                name="image"
+                defaultValue={updatedRecipe?.image ?? "/hf/default-recipe.jpg"}
+                readOnly
+              />
+            </label>
+            <div className="letsgo">
+              <button type="submit" className="btn">
+                Enregistrer les modifications
+              </button>
+              <button
+                type="button"
+                className="btn reset-recipe"
+                onClick={() => handleReset()}
+              >
+                Annuler les modifications
+              </button>
             </div>
+          </form>
 
-            <button
-              type="button"
-              className="add btn manage-ustensil"
-              onClick={() => addUstensil()}
-            >
-              + Ajouter Ustensile
-            </button>
-          </fieldset> 
 
-          <label>
-            Temps (minutes)
-            <input
-              type="number"
-              name="time"
-              min="0"
-              required
-              defaultValue={updatedRecipe?.time}
-            />
-          </label>
-          <label>
-            Quantités
-            <input
-              type="number"
-              name="servings"
-              min="1"
-              required
-              defaultValue={updatedRecipe?.servings}
-            />
-          </label>
-          <label>
-            Image (URL)
-            <input
-              type="text"
-              name="image"
-              defaultValue={updatedRecipe?.image ?? "/hf/default-recipe.jpg"}
-              readOnly
-            />
-          </label>
-          <div className="letsgo">
-            <button type="submit" className="btn">
-              Enregistrer les modifications 
-            </button>
-            <button
-              type="button"
-              className="btn reset-recipe"
-              onClick={() => handleReset()}
-            >
-              Annuler les modifications
-            </button>
+
+          <div className="update-recipe">
+            {updatedRecipe && <RecipeCard recipe={updatedRecipe}></RecipeCard>}
           </div>
-        </form>
 
-        
-
-        <div className="update-recipe">
-          {updatedRecipe && <RecipeCard recipe={updatedRecipe}></RecipeCard>}
-        </div>
-
-      </section>
+        </section>
       </PageWrapper>
     </>
   );
