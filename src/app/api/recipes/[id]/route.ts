@@ -183,7 +183,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       .single();
 
 
-    if (updatedRecipeError) {
+    if(updatedRecipeError){
       throw new Error(`Update Recipe Failed: ${updatedRecipeError.message}`);
     }
 
