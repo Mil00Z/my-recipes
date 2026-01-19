@@ -10,6 +10,7 @@ const useFormList = <T,>(createNewItem : () => T) =>  {
     const addItem = () => {
 
       setItems((prevItems:T[]) =>[...prevItems,createNewItem()]);
+      console.log('add item :',items.length);
     }
 
     const removeItem = (index:number) => {
@@ -17,6 +18,7 @@ const useFormList = <T,>(createNewItem : () => T) =>  {
       const filteredItems = items.filter((_,i:number) => i !==index);
 
       setItems(filteredItems);
+     
     }
 
     const cleanItem = () => {
@@ -25,7 +27,7 @@ const useFormList = <T,>(createNewItem : () => T) =>  {
 
     };
 
-    return [items,addItem,removeItem,cleanItem] as const;
+    return [items,addItem,removeItem,cleanItem,setItems] as const;
 
 }
 export default useFormList

@@ -1,0 +1,25 @@
+.select-form-label {
+    // font-weight: 600;
+    // color: var(--primary-color);
+    // margin-bottom: 0.5rem;
+    // font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.select-form {
+    width: fit-content;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f9fafb;
+    margin-top: 0.2rem;
+
+    & .option {
+        padding: 0.6rem 0.8rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font-size: 1rem;
+        background: #f9fafb;
+    }
+}

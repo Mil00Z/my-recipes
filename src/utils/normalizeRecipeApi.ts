@@ -12,6 +12,7 @@ export type RawRecipe = {
   time:number;
   _RecipeIngredients: {
     Ingredients: {
+      id:string
       ingredient:string;
     };
     quantity:number | undefined;
@@ -26,9 +27,10 @@ export function normalizeRecipe(rawRecipe:RawRecipe) : Recipe {
 
 
   const cleanIngredients : Ingredient[] = rawRecipe._RecipeIngredients?.map((item) => ({
+    id:item.Ingredients?.id,
     ingredient:item.Ingredients?.ingredient ?? '',
-    quantity:item.quantity,
-    unit:item.unit
+    quantity:item.quantity ?? 0,
+    unit:item.unit ?? ''
    }
 ))
 

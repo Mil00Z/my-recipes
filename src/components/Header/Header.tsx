@@ -7,7 +7,7 @@ import Hero from '@/components/Hero/Hero';
 import './Header.scss';
 
 type HeaderProps = {
-  layout?: 'home' | undefined;
+  layout?: 'home' | 'create' | 'update' | undefined;
 }
 
 const Header = ({layout}:HeaderProps) => {
@@ -24,8 +24,13 @@ return (
         </Link>
     </div> 
 
+
     {layout === "home" && <Hero />}
-    
+
+    {layout === "create" && <Hero title="Ajouter une recette" />}
+
+    {layout === "update" && <Hero title="Modifier une recette" />}
+
    </header>
   )
 }

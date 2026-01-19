@@ -1,4 +1,4 @@
 export type Ustensil = {
-  id:string;
+  id?:string;
   name:string;
 }
