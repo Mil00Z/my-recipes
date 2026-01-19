@@ -17,7 +17,8 @@ import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
-import "./createRecipe.scss";
+import "@/app/create/createRecipe.scss";
+import "@/components/RecipeFormEdit/RecipeFormEdit.scss";
 
 const AddRecipePage = () => {
   //Local
@@ -130,163 +131,166 @@ const AddRecipePage = () => {
   return (
     <>
       <PageWrapper layout={"create"}>
-        <form className="add-recipe-form" onSubmit={(e) => handleSubmit(e)}>
-          <h2 title={`${maxId} recettes existantes`}></h2>
-          <label>
-            Titre
-            <input
-              type="text"
-              name="title"
-              defaultValue={`recette test ${maxId + 1}`}
-              required
-            />
-          </label>
-          <label>
-            Description
-            <textarea
-              name="description"
-              required
-              defaultValue={`une recette de test de numéro ${maxId + 1}`}
-            />
-          </label>
-          <fieldset>
-            <legend>Ingrédients ({ingredients.length})</legend>
+        <section className="create-layout">
+          <form className="recipe-form" onSubmit={(e) => handleSubmit(e)}>
+            <h2 title={`${maxId} recettes existantes`}>Ma nouvelle recette</h2>
+            <label>
+              Titre
+              <input
+                type="text"
+                name="title"
+                defaultValue={`recette test ${maxId + 1}`}
+                required
+              />
+            </label>
+            <label>
+              Description
+              <textarea
+                name="description"
+                required
+                defaultValue={`une recette de test de numéro ${maxId + 1}`}
+              />
+            </label>
+            <fieldset>
+              <legend>Ingrédients ({ingredients.length})</legend>
 
-            <div className="ingred-list">
-              {ingredients?.map((_, index: number) => (
-                <div
-                  key={`ingred-item-${index}`}
-                  className="ingred-item"
-                  data-index={`ingred-item-${index}`}
-                >
-                  <input
-                    type="text"
-                    name={`ingredient-${index}`}
-                    placeholder="Ingrédient"
-                    defaultValue={`ingredient ${maxId + 1}`}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name={`quantity-${index}`}
-                    placeholder="Quantité"
-                    defaultValue={`${maxId + 1}`}
-                  />
-                  <input
-                    type="text"
-                    name={`unit-${index}`}
-                    placeholder="Unité"
-                    defaultValue={`AL`}
-                  />
-
-                  <button
-                    type="button"
-                    className="remove btn manage-ingred"
-                    onClick={() => removeIngredient(index)}
+              <div className="ingred-list">
+                {ingredients?.map((_, index: number) => (
+                  <div
+                    key={`ingred-item-${index}`}
+                    className="ingred-item"
+                    data-index={`ingred-item-${index}`}
                   >
-                    - Suppr ingrédient
-                  </button>
-                </div>
-              ))}
-            </div>
+                    <input
+                      type="text"
+                      name={`ingredient-${index}`}
+                      placeholder="Ingrédient"
+                      defaultValue={`ingredient ${maxId + 1}`}
+                      required
+                    />
+                    <input
+                      type="text"
+                      name={`quantity-${index}`}
+                      placeholder="Quantité"
+                      defaultValue={`${maxId + 1}`}
+                    />
+                    <input
+                      type="text"
+                      name={`unit-${index}`}
+                      placeholder="Unité"
+                      defaultValue={`AL`}
+                    />
 
-            <button
-              type="button"
-              className="add btn manage-ingred"
-              onClick={() => addIngredient()}
-            >
-              + Ajouter ingrédient
-            </button>
-          </fieldset>
+                    <button
+                      type="button"
+                      className="remove btn manage-ingred"
+                      onClick={() => removeIngredient(index)}
+                    >
+                      - Suppr ingrédient
+                    </button>
+                  </div>
+                ))}
+              </div>
 
-          <label>
-            Appareil
-            <input
-              type="text"
-              name="appliance"
-              required
-              defaultValue={`appliance ${maxId + 1}`}
-            />
-          </label>
-          <fieldset>
-            <legend>Ustensiles ({ustensils.length})</legend>
+              <button
+                type="button"
+                className="add btn manage-ingred"
+                onClick={() => addIngredient()}
+              >
+                + Ajouter ingrédient
+              </button>
+            </fieldset>
 
-            <div className="ustensil-list">
-              {ustensils?.map((_, index: number) => (
-                <div
-                  key={`ustensil-item-${index}`}
-                  className="ustensil-item"
-                  data-index={`ustensil-item-${index}`}
-                >
-                  <input
-                    type="text"
-                    name={`ustensil-${index}`}
-                    placeholder="Ustensile"
-                    required
-                    defaultValue={`ustensil ${maxId + 1}`}
-                  />
+            <label>
+              Appareil
+              <input
+                type="text"
+                name="appliance"
+                required
+                defaultValue={`appliance ${maxId + 1}`}
+              />
+            </label>
+            <fieldset>
+              <legend>Ustensiles ({ustensils.length})</legend>
 
-                  <button
-                    type="button"
-                    className="remove btn manage-ustensil"
-                    onClick={() => removeUstensil(index)}
+              <div className="ustensil-list">
+                {ustensils?.map((_, index: number) => (
+                  <div
+                    key={`ustensil-item-${index}`}
+                    className="ustensil-item"
+                    data-index={`ustensil-item-${index}`}
                   >
-                    - Suppr Ustensil
-                  </button>
-                </div>
-              ))}
-            </div>
+                    <input
+                      type="text"
+                      name={`ustensil-${index}`}
+                      placeholder="Ustensile"
+                      required
+                      defaultValue={`ustensil ${maxId + 1}`}
+                    />
 
-            <button
-              type="button"
-              className="add btn manage-ustensil"
-              onClick={() => addUstensil()}
-            >
-              + Ajouter Ustensile
-            </button>
-          </fieldset>
-          <label>
-            Temps (minutes)
-            <input
-              type="number"
-              name="time"
-              min="0"
-              required
-              defaultValue={Math.ceil(Math.random() * maxId)}
-            />
-          </label>
-          <label>
-            Quantités
-            <input
-              type="number"
-              name="servings"
-              required
-              defaultValue={`2`}
-            />
-          </label>
-          <label>
-            Image (URL)
-            <input
-              type="text"
-              name="image"
-              defaultValue="/hf/default-recipe.jpg"
-              readOnly
-            />
-          </label>
-          <div className="letsgo">
-            <button type="submit" className="btn">
-              {" "}
-              💾 Enregistrer la recette
-            </button>
-            <button
-              type="button"
-              className="btn reset-recipe"
-              onClick={(e) => e.target.closest("form").reset()}
-            >
-              💥 Clear
-            </button>
-          </div>
-        </form>
+                    <button
+                      type="button"
+                      className="remove btn manage-ustensil"
+                      onClick={() => removeUstensil(index)}
+                    >
+                      - Suppr Ustensil
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="add btn manage-ustensil"
+                onClick={() => addUstensil()}
+              >
+                + Ajouter Ustensile
+              </button>
+            </fieldset>
+            <label>
+              Temps (minutes)
+              <input
+                type="number"
+                name="time"
+                min="0"
+                required
+                defaultValue={Math.ceil(Math.random() * maxId)}
+              />
+            </label>
+            <label>
+              Quantités
+              <input
+                type="number"
+                name="servings"
+                required
+                defaultValue={`2`}
+              />
+            </label>
+            <label>
+              Image (URL)
+              <input
+                type="text"
+                name="image"
+                defaultValue="/hf/default-recipe.jpg"
+                readOnly
+              />
+            </label>
+            <div className="letsgo">
+              <button type="submit" className="btn">
+                {" "}
+                💾 Enregistrer la recette
+              </button>
+              <button
+                type="button"
+                className="btn reset-recipe"
+                onClick={(e) => e.target.closest("form").reset()}
+              >
+                💥 Clear
+              </button>
+            </div>
+          </form>
+        </section>
+
       </PageWrapper>
 
       <StoreDebbuger />
