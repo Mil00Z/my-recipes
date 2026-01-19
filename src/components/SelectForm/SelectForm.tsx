@@ -74,7 +74,10 @@ const SelectForm = ({ item, type }: SelectFormProps) => {
                 className="select-form search-results"
                 onChange={handleSelectChange}
             >
-                <option value="" disabled>-- Sélectionner --</option>
+                <option value={selectedItemId} className="debeug select-form__item">
+                    {selectedItemName || "-- Sélectionner --"}
+                </option>
+
                 {displayedDatas.map((data) => (
                     <option key={data.id} value={data.id} className="option">
                         {data.name}
