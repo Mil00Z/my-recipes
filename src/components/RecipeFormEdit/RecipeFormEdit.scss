@@ -1,0 +1,135 @@
+.recipe-form {
+    width: 55%;
+    margin: 5dvh auto;
+    padding: 2rem 2.5rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: all 0.33s ease-in-out;
+    outline: 1px solid transparent;
+
+    &:focus-within,
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+    }
+}
+
+.recipe-form h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--black-color);
+    font-size: 2rem;
+}
+
+.recipe-form label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    color: var(--third-color);
+    gap: 0.5rem;
+}
+
+.recipe-form input[type="text"],
+.recipe-form input[type="number"],
+.recipe-form textarea,
+.recipe-form select {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f9fafb;
+    margin-top: 0.2rem;
+}
+
+.recipe-form textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.recipe-form fieldset {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0;
+    background: #f3f4f6;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.recipe-form legend {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+
+/* Ajouts pour améliorer la lisibilité et la cohérence */
+.recipe-form input::placeholder,
+.recipe-form textarea::placeholder {
+    color: #a0aec0;
+    opacity: 1;
+}
+
+.recipe-form fieldset {
+    margin-bottom: 1rem;
+}
+
+.recipe-form input[type="number"]::-webkit-inner-spin-button,
+.recipe-form input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.update-container {
+    --spacing: 2rem;
+    padding: var(--spacing);
+
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    &>h2 {
+        width: 100%;
+    }
+}
+
+.ingred-list,
+.ustensil-list {
+    --spacing: .9rem;
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--spacing) calc(var(--spacing) * 1.25);
+}
+
+
+.ingred-item,
+.ustensil-item {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--spacing);
+
+}
+
+//submit//
+.letsgo {
+    display: flex;
+    justify-content: space-evenly;
+    margin-block: 2vh;
+
+
+    .reset-recipe {
+        font-size: 1rem;
+    }
+
+    // Responsive
+    @media all and (max-width:1060px) {
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+}
