@@ -77,7 +77,7 @@ export async function DELETE(request: Request, context: { params: { id: string }
 
   try {
     // liens Appliances
-    const { error: errorAppliances, count } = await supabase
+    const { error: errorAppliances, count: countAppliances } = await supabase
       .from('_RecipeAppliances')
       .delete({ count: "exact" })
       .eq('A', currentRecipeId);
@@ -86,14 +86,14 @@ export async function DELETE(request: Request, context: { params: { id: string }
       throw new Error(`Delete Jointed Appliances Failed: ${errorAppliances.message}`);
     }
 
-    if (count === 0) {
+    if (countAppliances === 0) {
       console.warn(`Aucun lien d'appliance trouvé pour la recette ${currentRecipeId}`);
     }
     console.log(`...Liens Appliances pour ${currentRecipeId} supprimés.`);
 
 
     // liens Ustensils 
-    const { error: errorUstensils } = await supabase
+    const { error: errorUstensils, count: countUstensils } = await supabase
       .from('_RecipeUstensils')
       .delete({ count: "exact" })
       .eq('A', currentRecipeId);
@@ -102,14 +102,14 @@ export async function DELETE(request: Request, context: { params: { id: string }
       throw new Error(`Delete Jointed Ustensils Failed: ${errorUstensils.message}`);
     }
 
-    if (count === 0) {
+    if (countUstensils === 0) {
       console.warn(`Aucun lien d'ustensile trouvé pour la recette ${currentRecipeId}`);
     }
     console.log(`...Liens Ustensils pour ${currentRecipeId} supprimés.`);
 
 
     //liens Ingredients
-    const { error: errorIngredients } = await supabase
+    const { error: errorIngredients, count: countIngredients } = await supabase
       .from('_RecipeIngredients')
       .delete({ count: "exact" })
       .eq('A', currentRecipeId);
@@ -118,14 +118,14 @@ export async function DELETE(request: Request, context: { params: { id: string }
       throw new Error(`Delete Jointed Ingredients Failed: ${errorIngredients.message}`);
     }
 
-    if (count === 0) {
+    if (countIngredients === 0) {
       console.warn(`Aucun lien d'ingrédient trouvé pour la recette ${currentRecipeId}`);
     }
     console.log(`...Liens Ingrédients pour ${currentRecipeId} supprimés.`);
 
 
     // Recipe
-    const { error: errorRecipe, countRecipe } = await supabase
+    const { error: errorRecipe, count: countRecipe } = await supabase
       .from('Recipes')
       .delete({ count: 'exact' })
       .eq('id', currentRecipeId);
@@ -140,7 +140,6 @@ export async function DELETE(request: Request, context: { params: { id: string }
         { status: 404 }
       );
     }
-
 
 
     // Finaly 
@@ -183,7 +182,7 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       .single();
 
 
-    if(updatedRecipeError){
+    if (updatedRecipeError) {
       throw new Error(`Update Recipe Failed: ${updatedRecipeError.message}`);
     }
 
