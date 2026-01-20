@@ -106,7 +106,7 @@ const AddRecipePage = () => {
       setCreatedRecipe(newRecipe);
 
       //Quick reset Form
-      e.target.reset();
+      (e.target as HTMLFormElement).reset();
     } catch (error) {
       console.error("Erreur de création de la recete :", error);
 
@@ -283,7 +283,7 @@ const AddRecipePage = () => {
               <button
                 type="button"
                 className="btn reset-recipe"
-                onClick={(e) => e.target.closest("form").reset()}
+                onClick={(e) => (e.target as HTMLElement).closest("form")?.reset()}
               >
                 💥 Clear
               </button>
@@ -291,7 +291,7 @@ const AddRecipePage = () => {
           </form>
         </section>
 
-      </PageWrapper>
+      </PageWrapper >
 
       <StoreDebbuger />
     </>

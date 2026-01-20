@@ -37,10 +37,11 @@ const RecipeSingle = () => {
   // TimeOut delay
   let timeOutTiming: number = 3000;
 
-  const handleDeleteRecipe = async (element: Event) => {
+
+  const handleDeleteRecipe = async () => {
     if (
       window.confirm(
-        `Suppression de la recette ${getParams.id} - ${fetchedRecipe.title} ?`
+        `Suppression de la recette ${getParams.id} - ${fetchedRecipe?.title} ?`
       )
     ) {
       try {
@@ -180,7 +181,7 @@ const RecipeSingle = () => {
                 <div className="meta-badge__content">
                   <span className="meta-badge__label">Mis à jour</span>
                   <span className="meta-badge__value">
-                    {new Date(fetchedRecipe.updatedAt).toLocaleDateString()}
+                    {fetchedRecipe.updatedAt ? new Date(fetchedRecipe.updatedAt).toLocaleDateString() : 'Date inconnue'}
                   </span>
                 </div>
               </div>
@@ -201,7 +202,7 @@ const RecipeSingle = () => {
                 <>
                   <button
                     className="btn btn-delete recipe-delete-btn"
-                    onClick={(e) => handleDeleteRecipe(e.target)}
+                    onClick={() => handleDeleteRecipe()}
                   >
                     🗑️ Supprimer la recette
                   </button>
