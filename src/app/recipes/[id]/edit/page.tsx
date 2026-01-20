@@ -222,7 +222,7 @@ const UpdateRecipePage = () => {
 
         <section className="update-layout">
           <div className="update-info">
-            <span>{new Date(updatedRecipe?.updatedAt).toLocaleDateString()}</span>
+            <span>{updatedRecipe?.updatedAt && new Date(updatedRecipe.updatedAt).toLocaleDateString()}</span>
           </div>
 
           <form className="recipe-form" onSubmit={(e) => handleSubmit(e)} key={formKey}>
