@@ -101,10 +101,53 @@ Chaque tableau regroupe les erreurs par fichier, avec un résumé et le chemin c
 ---
 
 
-## Résumé des priorités (mis à jour)
-- [ ] Vérifier la configuration Zustand/persist et les génériques pour résoudre l'erreur `TS2345` sur `StateCreator`.
-- [ ] Assurer la cohérence entre la structure de vos données initiales (`initialRecipes`) et vos interfaces de type (`Recipe`, `Ingredient`).
-- [ ] Corriger l'erreur de type pour FormEvent dans src/app/update/page.tsx (si ce n'est pas déjà fait avec l'assertion).
+## src/app/api/recipes/[id]/route.ts
+| Ligne | Erreur / Résumé | Correction à prévoir |
+|-------|-----------------|----------------------|
+| 24 | ~~`Type ... params ... is not valid`~~ | ~~**Next.js 15 :** `params` doit être typé comme `Promise<{ id: string }>`. (Code source corrigé)~~ |
+| 64 | ~~`Type ... params ... is not valid`~~ | ~~Idem pour la méthode DELETE.~~ |
+| 166 | ~~`Type ... params ... is not valid`~~ | ~~Idem pour la méthode PATCH.~~ |
+| 167 | ~~`Property 'ingredients' does not exist on type 'object'`~~ | ~~Erreur de déstructuration du body JSON dans le PATCH.~~ |
 
 ---
-**Total des erreurs restantes : 1/26**
+
+## src/hooks/dataStore.tsx
+| Ligne | Erreur / Résumé | Correction à prévoir |
+|-------|-----------------|----------------------|
+| 77 | ~~`Argument of type RawRecipe ... is not assignable`~~ | **Doublon de fichier :** On utilise le type du vieux fichier `normalizeRecipe.ts`.  |
+| 99 | ~~`getStorage does not exist in type PersistOptions`~~ | **API Zustand :** Renommer `getStorage` en `storage`.  |
+
+---
+
+## src/app/recipes/[id]/page.tsx
+| Ligne | Erreur / Résumé | Correction à prévoir |
+|-------|-----------------|----------------------|
+| 43 | `Argument of type string | undefined is not assignable` | Vérifier que `updatedAt` est bien défini avant de faire `new Date()`. |
+| 204 | ~~`Argument of type EventTarget is not assignable to Event`~~ | **Event Handler :** On passe `e.target` (HTML Element) à une fonction qui attend probablement un `Event` complet. |
+
+---
+
+## src/components/FeedbackBlock/FeedbackBlock.tsx
+| Ligne | Erreur / Résumé | Correction à prévoir |
+|-------|-----------------|----------------------|
+| 24 | ~~`Type string is not assignable to UrlObject`~~ | **Strict Link :** Next.js attend une URL valide. Vérifier que la prop passée est bien une string sûre. |
+
+---
+
+## src/utils/normalizeRecipe.ts (Fichier Obsolète)
+| Ligne | Erreur / Résumé | Correction à prévoir |
+|-------|-----------------|----------------------|
+| 45-158 | ~~**17 Erreurs Multiples**~~ | Ce fichier semble être un doublon de `normalizeRecipeApi.ts`.|
+
+---
+
+
+## Résumé des priorités (mis à jour - 20 Janvier 2026)
+- [x] ~~**Nettoyage Doublons :** Harmoniser les imports dans `dataStore.tsx` et supprimer le fichier obsolète `src/utils/normalizeRecipe.ts`.~~
+- [x] ~~**API Next.js 15 :** Typer `params` comme `Promise` dans `src/app/api/recipes/[id]/route.ts`.~~
+- [x] ~~**Fix Store Zustand :** Corriger l'option de persistance (`getStorage` -> `storage`) dans `dataStore.tsx`.~~
+- [ ] ~~**Fix Composants :** Corriger le typage `updatedAt` (Date) et `handleDeleteRecipe` (Event).~~
+
+
+**Total des erreurs restantes : 1/31
+
