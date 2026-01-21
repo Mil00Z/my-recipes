@@ -14,35 +14,36 @@ if (!supabaseUrl || !supabaseAnonKey) {
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Définir le gestionnaire de requête pour la méthode GET
-export async function GET(request : Request) {
+export async function GET() {
 
   try {
-   
-    const { data : RawUstensils, error } = await supabase.from('Ustensils').select('*');
 
-   // Si de soucis de donnéés
+    const { data: RawUstensils, error } = await supabase.from('Ustensils').select('*');
+
+    // Si de soucis de donnéés
     if (!RawUstensils) {
       return NextResponse.json({ error: 'Ustensils not found' }, { status: 404 });
     }
 
     else if (error) {
-       console.error("❌ Erreur de connexion ou de requête Supabase:", error);
+      console.error("❌ Erreur de connexion ou de requête Supabase:", error);
 
       return NextResponse.json(
-        { message: 'Erreur de connexion ou de requête Supabase:',
-          error : error
-         } 
+        {
+          message: 'Erreur de connexion ou de requête Supabase:',
+          error: error
+        }
       );
     }
-   
+
     return NextResponse.json(RawUstensils);
 
   } catch (err) {
-   
+
     console.error('Erreur inattendue dans la route API:', err);
 
     return NextResponse.json(
-      { error: 'Une erreur serveur est survenue...'},
+      { error: 'Une erreur serveur est survenue...' },
       { status: 500 }
     );
   }

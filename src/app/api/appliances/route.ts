@@ -14,27 +14,28 @@ if (!supabaseUrl || !supabaseAnonKey) {
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 
-export async function GET(request : Request) {
+export async function GET() {
 
   try {
-  
-    const { data : RawAppliances, error } = await supabase.from('Appliances').select('*');
 
-    // Si de soucis de donnéés
+    const { data: RawAppliances, error } = await supabase.from('Appliances').select('*');
+
+    // Si soucis de données
     if (!RawAppliances) {
       return NextResponse.json({ error: 'Appliances not found' }, { status: 404 });
     }
-   
+
     else if (error) {
       console.error("❌ Erreur de connexion ou de requête Supabase:", error);
-      
+
       return NextResponse.json(
-        { message: 'Erreur de connexion ou de requête Supabase:',
-          error : error
-         } 
+        {
+          message: 'Erreur de connexion ou de requête Supabase:',
+          error: error
+        }
       );
     }
-   
+
     return NextResponse.json(RawAppliances);
 
   } catch (err) {
@@ -42,7 +43,7 @@ export async function GET(request : Request) {
     console.error('Erreur inattendue dans la route API:', err);
 
     return NextResponse.json(
-      { error: 'Une erreur serveur est survenue...'},
+      { error: 'Une erreur serveur est survenue...' },
       { status: 500 }
     );
   }

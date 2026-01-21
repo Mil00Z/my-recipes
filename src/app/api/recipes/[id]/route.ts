@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-import type { Appliance } from '@/types/appliance.types';
-import type { Ustensil } from '@/types/ustensil.types';
-import type { Ingredient } from '@/types/ingredient.types';
-
 import { v4 as uuid } from 'uuid';
 
 
@@ -21,7 +17,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Définir le gestionnaire de requête pour la méthode GET
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET({ params }: { params: Promise<{ id: string }> }) {
 
   //attention await 
   const { id } = await params;
@@ -61,7 +57,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 }
 
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE({ params }: { params: Promise<{ id: string }> }) {
 
   const { id: currentRecipeId } = await params;
 
@@ -170,7 +166,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const { ingredients, appliances, ustensils, ...recipeDataOnly } = newRecipeDatas;
     console.log("👉 Payload reçu:", newRecipeDatas);
 
-    const { data: updatedRecipeData, error: updatedRecipeError } = await supabase
+    const { error: updatedRecipeError } = await supabase
       .from('Recipes')
       .update(recipeDataOnly)
       .eq('id', currentRecipeId)
@@ -202,9 +198,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
         // Get Id and Name FROM Payload
         let ingredientId = ing.id;
-        let ingredientName = ing.ingredient.trim().toLowerCase();
-        let ingredientUnit = ing.unit;
-        let ingredientQuantity = ing.quantity;
+        const ingredientName = ing.ingredient.trim().toLowerCase();
+        const ingredientUnit = ing.unit;
+        const ingredientQuantity = ing.quantity;
 
         // #1 Checking Name
         const { data: existingIngredientData, error: fetchIngredientError } = await supabase
@@ -234,7 +230,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
           ingredientId = uuid();
 
-          const { data: newIngredientData, error: insertIngredientError } = await supabase
+          const { error: insertIngredientError } = await supabase
             .from('Ingredients')
             .insert({
               id: ingredientId,
@@ -250,7 +246,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
         }
 
         // Finally Insert Link
-        const { data: updateIngredientData, error: updateIngredientError } = await supabase
+        const { error: updateIngredientError } = await supabase
           .from('_RecipeIngredients')
           .insert({
             A: currentRecipeId,
@@ -284,7 +280,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
         // Get Id and Name FROM Payload
         let applianceId = app.id;
-        let applianceName = (app.name || "").trim().toLowerCase();
+        const applianceName = (app.name || "").trim().toLowerCase();
 
         // #1 Checking Name
         const { data: existingApplianceData, error: fetchApplianceError } = await supabase
@@ -339,7 +335,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 
         // Finally Insert Link
-        const { data: updateApplianceData, error: updateApplianceError } = await supabase
+        const { error: updateApplianceError } = await supabase
           .from('_RecipeAppliances')
           .insert({
             A: currentRecipeId,
@@ -370,7 +366,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
         // Get Id and Name FROM Payload
         let ustensilId = ust.id;
-        let ustensilName = ust.name.trim().toLowerCase();
+        const ustensilName = ust.name.trim().toLowerCase();
 
         // #1 Checking Name
         const { data: existingUstensilData, error: fetchUstensilError } = await supabase
@@ -420,7 +416,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 
         // Finally Insert Link
-        const { data: updateUstensilData, error: updateUstensilError } = await supabase
+        const { error: updateUstensilError } = await supabase
           .from('_RecipeUstensils')
           .insert({
             A: currentRecipeId,
