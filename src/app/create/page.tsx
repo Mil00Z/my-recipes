@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useState } from "react";
+
+
 import { useStore } from "@/hooks/dataStore";
 import useFormList from "@/hooks/useFormList";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
 import type { Ustensil } from "@/types/ustensil.types";
-import type { Appliance } from "@/types/appliance.types";
+// import type { Appliance } from "@/types/appliance.types";
 
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
@@ -41,14 +41,10 @@ const AddRecipePage = () => {
   const [ustensils, addUstensil, removeUstensil] =
     useFormList<Ustensil>(createNewUstensil);
 
-  const createNewAppliance = (): Appliance => ({
-    name: "",
-  });
-
+  // const createNewAppliance = (): Appliance => ({
+  //   name: "",
+  // });
   //  const [appliances,addAppliance,RemoveAppliance] = useFormList<Appliance>(createNewAppliance);
-
-  // Routing Scenario
-  const router = useRouter();
 
   // Auto Generation of new ID
   const maxId = Math.max(
