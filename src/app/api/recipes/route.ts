@@ -108,7 +108,7 @@ export async function POST(request: Request) {
 
 
       // Create Joints Links
-      const { data: applianceJoints, error: applianceJointsError } = await supabase.from('_RecipeAppliances').insert(jointsToInsert)
+      const { error: applianceJointsError } = await supabase.from('_RecipeAppliances').insert(jointsToInsert)
         .select()
 
       if (applianceJointsError) throw new Error('Creation of appliance joints Ids Failed');
@@ -139,7 +139,7 @@ export async function POST(request: Request) {
 
 
       // Create Joints Links
-      const { data: ustensilJoints, error: ustensilJointsError } = await supabase.from('_RecipeUstensils').insert(jointsToInsert)
+      const { error: ustensilJointsError } = await supabase.from('_RecipeUstensils').insert(jointsToInsert)
         .select()
 
 
