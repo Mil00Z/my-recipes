@@ -24,7 +24,7 @@ const RecipeSingle = () => {
   const [fetchedRecipe, setFetchedRecipe] = useState<Recipe | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
-  const [deletedRecipe, setDeletedRecipe] = useState<Recipe | null>(null);
+  const [deletedRecipe, setDeletedRecipe] = useState<{ message: string } | null>(null);
   const [showAdminFlow, setShowAdminFlow] = useState<boolean>(false);
 
   //Get Url Params
