@@ -47,13 +47,14 @@ const SelectForm = ({ item, type }: SelectFormProps) => {
     };
 
     useEffect(() => {
-
         const newList = getListDatas();
         setDisplayedDatas(newList);
+
         if (newList.length > 0 && item) {
             setSelectedItemName(item.name || "");
             setSelectedItemId(item.id || "");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipes, item]);
 
     if (!displayedDatas || displayedDatas.length === 0) {
