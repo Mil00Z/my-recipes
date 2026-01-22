@@ -21,6 +21,7 @@ const FeedbackBlock = ({ type, message, content, actionLink = "/", actionLabel =
 
         <h2>{type === "success" ? ('✅') : ('❌')} {message}</h2>
         {content && <p>{content}</p>}
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         <Link href={actionLink as any} className={`link btn ${btnClass || 'btn-cta'}`}>
           <span className="btn-icon">←</span>{actionLabel}</Link>
       </div>
