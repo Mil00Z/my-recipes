@@ -91,7 +91,6 @@ const AddRecipePage = () => {
         throw new Error("Failed to Send New Recipe");
       }
 
-      const result = await response.json();
       //Refresh Datas
       await fetchRecipes();
 
