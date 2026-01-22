@@ -17,10 +17,10 @@ if (!supabaseUrl || !supabaseAnonKey) {
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Définir le gestionnaire de requête pour la méthode GET
-export async function GET({ params }: { params: Promise<{ id: string }> }) {
+export async function GET(context: { params: Promise<{ id: string }> }) {
 
   //attention await 
-  const { id } = await params;
+  const { id } = await context.params;
 
   try {
     // Récupérer toutes les recettes depuis la table 'recipes'
@@ -57,9 +57,9 @@ export async function GET({ params }: { params: Promise<{ id: string }> }) {
 }
 
 
-export async function DELETE({ params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(context: { params: Promise<{ id: string }> }) {
 
-  const { id: currentRecipeId } = await params;
+  const { id: currentRecipeId } = await context.params;
 
   if (!currentRecipeId) {
     console.error('Error On ID recipe');
@@ -156,9 +156,9 @@ export async function DELETE({ params }: { params: Promise<{ id: string }> }) {
 
 
 
-export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
 
-  const { id: currentRecipeId } = await params;
+  const { id: currentRecipeId } = await context.params;
 
   try {
 
