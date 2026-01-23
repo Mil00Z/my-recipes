@@ -48,7 +48,8 @@ const TagElement = ({ element }: TagProps) => {
 
     updateResults(filteredResults);
 
-  }, [tags, matchingRecipes, recipes, updateResults]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tags]);
 
 
 

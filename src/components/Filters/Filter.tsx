@@ -125,7 +125,9 @@ const FilterSearch = ({ type, title }: Filter) => {
     };
 
     useEffect(() => {
+
         setDisplayedFilters(getFilterDatas());
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchingRecipes]);
 
