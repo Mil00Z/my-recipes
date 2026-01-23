@@ -1,13 +1,13 @@
 'use client';
 
-import {useEffect,Suspense} from 'react';
+import { useEffect } from 'react';
 import { useStore } from "@/hooks/dataStore";
 
 //UI
 import RecipesList from '@/components/RecipesList/RecipesList';
 
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
-import StoreDebbuger from "@/components/Debeug/Debeug";
+// import StoreDebbuger from "@/components/Debeug/Debeug";
 
 import Loading from '@/components/Loading/Loading';
 import Error from '@/components/Error/Error';
@@ -22,31 +22,31 @@ import '@/components/RecipeCard/RecipeCard.scss';
 
 const SandBoxPage = () => {
 
-  const {recipes,isLoading,isError,fetchRecipes} = useStore();
+  const { recipes, isLoading, isError, fetchRecipes } = useStore();
 
 
-  useEffect(() =>{
+  useEffect(() => {
 
     fetchRecipes();
-  
-  },[])
 
- 
-  if(isLoading) {
+  }, [fetchRecipes])
+
+
+  if (isLoading) {
 
     return (
-    <PageWrapper>
+      <PageWrapper>
         <h1>✔ Testing Fetching API</h1>
         <h2> 📜 Implement normalize strategies on Datas</h2>
-        
+
         <div className="recipes-container">
-            <Loading />
+          <Loading />
         </div>
       </PageWrapper>
-      )
+    )
   }
 
-   if (isError) {
+  if (isError) {
     return (
       <PageWrapper>
         <Error dataType={'testing'} />
@@ -55,12 +55,12 @@ const SandBoxPage = () => {
   }
 
 
-  return(
+  return (
     <>
       <PageWrapper>
         <h1>✔ Testing Fetching API</h1>
         <h2> 📜 Implement normalize strategies on Datas</h2>
-        
+
         <div className="recipes-container">
 
           <RecipesList recipes={recipes} matchingRecipes={recipes} />
@@ -74,11 +74,11 @@ const SandBoxPage = () => {
         <div className="testing debeug">
 
 
-          
+
         </div>
       </PageWrapper>
 
-    <StoreDebbuger/>
+      {/* <StoreDebbuger /> */}
     </>
   )
 }

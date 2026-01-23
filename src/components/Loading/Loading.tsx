@@ -1,17 +1,12 @@
-import { useStore } from '@/hooks/dataStore';
 
 //Styles
 import './Loading.scss';
 
 const Loading = () => {
 
-  const {isLoading} = useStore();
-
-  // console.log('start','is loading =>',isLoading);
-
   return (
     <>
-      <h3>Loading datas...</h3>
+      <h3>Loading Recipes datas...</h3>
       <div className="loader"></div>
     </>
   )

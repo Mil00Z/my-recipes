@@ -55,3 +55,4 @@ project-status.md
 #datas
 *.csv
 src/datas/fakeRecipeTest.json
+eslint-reports.md

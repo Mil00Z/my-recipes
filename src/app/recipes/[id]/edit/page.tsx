@@ -29,11 +29,11 @@ import "@/components/Filters/Filter.scss";
 
 const UpdateRecipePage = () => {
 
-  //Local
+  //Local 
   const [updatedRecipe, setUpdatedRecipe] = useState<Recipe | null>(null);
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
-  const [isError, setIsError] = useState<Boolean>(false);
-  const [isUpdated, setIsUpdated] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [formKey, setFormKey] = useState<number>(0);
 
 
@@ -108,8 +108,6 @@ const UpdateRecipePage = () => {
         throw new Error("Failed to Send New Recipe");
       }
 
-      const result = await response.json();
-
       const optimsiticUpdatedRecipe = { ...updatedRecipe, ...patchRecipe } as Recipe;
       //Local State
       setUpdatedRecipe(optimsiticUpdatedRecipe);
@@ -175,7 +173,7 @@ const UpdateRecipePage = () => {
 
     getUpdateRecipe();
 
-  }, [getParams.id]);
+  }, [getParams.id, setIngredients, setUstensils, setAppliances]);
 
   //Guard
   if (isLoading) {
@@ -195,7 +193,7 @@ const UpdateRecipePage = () => {
         </div>
         <Link href="/" className="btn btn-back">
           <span className="btn-icon">←</span>
-          Retour à l'accueil
+          {"Retour à l'accueil"}
         </Link>
       </PageWrapper>
     );
@@ -222,11 +220,11 @@ const UpdateRecipePage = () => {
 
         <section className="update-layout">
           <div className="update-info">
-            <span>{new Date(updatedRecipe?.updatedAt).toLocaleDateString()}</span>
+            <span>{updatedRecipe?.updatedAt && new Date(updatedRecipe.updatedAt).toLocaleDateString()}</span>
           </div>
 
           <form className="recipe-form" onSubmit={(e) => handleSubmit(e)} key={formKey}>
-            <h2>{updatedRecipe?.title}'</h2>
+            <h2>{updatedRecipe?.title}</h2>
             <label>
               Titre
               <input

@@ -10,28 +10,25 @@ type HeaderProps = {
   layout?: 'home' | 'create' | 'update' | undefined;
 }
 
-const Header = ({layout}:HeaderProps) => {
+const Header = ({ layout }: HeaderProps) => {
 
-return (
-  <header className="main-header">
+  return (
+    <header className="main-header">
 
-    <div className="top-header">
+      <div className="top-header">
         <Link href="/" aria-label={"lien vers la Homepage"} tabIndex={0}>
           <Image src="/logo.svg" alt="logo de My-Recipes" width={180} height={38} priority title="V2" />
         </Link>
-        <Link href="/create" aria-label={"lien vers le create de recettes"} className="link">
-            Ajouter recette
-        </Link>
-    </div> 
+      </div>
 
 
-    {layout === "home" && <Hero />}
+      {layout === "home" && <Hero />}
 
-    {layout === "create" && <Hero title="Ajouter une recette" />}
+      {layout === "create" && <Hero title="Ajouter une recette" />}
 
-    {layout === "update" && <Hero title="Modifier une recette" />}
+      {layout === "update" && <Hero title="Modifier une recette" />}
 
-   </header>
+    </header>
   )
 }
 

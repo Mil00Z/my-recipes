@@ -10,6 +10,21 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: ["src/generated/**", ".next/**", "node_modules/**"]
+  },
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+          "caughtErrorsIgnorePattern": "^_"
+        }
+      ]
+    }
+  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 

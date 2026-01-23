@@ -16,17 +16,16 @@ import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import Loading from "@/components/Loading/Loading";
 import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 
-import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
 import "./Recipe.scss";
 
 const RecipeSingle = () => {
   const [fetchedRecipe, setFetchedRecipe] = useState<Recipe | null>(null);
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
-  const [isError, setIsError] = useState<Boolean>(false);
-  const [deletedRecipe, setDeletedRecipe] = useState<any>();
-  const [showAdminFlow, setShowAdminFlow] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [deletedRecipe, setDeletedRecipe] = useState<{ message: string } | null>(null);
+  const [showAdminFlow, setShowAdminFlow] = useState<boolean>(false);
 
   //Get Url Params
   const getParams = useParams();
@@ -35,12 +34,13 @@ const RecipeSingle = () => {
   const router = useRouter();
 
   // TimeOut delay
-  let timeOutTiming: number = 3000;
+  const timeOutTiming: number = 3000;
 
-  const handleDeleteRecipe = async (element: Event) => {
+
+  const handleDeleteRecipe = async () => {
     if (
       window.confirm(
-        `Suppression de la recette ${getParams.id} - ${fetchedRecipe.title} ?`
+        `Suppression de la recette ${getParams.id} - ${fetchedRecipe?.title} ?`
       )
     ) {
       try {
@@ -96,7 +96,7 @@ const RecipeSingle = () => {
 
     //Prefetch le redirect
     router.prefetch("/");
-  }, [getParams.id]);
+  }, [getParams.id, router]);
 
   //Guard
   if (isLoading) {
@@ -113,7 +113,7 @@ const RecipeSingle = () => {
         <div className="recipe-not-found"> 😭 Recipe not found</div>
         <Link href="/" className="btn btn-back">
           <span className="btn-icon">←</span>
-          Retour à l'accueil
+          {"Retour à l'accueil"}
         </Link>
       </PageWrapper>
     );
@@ -128,7 +128,7 @@ const RecipeSingle = () => {
         </div>
         <Link href="/" className="btn btn-back">
           <span className="btn-icon">←</span>
-          Retour à l'accueil
+          {"Retour à l'accueil"}
         </Link>
       </PageWrapper>
     );
@@ -180,7 +180,7 @@ const RecipeSingle = () => {
                 <div className="meta-badge__content">
                   <span className="meta-badge__label">Mis à jour</span>
                   <span className="meta-badge__value">
-                    {new Date(fetchedRecipe.updatedAt).toLocaleDateString()}
+                    {fetchedRecipe.updatedAt ? new Date(fetchedRecipe.updatedAt).toLocaleDateString() : 'Date inconnue'}
                   </span>
                 </div>
               </div>
@@ -201,7 +201,7 @@ const RecipeSingle = () => {
                 <>
                   <button
                     className="btn btn-delete recipe-delete-btn"
-                    onClick={(e) => handleDeleteRecipe(e.target)}
+                    onClick={() => handleDeleteRecipe()}
                   >
                     🗑️ Supprimer la recette
                   </button>
@@ -308,7 +308,7 @@ const RecipeSingle = () => {
           >
             <Link href="/" className="btn btn-back">
               <span className="btn-icon">←</span>
-              Retour à l'accueil
+              {"Retour à l'accueil"}
             </Link>
           </footer>
         </article>

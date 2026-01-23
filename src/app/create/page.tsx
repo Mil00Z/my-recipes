@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useState } from "react";
+
+
 import { useStore } from "@/hooks/dataStore";
 import useFormList from "@/hooks/useFormList";
 
 import type { Recipe } from "@/types/recipe.types";
 import type { Ingredient } from "@/types/ingredient.types";
 import type { Ustensil } from "@/types/ustensil.types";
-import type { Appliance } from "@/types/appliance.types";
+// import type { Appliance } from "@/types/appliance.types";
 
 //Layout
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
@@ -41,14 +41,10 @@ const AddRecipePage = () => {
   const [ustensils, addUstensil, removeUstensil] =
     useFormList<Ustensil>(createNewUstensil);
 
-  const createNewAppliance = (): Appliance => ({
-    name: "",
-  });
-
+  // const createNewAppliance = (): Appliance => ({
+  //   name: "",
+  // });
   //  const [appliances,addAppliance,RemoveAppliance] = useFormList<Appliance>(createNewAppliance);
-
-  // Routing Scenario
-  const router = useRouter();
 
   // Auto Generation of new ID
   const maxId = Math.max(
@@ -95,7 +91,6 @@ const AddRecipePage = () => {
         throw new Error("Failed to Send New Recipe");
       }
 
-      const result = await response.json();
       //Refresh Datas
       await fetchRecipes();
 
@@ -106,7 +101,7 @@ const AddRecipePage = () => {
       setCreatedRecipe(newRecipe);
 
       //Quick reset Form
-      e.target.reset();
+      (e.target as HTMLFormElement).reset();
     } catch (error) {
       console.error("Erreur de création de la recete :", error);
 
@@ -283,7 +278,7 @@ const AddRecipePage = () => {
               <button
                 type="button"
                 className="btn reset-recipe"
-                onClick={(e) => e.target.closest("form").reset()}
+                onClick={(e) => (e.target as HTMLElement).closest("form")?.reset()}
               >
                 💥 Clear
               </button>
@@ -291,7 +286,7 @@ const AddRecipePage = () => {
           </form>
         </section>
 
-      </PageWrapper>
+      </PageWrapper >
 
       <StoreDebbuger />
     </>

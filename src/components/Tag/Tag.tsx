@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 import { useStore } from "@/hooks/dataStore";
 
 import { filterRecipesByTags } from '@/utils/filterRecipesByTags';
@@ -12,52 +12,52 @@ interface TagProps {
 }
 
 
-const TagElement = ({element} : TagProps) => {
+const TagElement = ({ element }: TagProps) => {
 
- const {tags,removeTag,updateResults,recipes,matchingRecipes} = useStore();
- 
+  const { tags, removeTag, updateResults, recipes, matchingRecipes } = useStore();
 
-  function handleRemoveTag (tag:Tag)  {
+
+  function handleRemoveTag(tag: Tag) {
 
     removeTag(tag);
 
     // Je ne sais pas pourquoi cet update forcé ici permets la résolution du soucis : recalcul + update dans le flow B to A
     updateResults(recipes);
-  
-}
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
-useEffect(() => {
+  }
 
-  const getDataSource = (tags: Tag[], matchingRecipes:Recipe[], recipes:Recipe[]) => {
+  useEffect(() => {
 
-    if (tags.length === 0) {
-      // console.log('source tags null',recipes);
-      return recipes;
-    } else if (matchingRecipes.length !== 0 || tags.length !== 0) {
-      // console.log('source tags not null || matchiongRecipes not exist ',matchingRecipes);
-      return matchingRecipes;
-    } else {
-      // console.log('fallback of shit',recipes);
-      return recipes;
-    }
-  };
+    const getDataSource = (tags: Tag[], matchingRecipes: Recipe[], recipes: Recipe[]) => {
 
-  const source = getDataSource(tags, matchingRecipes, recipes);
+      if (tags.length === 0) {
+        // console.log('source tags null',recipes);
+        return recipes;
+      } else if (matchingRecipes.length !== 0 || tags.length !== 0) {
+        // console.log('source tags not null || matchiongRecipes not exist ',matchingRecipes);
+        return matchingRecipes;
+      } else {
+        // console.log('fallback of shit',recipes);
+        return recipes;
+      }
+    };
 
-  const filteredResults = filterRecipesByTags(source, tags);
+    const source = getDataSource(tags, matchingRecipes, recipes);
 
-  updateResults(filteredResults);
+    const filteredResults = filterRecipesByTags(source, tags);
 
-}, [tags]);
+    updateResults(filteredResults);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tags]);
 
 
 
-  
+
   return (
     <>
-      {tags?.map((tag:Tag,index:number) => {
-        return(
+      {tags?.map((tag: Tag, index: number) => {
+        return (
           <span key={`${tag.type}-${index}`} className={`recipe-${element}`} data-parent={tag.type}>{tag.value}
             <i className="fa-solid fa-xmark" onClick={() => handleRemoveTag(tag)}></i>
           </span>
