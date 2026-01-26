@@ -6,7 +6,17 @@ L'objectif n'est pas seulement de reproduire l'interface, mais de construire une
 
 🔗 **Projet original (Legacy) :** [https://github.com/Mil00Z/les-petits-plats](https://github.com/Mil00Z/les-petits-plats)
 
-## 🛠 Stack choisie
+## � Historique & Versions
+
+Ce projet a évolué à travers plusieures phases distinctes :
+
+| Version | Stack Technique | Accès |
+| :--- | :--- | :--- |
+| **V0 (Originale)** | JavaScript Vanilla (Algorithmes natifs) | [Repo original](https://github.com/Mil00Z/les-petits-plats) |
+| **V1 (Refacto)** | Next.js + Zustand + TS (Données JSON locales) | [Branche `main`](https://my-recipes-2026.vercel.app) |
+| **V2 (Fullstack)** | Next.js 15 + API Routes + Supabase | [Branche `develop`](https://my-recipes-v2-preview.vercel.app) |
+
+## �🛠 Stack choisie
 Ce projet a servi de support pour approfondir la maîtrise de l'écosystème Next.js :
 
 * **Framework :** Next.js (App Router, Server Components)
@@ -30,7 +40,8 @@ Le cycle de développement a intégré plusieurs challenges techniques majeurs :
 *  **Performance :** Optimisation des rendus via React Server Components et gestion fine du client-side state.
 *  **CRUD Complet :** Création, Lecture, Mise à jour et Suppression de recettes connectées à la BDD.
 *  **Normalisation :** Pattern de transformation des données Back-end (Jointures SQL) vers Front-end (UI simplifiée).
-*  **Interface d'Administration (Back-office) :** Feature "Porte", actuellement simplifiée pour la gestion CRUD des recettes (focus sur la manipulation des données plutôt que la gestion utilisateur complexe).
+*  **Interface d'Administration (Back-office) :** Feature "Porte", actuellement simplifiée pour la gestion CRUD des recettes.
 
 ## 🚀 État du projet
-* **Statut :** En cours de finalisation CRUD (Focus actuel : Feature Update & UI Polish).
+* **Statut :** 🟢 **V2 Stable** (App Robuste & CRUD Complet).
+* **Focus actuel :** Optimisations UI & Polish final.
