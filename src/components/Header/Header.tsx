@@ -1,5 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
+
+import useAuth from '@/hooks/useAuth';
+
+
 import Hero from '@/components/Hero/Hero';
 
 
@@ -8,9 +12,15 @@ import './Header.scss';
 
 type HeaderProps = {
   layout?: 'home' | 'create' | 'update' | undefined;
+  user: boolean | undefined;
 }
 
 const Header = ({ layout }: HeaderProps) => {
+
+  const { user, loading } = useAuth();
+
+  console.table(user);
+
 
   return (
     <header className="main-header">
