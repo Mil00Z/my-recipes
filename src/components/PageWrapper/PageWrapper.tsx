@@ -4,24 +4,24 @@ import Header from "@/components/Header/Header";
 
 type PageWrapperProps = {
   children: React.ReactNode;
-  layout?: 'home' | 'create' | 'update' | undefined;
+  layout?: 'home' | 'create' | 'update' | 'login' | undefined;
 };
 
-const PageWrapper = ({children,layout = undefined}:PageWrapperProps) =>{
+const PageWrapper = ({ children, layout = undefined }: PageWrapperProps) => {
 
 
-  return(
-  
-  <>
-    <Header layout={layout} />
+  return (
 
-    <main className="wrapper content-first skeleton">
+    <>
+      <Header layout={layout} />
 
-      {children}
+      <main className="wrapper content-first skeleton">
 
-    </main>
-  
-  </>
+        {children}
+
+      </main>
+
+    </>
   )
 }
 export default PageWrapper

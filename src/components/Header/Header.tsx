@@ -11,14 +11,13 @@ import Hero from '@/components/Hero/Hero';
 import './Header.scss';
 
 type HeaderProps = {
-  layout?: 'home' | 'create' | 'update' | undefined;
+  layout?: 'home' | 'create' | 'update' | 'login' | undefined;
 }
 
 const Header = ({ layout }: HeaderProps) => {
 
   const { user, loading, LogOut } = useAuth();
 
-  // console.table(user);
 
   const handleLogOut = (e: React.MouseEvent<HTMLButtonElement>) => {
 
@@ -35,11 +34,16 @@ const Header = ({ layout }: HeaderProps) => {
           <Image src="/logo.svg" alt="logo de My-Recipes" width={180} height={38} priority title="V2" />
         </Link>
 
-        {user && (<>
-          <Link href="/create" aria-label={"lien vers la création de recettes"}>Ajouter une recette</Link>
-          <button type="button" onClick={(e) => handleLogOut(e)}>Logout</button>
+        {user ? (<>
+          <div className="log-menu">
+            <Link href="/create" aria-label={"lien vers la création de recettes"} className="btn go">Ajouter une recette</Link>
+            <button type="button" className="btn go" onClick={(e) => handleLogOut(e)}>Logout</button>
 
-        </>)
+          </div>
+        </>) : (
+          <div className="visitor-menu">
+            <Link href="/login" className="btn go">Se Connecter</Link>
+          </div>)
         }
 
       </div>
@@ -49,6 +53,8 @@ const Header = ({ layout }: HeaderProps) => {
       {layout === "create" && <Hero title="Ajouter une recette" />}
 
       {layout === "update" && <Hero title="Modifier une recette" />}
+
+      {layout === "login" && <Hero title="Tester CRUD" />}
 
     </header>
   )
