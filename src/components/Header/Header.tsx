@@ -12,14 +12,19 @@ import './Header.scss';
 
 type HeaderProps = {
   layout?: 'home' | 'create' | 'update' | undefined;
-  user: boolean | undefined;
 }
 
 const Header = ({ layout }: HeaderProps) => {
 
-  const { user, loading } = useAuth();
+  const { user, loading, LogOut } = useAuth();
 
-  console.table(user);
+  // console.table(user);
+
+  const handleLogOut = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+    LogOut();
+
+  }
 
 
   return (
@@ -29,8 +34,15 @@ const Header = ({ layout }: HeaderProps) => {
         <Link href="/" aria-label={"lien vers la Homepage"} tabIndex={0}>
           <Image src="/logo.svg" alt="logo de My-Recipes" width={180} height={38} priority title="V2" />
         </Link>
-      </div>
 
+        {user && (<>
+          <Link href="/create" aria-label={"lien vers la création de recettes"}>Ajouter une recette</Link>
+          <button type="button" onClick={(e) => handleLogOut(e)}>Logout</button>
+
+        </>)
+        }
+
+      </div>
 
       {layout === "home" && <Hero />}
 
