@@ -1,15 +1,30 @@
 
 import { useState, useEffect } from 'react';
+import type { User } from '@supabase/supabase-js';
 import { createClient } from "@/utils/supabase/client";
 
 
 
 const useAuth = () => {
 
-    const [user, setUser] = useState<object | null>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     const supabase = createClient();
+
+    const LogOut = async () => {
+
+        try {
+
+            const { error } = await supabase.auth.signOut();
+
+            setUser(null);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+    }
 
 
     useEffect(() => {
@@ -17,14 +32,14 @@ const useAuth = () => {
         const checkSession = async () => {
 
             try {
-                const { data, error } = await supabase.auth.getSession()
+                const { data } = await supabase.auth.getSession();
 
                 if (!data) {
                     console.log('Undefined data session')
                     return;
                 }
 
-                setUser(data.session?.user)
+                setUser(data.session?.user ?? null)
                 setLoading(false);
 
             } catch (error) {
@@ -38,6 +53,6 @@ const useAuth = () => {
 
     }, [])
 
-    return { user, loading }
+    return { user, loading, LogOut }
 }
 export default useAuth;
