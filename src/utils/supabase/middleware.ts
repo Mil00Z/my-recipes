@@ -37,24 +37,26 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
-    if (
-        !user &&
-        !request.nextUrl.pathname.startsWith('/login') &&
-        !request.nextUrl.pathname.startsWith('/auth')
-    ) {
-        // no user, potentially respond by redirecting the user to the login page
+    // 1. Si Connecté -> Interdire l'accès à /login (Redirection Home)
+    if (user && request.nextUrl.pathname.startsWith('/login')) {
+        console.log(request.nextUrl);
+        const url = request.nextUrl.clone()
+
+        url.pathname = '/'
+        return NextResponse.redirect(url)
+    }
+
+    // 2. Définition des Routes Protégées
+    const protectedPaths = ['/create', '/testing']
+    const isProtected = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path))
+        || request.nextUrl.pathname.includes('/edit') // Pour /recipes/X/edit
+
+    // 3. Si PAS Connecté ET Route Protégée -> Redirection Login
+    if (!user && isProtected) {
         const url = request.nextUrl.clone()
         url.pathname = '/login'
         return NextResponse.redirect(url)
     }
 
-    // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
-    // creating a new Response object with NextResponse.next() make sure to:
-    // 1. Pass the request in it, like so:
-    //    const myNewResponse = NextResponse.next({ request })
-    // 2. Copy over the cookies, like so:
-    //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-    // 3. Change the myNewResponse object to fit your needs, but avoid changing
-    //    the cookies!
     return supabaseResponse
 }
