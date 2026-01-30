@@ -11,6 +11,7 @@ import type { Ingredient } from "@/types/ingredient.types";
 import type { Appliance } from "@/types/appliance.types";
 import type { Ustensil } from "@/types/ustensil.types";
 
+import useAuth from '@/hooks/useAuth';
 import { normalizeRecipe } from "@/utils/normalizeRecipeApi";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import Loading from "@/components/Loading/Loading";
@@ -36,6 +37,17 @@ const RecipeSingle = () => {
   // TimeOut delay
   const timeOutTiming: number = 3000;
 
+
+  //Auth
+  const { user } = useAuth();
+
+  const handleImageRights = () => {
+    if (user) {
+
+      setShowAdminFlow(prev => !prev)
+    }
+
+  }
 
   const handleDeleteRecipe = async () => {
     if (
@@ -195,13 +207,13 @@ const RecipeSingle = () => {
                 width={800}
                 height={600}
                 className="recipe-image"
-                onClick={() => setShowAdminFlow(true)}
+                onClick={handleImageRights}
               />
-              {showAdminFlow && (
+              {user && showAdminFlow ? (
                 <>
                   <button
                     className="btn btn-delete recipe-delete-btn"
-                    onClick={() => handleDeleteRecipe()}
+                    onClick={handleDeleteRecipe}
                   >
                     🗑️ Supprimer la recette
                   </button>
@@ -213,7 +225,7 @@ const RecipeSingle = () => {
                     🛒 Mettre à jour la recette
                   </Link>
                 </>
-              )}
+              ) : ''}
             </div>
 
             <div className="recipe-details">
