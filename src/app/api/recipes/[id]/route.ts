@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from '@supabase/supabase-js';
+
+import { createClient } from '@/utils/supabase/server'
+
 
 import { v4 as uuid } from 'uuid';
 
@@ -14,10 +17,12 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Créer le client Supabase avec la bonne clé de service
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Définir le gestionnaire de requête pour la méthode GET
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+
+  const supabase = await createClient()
 
   //attention await 
   const { id } = await params;
@@ -58,6 +63,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+
+  const supabase = await createClient()
 
   const { id: currentRecipeId } = await params;
 
@@ -157,6 +164,8 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
 
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+
+  const supabase = await createClient()
 
   const { id: currentRecipeId } = await params;
 
@@ -430,7 +439,6 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       }
 
     }
-
 
     // Finaly 
     return NextResponse.json(

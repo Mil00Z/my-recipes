@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from '@supabase/supabase-js';
+
+import { createClient } from '@/utils/supabase/server'
+
 
 import type { Ingredient } from '@/types/ingredient.types';
 import type { Appliance } from '@/types/appliance.types';
@@ -19,10 +22,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Créer le client Supabase avec la bonne clé de service
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Définir le gestionnaire de requête pour la méthode GET
 export async function GET() {
+
+  const supabase = await createClient()
+
 
   try {
 
@@ -62,6 +68,9 @@ export async function GET() {
 
 
 export async function POST(request: Request) {
+
+  const supabase = await createClient()
+
 
   try {
 
