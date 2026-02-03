@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 
 import { createClient } from "@/utils/supabase/client";
 import useAuth from "@/hooks/useAuth";
@@ -12,6 +13,8 @@ import "./Login.scss";
 
 export default function LoginPage() {
 
+    const router = useRouter();
+
     //Settings
     const supabase = createClient();
     const { user, LogOut } = useAuth();
@@ -21,7 +24,7 @@ export default function LoginPage() {
     const [inputUserPass, setInputUserPass] = useState<string>('');
     const [errorEmail, setErrorEmail] = useState<boolean>(false);
     // const [errorPass, setErrorPass] = useState<boolean>(false);
-    const [timer, setTimer] = useState<number>(5);
+    // const [timer, setTimer] = useState<number>(5);
 
 
     const getUserEmail = (value: string) => {
@@ -52,9 +55,6 @@ export default function LoginPage() {
 
     }
 
-
-    console.log(user)
-
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -69,21 +69,17 @@ export default function LoginPage() {
             console.log(error)
             alert(error.message)
             return;
-        } else {
-            //     setTimer(4)
-
-            //     console.log('success');
-
-            //     const testTime = setInterval(() => {
-
-            //         setTimer((timer) => timer - 1);
-
-            //     }, 1000)
-
-            //     return() => clearInterval(testTime);
         }
 
     }
+
+
+    // useEffect(() => {
+    //     const timer = setTimeout(() => router.push('/'), 4000);
+    //     return () => clearTimeout(timer);
+    // }, []);
+
+
 
     if (user) {
         return (

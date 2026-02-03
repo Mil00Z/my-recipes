@@ -54,8 +54,6 @@ const useAuth = () => {
         const { data } = supabase.auth.onAuthStateChange((event, session) => {
             setUser(session?.user ?? null);
             setLoading(false);
-
-            console.log(session)
         });
 
         return () => {
