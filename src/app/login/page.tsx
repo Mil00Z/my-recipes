@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/client";
+import useAuth from "@/hooks/useAuth";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 
 //Styles
@@ -13,14 +13,16 @@ import "./Login.scss";
 export default function LoginPage() {
 
     //Settings
-    const router = useRouter();
     const supabase = createClient();
+    const { user, LogOut } = useAuth();
 
     //States
     const [inputUserEmail, setInputUserEmail] = useState<string>('');
     const [inputUserPass, setInputUserPass] = useState<string>('');
     const [errorEmail, setErrorEmail] = useState<boolean>(false);
     // const [errorPass, setErrorPass] = useState<boolean>(false);
+    const [timer, setTimer] = useState<number>(5);
+
 
     const getUserEmail = (value: string) => {
 
@@ -51,10 +53,11 @@ export default function LoginPage() {
     }
 
 
-
+    console.log(user)
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
 
 
         const { error } = await supabase.auth.signInWithPassword({
@@ -67,23 +70,51 @@ export default function LoginPage() {
             alert(error.message)
             return;
         } else {
-            console.log('success')
-            setTimeout(() => {
+            //     setTimer(4)
 
-                router.push('/recipes/50');
+            //     console.log('success');
 
-            }, 3000)
+            //     const testTime = setInterval(() => {
+
+            //         setTimer((timer) => timer - 1);
+
+            //     }, 1000)
+
+            //     return() => clearInterval(testTime);
         }
 
+    }
+
+    if (user) {
+        return (
+            <PageWrapper layout={'login'}>
+                <section className="login-form">
+                    <h1 style={{ textAlign: 'center', marginBottom: '3rem' }}>👋 Re-bonjour !</h1>
+                    <p className="login-status" style={{ textAlign: 'center', marginBottom: '2rem' }}>Vous êtes déjà connecté avec<br /> <strong>{user.email}</strong></p>
+
+                    <div className="form-group" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', flexDirection: 'column' }}>
+                        <a href="/" className="btn sign-in-button" style={{ textAlign: 'center' }}>Retour à l'accueil</a>
+                        <button
+                            type="button"
+                            onClick={LogOut}
+                            className="btn go"
+                            style={{ background: 'transparent', border: 'none', color: 'var(--text-color)', textDecoration: 'underline', cursor: 'pointer' }}
+                        >
+                            Se déconnecter
+                        </button>
+                    </div>
+                </section>
+            </PageWrapper>
+        )
     }
 
 
     return (
 
-        <PageWrapper>
+        <PageWrapper layout={'login'}>
             <section className="login-form">
 
-                <h1><i className="fa fa-user-circle sign-in-icon"></i> LogIn</h1>
+                <h1>Se connecter</h1>
                 <form id="login" onSubmit={(e) => handleLogin(e)}>
 
                     <div className="input-wrapper">
@@ -97,7 +128,7 @@ export default function LoginPage() {
                     </div>
 
                     <button className="btn sign-in-button" type="submit">Go Auth</button>
-
+                    {/* <div className="debeug">{timer ?? 'no time to die'}</div> */}
                 </form>
             </section>
         </PageWrapper>
