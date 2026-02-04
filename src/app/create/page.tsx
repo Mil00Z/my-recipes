@@ -266,8 +266,7 @@ const AddRecipePage = () => {
               <input
                 type="text"
                 name="image"
-                defaultValue="/hf/default-recipe.jpg"
-                readOnly
+                defaultValue="/"
               />
             </label>
             <div className="letsgo">
