@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from 'next/navigation';
 
 import { createClient } from "@/utils/supabase/client";
@@ -23,8 +23,7 @@ export default function LoginPage() {
     const [inputUserEmail, setInputUserEmail] = useState<string>('');
     const [inputUserPass, setInputUserPass] = useState<string>('');
     const [errorEmail, setErrorEmail] = useState<boolean>(false);
-    // const [errorPass, setErrorPass] = useState<boolean>(false);
-    // const [timer, setTimer] = useState<number>(5);
+    // const [errorPass, setErrorPass] = useState<boolean>(false); // Keep this if you plan to use it later, or remove
 
 
     const getUserEmail = (value: string) => {
@@ -58,8 +57,6 @@ export default function LoginPage() {
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-
-
         const { error } = await supabase.auth.signInWithPassword({
             email: inputUserEmail,
             password: inputUserPass
@@ -72,13 +69,6 @@ export default function LoginPage() {
         }
 
     }
-
-
-    // useEffect(() => {
-    //     const timer = setTimeout(() => router.push('/'), 4000);
-    //     return () => clearTimeout(timer);
-    // }, []);
-
 
 
     if (user) {
@@ -124,7 +114,6 @@ export default function LoginPage() {
                     </div>
 
                     <button className="btn sign-in-button" type="submit">Go Auth</button>
-                    {/* <div className="debeug">{timer ?? 'no time to die'}</div> */}
                 </form>
             </section>
         </PageWrapper>
