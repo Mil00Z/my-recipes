@@ -46,13 +46,14 @@ yarn-error.log*
 next-env.d.ts
 
 # project datas
-legacy/*
+/legacy/*
 project-status.md
 
 #prisma
+/prisma/*
 /src/generated/prisma
 
 #datas
 *.csv
-src/datas/fakeRecipeTest.json
+/src/datas/fakeRecipeTest.json
 eslint-reports.md
