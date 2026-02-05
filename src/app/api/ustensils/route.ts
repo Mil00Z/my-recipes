@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/utils/supabase/server'
+
 
 // Récupérer les variables d'environnement.
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -11,10 +13,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 // Créer le client Supabase avec la bonne clé de service
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Définir le gestionnaire de requête pour la méthode GET
 export async function GET() {
+
+  const supabase = await createClient()
+
 
   try {
 

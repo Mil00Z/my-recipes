@@ -367,7 +367,7 @@ const UpdateRecipePage = () => {
               <input
                 type="text"
                 name="image"
-                defaultValue={updatedRecipe?.image ?? "/hf/default-recipe.jpg"}
+                defaultValue={updatedRecipe?.image ?? "/hf/default-recipe.webp"}
               />
             </label>
             <div className="letsgo">
