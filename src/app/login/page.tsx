@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from "react";
-import { useRouter } from 'next/navigation';
 
 import { createClient } from "@/utils/supabase/client";
 import useAuth from "@/hooks/useAuth";
@@ -9,11 +8,11 @@ import PageWrapper from "@/components/PageWrapper/PageWrapper";
 
 //Styles
 import "./Login.scss";
+import Link from "next/link";
 
 
 export default function LoginPage() {
 
-    const router = useRouter();
 
     //Settings
     const supabase = createClient();
@@ -75,11 +74,13 @@ export default function LoginPage() {
         return (
             <PageWrapper layout={'login'}>
                 <section className="login-form">
-                    <h1 style={{ textAlign: 'center', marginBottom: '3rem' }}>👋 Re-bonjour !</h1>
-                    <p className="login-status" style={{ textAlign: 'center', marginBottom: '2rem' }}>Vous êtes déjà connecté avec<br /> <strong>{user.email}</strong></p>
+                    <h1 style={{ textAlign: 'center', marginBottom: '3rem' }}>{"👋 Re-bonjour !"}</h1>
+                    <p className="login-status" style={{ textAlign: 'center', marginBottom: '2rem' }}>{"Vous êtes déjà connecté avec"}<br /> <strong>{user.email}</strong></p>
 
                     <div className="form-group" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', flexDirection: 'column' }}>
-                        <a href="/" className="btn sign-in-button" style={{ textAlign: 'center' }}>Retour à l'accueil</a>
+
+                        <Link href={"/"} className="btn sign-in-button" style={{ textAlign: 'center' }}>{"Retour à l'accueil"} </Link>
+
                         <button
                             type="button"
                             onClick={LogOut}

@@ -16,10 +16,10 @@ type HeaderProps = {
 
 const Header = ({ layout }: HeaderProps) => {
 
-  const { user, loading, LogOut } = useAuth();
+  const { user, LogOut } = useAuth();
 
 
-  const handleLogOut = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogOut = () => {
 
     LogOut();
 
@@ -37,7 +37,7 @@ const Header = ({ layout }: HeaderProps) => {
         {user ? (<>
           <div className="log-menu">
             <Link href="/create" aria-label={"lien vers la création de recettes"} className="btn go">Ajouter une recette</Link>
-            <button type="button" className="btn go" onClick={(e) => handleLogOut(e)}>Logout</button>
+            <button type="button" className="btn go" onClick={() => handleLogOut()}>Logout</button>
 
           </div>
         </>) : (

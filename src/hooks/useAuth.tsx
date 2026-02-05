@@ -20,8 +20,10 @@ const useAuth = () => {
 
             setUser(null);
 
+            if (error) throw error;
+
         } catch (error) {
-            console.error(error)
+            console.error("Logout failed:", error);
         }
 
     }
@@ -51,7 +53,7 @@ const useAuth = () => {
 
         checkSession();
 
-        const { data } = supabase.auth.onAuthStateChange((event, session) => {
+        const { data } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null);
             setLoading(false);
         });
@@ -59,7 +61,7 @@ const useAuth = () => {
         return () => {
             data.subscription.unsubscribe();
         };
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return { user, loading, LogOut }
