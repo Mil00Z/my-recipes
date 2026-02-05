@@ -368,7 +368,6 @@ const UpdateRecipePage = () => {
                 type="text"
                 name="image"
                 defaultValue={updatedRecipe?.image ?? "/hf/default-recipe.jpg"}
-                readOnly
               />
             </label>
             <div className="letsgo">
