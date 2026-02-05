@@ -201,135 +201,134 @@ const RecipeSingle = () => {
 
           <div className="recipe-content">
             <div
-              className="recipe-image-container clickable-wrapper"
+              className={`recipe-image-container ${user ? 'editable' : ''}`}
               onClick={handleImageRights}
-              style={{ cursor: user ? 'pointer' : 'default', position: 'relative' }}
             >
               <Image
-                src={fetchedRecipe.image ? fetchedRecipe.image : "/default.jpg"}
+                src={fetchedRecipe.image ? fetchedRecipe.image : "/default.webp"}
                 alt={fetchedRecipe.title}
                 width={800}
                 height={600}
                 className="recipe-image"
-              // onClick removed from Image, handled by parent div
+
               />
+
+              {user && showAdminFlow ? (
+                <>
+                  <button
+                    className="btn btn-delete recipe-delete-btn"
+                    onClick={handleDeleteRecipe}
+                  >
+                    🗑️ Supprimer la recette
+                  </button>
+
+                  <Link
+                    className="btn link recipe-update-btn"
+                    href={`/recipes/${fetchedRecipe.id}/edit`}
+                  >
+                    🛒 Mettre à jour la recette
+                  </Link>
+                </>
+              ) : ''}
             </div>
-            {user && showAdminFlow ? (
-              <>
-                <button
-                  className="btn btn-delete recipe-delete-btn"
-                  onClick={handleDeleteRecipe}
-                >
-                  🗑️ Supprimer la recette
-                </button>
 
-                <Link
-                  className="btn link recipe-update-btn"
-                  href={`/recipes/${fetchedRecipe.id}/edit`}
-                >
-                  🛒 Mettre à jour la recette
-                </Link>
-              </>
-            ) : ''}
-          </div>
-
-          <div className="recipe-details">
-            <section className="recipe-section recipe-section--equipment">
-              <h2 className="recipe-section__title">
-                <span className="recipe-section__icon">🔧</span>
-                Équipements
-              </h2>
-
-              <div className="equipment-row">
-                <div className="equipment-item">
-                  <h3 className="equipment-item__label">
-                    Appareil principal
-                  </h3>
-                  <div className="equipment-item__value">
-                    {fetchedRecipe.appliances.length > 0 ? (
-                      fetchedRecipe.appliances.map(
-                        (applianceItem: Appliance, index: number) => (
-                          <span
-                            key={`${applianceItem.name}-${index}`}
-                            className="equipment-tag"
-                          >
-                            {applianceItem.name}
-                          </span>
-                        )
-                      )
-                    ) : (
-                      <span className="equipment-empty">Aucun appareil</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="equipment-item">
-                  <h3 className="equipment-item__label">
-                    Ustensiles à prevoir
-                  </h3>
-                  <div className="equipment-item__value">
-                    {fetchedRecipe.ustensils.length > 0 ? (
-                      fetchedRecipe.ustensils.map(
-                        (ustensilItem: Ustensil, index: number) => (
-                          <span
-                            key={`${ustensilItem.name}-${index}`}
-                            className="equipment-tag"
-                          >
-                            {ustensilItem.name}
-                          </span>
-                        )
-                      )
-                    ) : (
-                      <span className="equipment-empty">Aucun ustensile</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {fetchedRecipe.ingredients.length > 0 && (
-              <section className="recipe-section recipe-section--ingredients">
+            <div className="recipe-details">
+              <section className="recipe-section recipe-section--equipment">
                 <h2 className="recipe-section__title">
-                  <span className="recipe-section__icon">🥘</span>
-                  Ingrédients
+                  <span className="recipe-section__icon">🔧</span>
+                  Équipements
                 </h2>
-                <ul className="ingredients-list">
-                  {fetchedRecipe.ingredients.map(
-                    (ingredientItem: Ingredient, index: number) => (
-                      <li
-                        key={`${ingredientItem.ingredient}-${index}`}
-                        className="ingredient-item"
-                      >
-                        <span className="ingredient-name">
-                          {ingredientItem.ingredient}
-                        </span>
-                        <span className="ingredient-quantity">
-                          {ingredientItem.quantity}
-                        </span>
-                        <span className="ingredient-unit">
-                          {ingredientItem.unit}
-                        </span>
-                      </li>
-                    )
-                  )}
-                </ul>
-              </section>
-            )}
-          </div>
-        </div>
 
-        <footer
-          role="contentinfo"
-          className="recipe-footer"
-          aria-label="footer de la recette"
-        >
-          <Link href="/" className="btn btn-back">
-            <span className="btn-icon">←</span>
-            {"Retour à l'accueil"}
-          </Link>
-        </footer>
-      </article>
-    </PageWrapper >
+                <div className="equipment-row">
+                  <div className="equipment-item">
+                    <h3 className="equipment-item__label">
+                      Appareil principal
+                    </h3>
+                    <div className="equipment-item__value">
+                      {fetchedRecipe.appliances.length > 0 ? (
+                        fetchedRecipe.appliances.map(
+                          (applianceItem: Appliance, index: number) => (
+                            <span
+                              key={`${applianceItem.name}-${index}`}
+                              className="equipment-tag"
+                            >
+                              {applianceItem.name}
+                            </span>
+                          )
+                        )
+                      ) : (
+                        <span className="equipment-empty">Aucun appareil</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="equipment-item">
+                    <h3 className="equipment-item__label">
+                      Ustensiles à prevoir
+                    </h3>
+                    <div className="equipment-item__value">
+                      {fetchedRecipe.ustensils.length > 0 ? (
+                        fetchedRecipe.ustensils.map(
+                          (ustensilItem: Ustensil, index: number) => (
+                            <span
+                              key={`${ustensilItem.name}-${index}`}
+                              className="equipment-tag"
+                            >
+                              {ustensilItem.name}
+                            </span>
+                          )
+                        )
+                      ) : (
+                        <span className="equipment-empty">Aucun ustensile</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {fetchedRecipe.ingredients.length > 0 && (
+                <section className="recipe-section recipe-section--ingredients">
+                  <h2 className="recipe-section__title">
+                    <span className="recipe-section__icon">🥘</span>
+                    Ingrédients
+                  </h2>
+                  <ul className="ingredients-list">
+                    {fetchedRecipe.ingredients.map(
+                      (ingredientItem: Ingredient, index: number) => (
+                        <li
+                          key={`${ingredientItem.ingredient}-${index}`}
+                          className="ingredient-item"
+                        >
+                          <span className="ingredient-name">
+                            {ingredientItem.ingredient}
+                          </span>
+                          <span className="ingredient-quantity">
+                            {ingredientItem.quantity}
+                          </span>
+                          <span className="ingredient-unit">
+                            {ingredientItem.unit}
+                          </span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </section>
+              )}
+            </div>
+          </div>
+
+          <footer
+            role="contentinfo"
+            className="recipe-footer"
+            aria-label="footer de la recette"
+          >
+            <Link href="/" className="btn btn-back">
+              <span className="btn-icon">←</span>
+              {"Retour à l'accueil"}
+            </Link>
+          </footer>
+        </article>
+      </PageWrapper >
     </>
   );
 };
