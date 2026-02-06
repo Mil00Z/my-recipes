@@ -32,8 +32,13 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        transition: all 0.33s ease-in-out;
+        // transition: all 0.33s ease-in-out;
         outline: 1px solid transparent;
+
+        &.is-ok {
+            width: 65%;
+            padding: 3rem;
+        }
     }
 
     .sing-in-button {

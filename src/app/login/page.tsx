@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from "react";
+import Link from "next/link";
 
 import { createClient } from "@/utils/supabase/client";
 import useAuth from "@/hooks/useAuth";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
+import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 
 //Styles
 import "./Login.scss";
-import Link from "next/link";
+
 
 
 export default function LoginPage() {
@@ -81,22 +83,27 @@ export default function LoginPage() {
     if (user) {
         return (
             <PageWrapper layout={'login'}>
-                <section className="login-form">
-                    <h1 style={{ textAlign: 'center', marginBottom: '3rem' }}>{"👋 Re-bonjour !"}</h1>
-                    <p className="login-status" style={{ textAlign: 'center', marginBottom: '2rem' }}>{"Vous êtes déjà connecté avec"}<br /> <strong>{user.email}</strong></p>
 
-                    <div className="form-group" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', flexDirection: 'column' }}>
+                {/* <FeedbackBlock
+                    type="success"
+                    message="Hey Salut !"
+                    content={`Vous êtes connecté en tant que ${user.email}`}
+                    actionLink="/"
+                    actionLabel="Voir les recettes"
+                /> */}
+                <section className={`login-form is-ok`}>
+                    <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>👋 Hey Salut!</h1>
 
-                        <Link href={"/"} className="btn sign-in-button" style={{ textAlign: 'center' }}>{"Retour à l'accueil"} </Link>
+                    <p style={{ textAlign: 'center', marginBottom: '2rem', color: '#666' }}>
+                        Vous êtes identifié en tant que <br />
+                        <strong>{user.email}</strong>
+                    </p>
 
-                        <button
-                            type="button"
-                            onClick={LogOut}
-                            className="btn go"
-                            style={{ background: 'transparent', border: 'none', color: 'var(--text-color)', textDecoration: 'underline', cursor: 'pointer' }}
-                        >
-                            Se déconnecter
-                        </button>
+                    {/* Juste le bouton de retour, centré et pas trop large */}
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <Link href="/" className="btn btn-primary">
+                            Retour aux fourneaux 🥘
+                        </Link>
                     </div>
                 </section>
             </PageWrapper>

@@ -54,7 +54,7 @@ const Header = ({ layout }: HeaderProps) => {
 
       {layout === "update" && <Hero title="Modifier une recette" />}
 
-      {layout === "login" && <Hero title="Tester CRUD" />}
+      {layout === "login" && <Hero title="Gérer mes recettes" />}
 
     </header>
   )
