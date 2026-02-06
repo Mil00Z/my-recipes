@@ -27,17 +27,9 @@ export default function LoginPage() {
 
     const getUserEmail = (value: string) => {
 
-        const emailRegex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+");
+        setInputUserEmail(value);
 
-        if (value.length >= 6 && emailRegex.test(value)) {
-
-            setErrorEmail(false);
-            setInputUserEmail(value);
-
-        } else {
-
-            setErrorEmail(true);
-        }
+        if (errorEmail) setErrorEmail(false);
 
     }
 
@@ -50,6 +42,22 @@ export default function LoginPage() {
             setInputUserPass(value);
 
         }
+
+    }
+
+    const handleBlurEmail = () => {
+
+        const emailRegex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+");
+
+        if (inputUserEmail.length >= 6 && emailRegex.test(inputUserEmail)) {
+
+            setErrorEmail(false);
+
+        } else {
+
+            setErrorEmail(true);
+        }
+
 
     }
 
@@ -102,16 +110,29 @@ export default function LoginPage() {
             <section className="login-form">
 
                 <h1>Se connecter</h1>
-                <form id="login" onSubmit={(e) => handleLogin(e)}>
+                <form className="login" onSubmit={(e) => handleLogin(e)}>
 
                     <div className="input-wrapper">
-                        <label htmlFor="email">Username</label>
-                        <input type="email" placeholder="Votre identifiant" id="email" name="email" onChange={(e) => getUserEmail(e.target.value)} />
+                        <label htmlFor="email">Email</label>
+                        <input type="email"
+                            placeholder="Votre identifiant"
+                            id="email"
+                            name="email"
+                            onChange={(e) => getUserEmail(e.target.value)}
+                            onBlur={handleBlurEmail}
+                            required
+
+                        />
+                        {errorEmail && <p className="error">Veuillez remplir le champ email correctement</p>}
                     </div>
-                    {errorEmail && <p className="error">Veuillez remplir le champ email</p>}
                     <div className="input-wrapper">
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="*********" onChange={(e) => getUserPass(e.target.value)} />
+                        <input type="password"
+                            id="password"
+                            name="password"
+                            placeholder="*********"
+                            onChange={(e) => getUserPass(e.target.value)}
+                            required />
                     </div>
 
                     <button className="btn sign-in-button" type="submit">Go Auth</button>

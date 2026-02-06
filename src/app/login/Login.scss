@@ -1,20 +1,19 @@
 .login {
+    --reg-spacing: .25rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
 
     .error {
         padding: var(--reg-spacing);
 
         font : {
-            size: 1.2rem;
-            weight: bold;
+            size: 1rem;
         }
 
         text-align: center;
-        color:var(--white-color);
-        background:crimson
+        color:crimson
     }
 
     .success {
@@ -24,7 +23,7 @@
     }
 
     &-form {
-        width: 55%;
+        width: 45%;
         margin: 5dvh auto;
         padding: 2rem 2.5rem;
         background: #fff;
@@ -35,6 +34,12 @@
         gap: 1.5rem;
         transition: all 0.33s ease-in-out;
         outline: 1px solid transparent;
+    }
+
+    .sing-in-button {
+        width: fit-content;
+        align-self: center;
+        margin-top: 1rem;
     }
 }
 
