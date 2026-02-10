@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
 
 import { createClient } from "@/utils/supabase/client";
 import useAuth from "@/hooks/useAuth";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
-import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
+// import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 
 //Styles
 import "./Login.scss";
@@ -15,16 +16,42 @@ import "./Login.scss";
 
 export default function LoginPage() {
 
+    const REDIRECT_DELAY_SECONDS : number = 4;
 
     //Settings
     const supabase = createClient();
-    const { user, LogOut } = useAuth();
+    const { user } = useAuth();
+    const router = useRouter(); // Initialize useRouter
 
     //States
     const [inputUserEmail, setInputUserEmail] = useState<string>('');
     const [inputUserPass, setInputUserPass] = useState<string>('');
     const [errorEmail, setErrorEmail] = useState<boolean>(false);
-    // const [errorPass, setErrorPass] = useState<boolean>(false); // Keep this if you plan to use it later, or remove
+    // const [errorPass, setErrorPass] = useState<boolean>(false);
+    const [countdown, setCountdown] = useState<number>(REDIRECT_DELAY_SECONDS); 
+
+
+    useEffect(() => {
+        if (user) {
+
+            const timer = setTimeout(() => {
+                router.push('/'); 
+            }, REDIRECT_DELAY_SECONDS * 1000);
+
+    
+            const interval = setInterval(() => {
+                setCountdown((prevCountdown) => prevCountdown - 1);
+            }, 1000);
+
+            // Cleanup
+            return () => {
+                clearTimeout(timer);
+                clearInterval(interval);
+            };
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]); 
+
 
 
     const getUserEmail = (value: string) => {
@@ -84,23 +111,18 @@ export default function LoginPage() {
         return (
             <PageWrapper layout={'login'}>
 
-                {/* <FeedbackBlock
-                    type="success"
-                    message="Hey Salut !"
-                    content={`Vous êtes connecté en tant que ${user.email}`}
-                    actionLink="/"
-                    actionLabel="Voir les recettes"
-                /> */}
                 <section className={`login-form is-ok`}>
-                    <h1 style={{ textAlign: 'center', marginBottom: '1rem' }}>👋 Hey Salut!</h1>
+                    <h1>👋 Hey Salut!</h1>
 
-                    <p style={{ textAlign: 'center', marginBottom: '2rem', color: '#666' }}>
+                    <p className="logged-in-message">
                         Vous êtes identifié en tant que <br />
                         <strong>{user.email}</strong>
                     </p>
+                     <p className="logged-in-message">
+                        Redirection automatique dans <span className="count">{countdown}</span> secondes...
+                    </p>
 
-                    {/* Juste le bouton de retour, centré et pas trop large */}
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div className="redirect">
                         <Link href="/" className="btn btn-primary">
                             Retour aux fourneaux 🥘
                         </Link>
@@ -122,7 +144,7 @@ export default function LoginPage() {
                     <div className="input-wrapper">
                         <label htmlFor="email">Email</label>
                         <input type="email"
-                            placeholder="Votre identifiant"
+                            placeholder="chef@cuisine.com"
                             id="email"
                             name="email"
                             onChange={(e) => getUserEmail(e.target.value)}
@@ -133,7 +155,7 @@ export default function LoginPage() {
                         {errorEmail && <p className="error">Veuillez remplir le champ email correctement</p>}
                     </div>
                     <div className="input-wrapper">
-                        <label htmlFor="password">Password</label>
+                        <label htmlFor="password">Mot de passe</label>
                         <input type="password"
                             id="password"
                             name="password"
@@ -142,7 +164,7 @@ export default function LoginPage() {
                             required />
                     </div>
 
-                    <button className="btn sign-in-button" type="submit">Go Auth</button>
+                    <button className="btn go" type="submit">Se connecter</button>
                 </form>
             </section>
         </PageWrapper>

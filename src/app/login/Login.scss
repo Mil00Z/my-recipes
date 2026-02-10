@@ -37,15 +37,43 @@
 
         &.is-ok {
             width: 65%;
-            padding: 3rem;
-        }
-    }
+            padding: 3dvh;
 
-    .sing-in-button {
+            h1 {
+            text-align: center;
+            }
+
+            .logged-in-message {
+            text-align: center;
+            margin-block:0;
+
+           
+            &:first-of-type {
+            
+                strong {
+                color: var(--primary-color);
+                font-weight: 600;
+                }
+            }
+
+            .count {
+                font-weight: bold;
+                color: var(--primary-color);
+            }
+        }     
+
+    .redirect {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+}
+
+    .sign-in-button {
         width: fit-content;
         align-self: center;
-        margin-top: 1rem;
     }
+}
 }
 
 
