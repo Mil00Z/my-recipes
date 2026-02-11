@@ -17,12 +17,13 @@ import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
-import "@/app/create/createRecipe.scss";
 import "@/components/RecipeFormEdit/RecipeFormEdit.scss";
 
 const AddRecipePage = () => {
   //Local
   const [createdRecipe, setCreatedRecipe] = useState<Recipe | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
+   const [filePreview, setFilePreview] = useState<File | null>(null);
 
   //Store
   const { recipes, addRecipe, fetchRecipes } = useStore();
@@ -266,8 +267,35 @@ const AddRecipePage = () => {
               <input
                 type="text"
                 name="image"
-                defaultValue="/"
+                id="image"
+                placeholder="/mon-image.jpg ou https://..."
+                defaultValue={`/default.webp`}  
+                onChange={(e) => setImagePreview(e.target.value)}
               />
+              {/* <input
+                type="file"
+                name="image"
+                id="image"
+                placeholder="/mon-image.jpg"
+                defaultValue={"/defaut.webp"}
+                accept="image/*"
+                onChange={(e) => setFilePreview(e.target.files?.[0] || null)}
+              /> */}
+            {imagePreview && (
+              <>
+                <img 
+                  src={imagePreview} 
+                  alt={`Preview de ${imagePreview}`}
+                  style={{ maxWidth: '100%' }}
+                />
+                {/* <img 
+                  src={filePreview ? URL.createObjectURL(filePreview) : undefined} 
+                  alt={`Preview de ${imagePreview}`}
+                  style={{ maxWidth: '100%' }}
+                />
+                <p>{filePreview?.name}</p> */}
+              </> )
+            }
             </label>
             <div className="letsgo">
               <button type="submit" className="btn">
