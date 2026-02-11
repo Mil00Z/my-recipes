@@ -36,8 +36,12 @@ const Header = ({ layout }: HeaderProps) => {
 
         {user ? (<>
           <div className="log-menu">
-            <Link href="/create" aria-label={"lien vers la création de recettes"} className="btn go">Ajouter une recette</Link>
-            <button type="button" className="btn go" onClick={() => handleLogOut()}>Logout</button>
+            <Link 
+            href="/create"
+            className={`btn go ${layout === 'create' ? 'disabled' : ''}`} 
+            aria-label={"lien vers la création de recettes"}
+            aria-current={layout === 'create' ? 'page' : undefined}>Ajouter une recette</Link>
+            <button type="button" className="link" title="Se déconnecter" onClick={() => handleLogOut()}>Logout</button>
 
           </div>
         </>) : (
