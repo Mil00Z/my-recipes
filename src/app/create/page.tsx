@@ -17,13 +17,18 @@ import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 import StoreDebbuger from "@/components/Debeug/Debeug";
 
 //Styles
+import "@/app/create/createRecipe.scss";
 import "@/components/RecipeFormEdit/RecipeFormEdit.scss";
 
+
+
 const AddRecipePage = () => {
+
+
   //Local
   const [createdRecipe, setCreatedRecipe] = useState<Recipe | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>('');
-   const [filePreview, setFilePreview] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('/default.webp');
+  const [filePreview, setFilePreview] = useState<File | null>(null);
 
   //Store
   const { recipes, addRecipe, fetchRecipes } = useStore();
@@ -52,6 +57,9 @@ const AddRecipePage = () => {
     0,
     ...recipes.map((recipe: Recipe) => Number(recipe.id))
   );
+
+  // Random Time, out of render
+  const initialTime = Math.ceil(Math.random() * maxId);
 
   // Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -250,7 +258,7 @@ const AddRecipePage = () => {
                 name="time"
                 min="0"
                 required
-                defaultValue={Math.ceil(Math.random() * maxId)}
+                defaultValue={initialTime}
               />
             </label>
             <label>
@@ -268,8 +276,8 @@ const AddRecipePage = () => {
                 type="text"
                 name="image"
                 id="image"
-                placeholder="/mon-image.jpg ou https://..."
-                defaultValue={`/default.webp`}  
+                placeholder="/mon-image.jpg"
+                defaultValue={imagePreview}  
                 onChange={(e) => setImagePreview(e.target.value)}
               />
               {/* <input
@@ -284,9 +292,10 @@ const AddRecipePage = () => {
             {imagePreview && (
               <>
                 <img 
-                  src={imagePreview} 
+                  src={imagePreview || '/default.webp'}
                   alt={`Preview de ${imagePreview}`}
-                  style={{ maxWidth: '100%' }}
+                  onError={(e) => e.currentTarget.classList.add('hidden')}
+                  onLoad={(e) => e.currentTarget.classList.remove('hidden')}
                 />
                 {/* <img 
                   src={filePreview ? URL.createObjectURL(filePreview) : undefined} 
