@@ -27,6 +27,8 @@ const RecipeSingle = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [deletedRecipe, setDeletedRecipe] = useState<{ message: string } | null>(null);
   const [showAdminFlow, setShowAdminFlow] = useState<boolean>(false);
+  const [imgError, setImageError] = useState<boolean>(false);
+
 
   //Get Url Params
   const getParams = useParams();
@@ -205,12 +207,13 @@ const RecipeSingle = () => {
               onClick={handleImageRights}
             >
               <Image
-                src={fetchedRecipe.image ? fetchedRecipe.image : "/default.webp"}
+                src={!imgError && fetchedRecipe.image ? fetchedRecipe.image : "/default.webp"}
                 alt={fetchedRecipe.title}
-                width={800}
+                width={600}
                 height={600}
                 className="recipe-image"
-
+                priority={true}
+                onError={() => setImageError(true)}
               />
 
               {user && showAdminFlow ? (
