@@ -1,8 +1,8 @@
+
 .recipe-form {
-    width: 55%;
-    margin: 5dvh auto;
-    padding: 2rem 2.5rem;
-    background: #fff;
+    width: 65%;
+    padding: var(--layout-spacing);
+    background: var(--white-color);
     border-radius: 12px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -16,16 +16,17 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
     }
-}
 
-.recipe-form h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--black-color);
-    font-size: 2rem;
-}
 
-.recipe-form label {
+
+    h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: var(--black-color);
+        font-size: 2rem;
+    }
+
+    label {
     display: flex;
     flex-direction: column;
     font-weight: 500;
@@ -33,10 +34,10 @@
     gap: 0.5rem;
 }
 
-.recipe-form input[type="text"],
-.recipe-form input[type="number"],
-.recipe-form textarea,
-.recipe-form select {
+ input[type="text"],
+ input[type="number"],
+ textarea,
+ select {
     padding: 0.6rem 0.8rem;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
@@ -45,12 +46,12 @@
     margin-top: 0.2rem;
 }
 
-.recipe-form textarea {
+textarea {
     min-height: 80px;
     resize: vertical;
 }
 
-.recipe-form fieldset {
+fieldset {
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     padding: 1rem;
@@ -61,7 +62,7 @@
     gap: 0.7rem;
 }
 
-.recipe-form legend {
+legend {
     font-weight: 600;
     color: var(--primary-color);
     margin-bottom: 0.5rem;
@@ -70,33 +71,21 @@
 
 
 /* Ajouts pour améliorer la lisibilité et la cohérence */
-.recipe-form input::placeholder,
-.recipe-form textarea::placeholder {
+ input::placeholder,
+ textarea::placeholder {
     color: #a0aec0;
     opacity: 1;
 }
 
-.recipe-form fieldset {
+fieldset {
     margin-bottom: 1rem;
 }
 
-.recipe-form input[type="number"]::-webkit-inner-spin-button,
-.recipe-form input[type="number"]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
-}
-
-.update-container {
-    --spacing: 2rem;
-    padding: var(--spacing);
-
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-
-    &>h2 {
-        width: 100%;
-    }
+    }   
 }
 
 .ingred-list,
@@ -116,12 +105,23 @@
 
 }
 
-//submit//
+.preview-image {
+  max-width: 100%;
+  margin-top: 1rem;
+  border-radius: var(--radius);
+  object-fit: cover;
+  
+
+  &.hidden {
+    display: none; // Classe utilitaire pour cacher
+  }
+}
+
+//Submit//
 .letsgo {
     display: flex;
     justify-content: space-evenly;
     margin-block: 2vh;
-
 
     .reset-recipe {
         font-size: 1rem;
