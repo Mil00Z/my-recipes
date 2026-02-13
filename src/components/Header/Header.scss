@@ -2,7 +2,8 @@
 .main-header {
     --op: .3;
     width: 100%;
-    height: 700px;
+    // min-height: 700px;
+    min-height: 40dvh;
     display: flex;
     padding: var(--regular-spacing);
     flex-wrap: wrap;
@@ -19,7 +20,6 @@
     margin: 1.5rem;
     display: flex;
     justify-content: space-between;
-    align-items: top;
 
     &>a {
         display: block;
@@ -29,12 +29,22 @@
     .log-menu {
         --spacing: 1rem;
         display: flex;
-        flex-direction: column;
-        gap: var(--spacing) 0;
+        flex-direction: row;
+        // gap: var(--spacing) 0;
+        gap:2rem;
+        flex-wrap: wrap;
+        align-items: center;
         // padding-inline: var(--spacing);
 
-        &>a {
+        & > a {
             padding: var(--spacing)
+        }
+        .link {
+            background: none;
+            border: none;
+            color: var(--white-color);
+            font-size: 1rem;
+            cursor: pointer;
         }
     }
 }

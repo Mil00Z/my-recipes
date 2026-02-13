@@ -20,9 +20,15 @@ import StoreDebbuger from "@/components/Debeug/Debeug";
 import "@/app/create/createRecipe.scss";
 import "@/components/RecipeFormEdit/RecipeFormEdit.scss";
 
+
+
 const AddRecipePage = () => {
+
+
   //Local
   const [createdRecipe, setCreatedRecipe] = useState<Recipe | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('/default.webp');
+  // const [filePreview, setFilePreview] = useState<File | null>(null);
 
   //Store
   const { recipes, addRecipe, fetchRecipes } = useStore();
@@ -51,6 +57,9 @@ const AddRecipePage = () => {
     0,
     ...recipes.map((recipe: Recipe) => Number(recipe.id))
   );
+
+  // Random Time, out of render
+  const initialTime = Math.ceil(Math.random() * maxId);
 
   // Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -249,7 +258,7 @@ const AddRecipePage = () => {
                 name="time"
                 min="0"
                 required
-                defaultValue={Math.ceil(Math.random() * maxId)}
+                defaultValue={initialTime}
               />
             </label>
             <label>
@@ -266,8 +275,37 @@ const AddRecipePage = () => {
               <input
                 type="text"
                 name="image"
-                defaultValue="/"
+                id="image"
+                placeholder="/mon-image.jpg"
+                defaultValue={imagePreview}
+                onChange={(e) => setImagePreview(e.target.value)}
               />
+              {/* <input
+                type="file"
+                name="image"
+                id="image"
+                placeholder="/mon-image.jpg"
+                defaultValue={"/defaut.webp"}
+                accept="image/*"
+                onChange={(e) => setFilePreview(e.target.files?.[0] || null)}
+              /> */}
+              {imagePreview && (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imagePreview || '/default.webp'}
+                    alt={`Preview de ${imagePreview}`}
+                    onError={(e) => e.currentTarget.classList.add('hidden')}
+                    onLoad={(e) => e.currentTarget.classList.remove('hidden')}
+                  />
+                  {/* <img 
+                  src={filePreview ? URL.createObjectURL(filePreview) : undefined} 
+                  alt={`Preview de ${imagePreview}`}
+                  style={{ maxWidth: '100%' }}
+                />
+                <p>{filePreview?.name}</p> */}
+                </>)
+              }
             </label>
             <div className="letsgo">
               <button type="submit" className="btn">

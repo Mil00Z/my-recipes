@@ -1,43 +1,64 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
 
 import { createClient } from "@/utils/supabase/client";
 import useAuth from "@/hooks/useAuth";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
+// import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 
 //Styles
 import "./Login.scss";
-import Link from "next/link";
+
 
 
 export default function LoginPage() {
 
+    const REDIRECT_DELAY_SECONDS : number = 4;
 
     //Settings
     const supabase = createClient();
-    const { user, LogOut } = useAuth();
+    const { user } = useAuth();
+    const router = useRouter(); // Initialize useRouter
 
     //States
     const [inputUserEmail, setInputUserEmail] = useState<string>('');
     const [inputUserPass, setInputUserPass] = useState<string>('');
     const [errorEmail, setErrorEmail] = useState<boolean>(false);
-    // const [errorPass, setErrorPass] = useState<boolean>(false); // Keep this if you plan to use it later, or remove
+    // const [errorPass, setErrorPass] = useState<boolean>(false);
+    const [countdown, setCountdown] = useState<number>(REDIRECT_DELAY_SECONDS); 
+
+
+    useEffect(() => {
+        if (user) {
+
+            const timer = setTimeout(() => {
+                router.push('/'); 
+            }, REDIRECT_DELAY_SECONDS * 1000);
+
+    
+            const interval = setInterval(() => {
+                setCountdown((prevCountdown) => prevCountdown - 1);
+            }, 1000);
+
+            // Cleanup
+            return () => {
+                clearTimeout(timer);
+                clearInterval(interval);
+            };
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]); 
+
 
 
     const getUserEmail = (value: string) => {
 
-        const emailRegex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+");
+        setInputUserEmail(value);
 
-        if (value.length >= 6 && emailRegex.test(value)) {
-
-            setErrorEmail(false);
-            setInputUserEmail(value);
-
-        } else {
-
-            setErrorEmail(true);
-        }
+        if (errorEmail) setErrorEmail(false);
 
     }
 
@@ -50,6 +71,22 @@ export default function LoginPage() {
             setInputUserPass(value);
 
         }
+
+    }
+
+    const handleBlurEmail = () => {
+
+        const emailRegex = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+");
+
+        if (inputUserEmail.length >= 6 && emailRegex.test(inputUserEmail)) {
+
+            setErrorEmail(false);
+
+        } else {
+
+            setErrorEmail(true);
+        }
+
 
     }
 
@@ -73,22 +110,22 @@ export default function LoginPage() {
     if (user) {
         return (
             <PageWrapper layout={'login'}>
-                <section className="login-form">
-                    <h1 style={{ textAlign: 'center', marginBottom: '3rem' }}>{"👋 Re-bonjour !"}</h1>
-                    <p className="login-status" style={{ textAlign: 'center', marginBottom: '2rem' }}>{"Vous êtes déjà connecté avec"}<br /> <strong>{user.email}</strong></p>
 
-                    <div className="form-group" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', flexDirection: 'column' }}>
+                <section className={`login-form is-ok`}>
+                    <h1>👋 Hey Salut!</h1>
 
-                        <Link href={"/"} className="btn sign-in-button" style={{ textAlign: 'center' }}>{"Retour à l'accueil"} </Link>
+                    <p className="logged-in-message">
+                        Vous êtes identifié en tant que <br />
+                        <strong>{user.email}</strong>
+                    </p>
+                     <p className="logged-in-message">
+                        Redirection automatique dans <span className="count">{countdown}</span> secondes...
+                    </p>
 
-                        <button
-                            type="button"
-                            onClick={LogOut}
-                            className="btn go"
-                            style={{ background: 'transparent', border: 'none', color: 'var(--text-color)', textDecoration: 'underline', cursor: 'pointer' }}
-                        >
-                            Se déconnecter
-                        </button>
+                    <div className="redirect">
+                        <Link href="/" className="btn btn-primary">
+                            Retour aux fourneaux 🥘
+                        </Link>
                     </div>
                 </section>
             </PageWrapper>
@@ -102,19 +139,32 @@ export default function LoginPage() {
             <section className="login-form">
 
                 <h1>Se connecter</h1>
-                <form id="login" onSubmit={(e) => handleLogin(e)}>
+                <form className="login" onSubmit={(e) => handleLogin(e)}>
 
                     <div className="input-wrapper">
-                        <label htmlFor="email">Username</label>
-                        <input type="email" placeholder="Votre identifiant" id="email" name="email" onChange={(e) => getUserEmail(e.target.value)} />
+                        <label htmlFor="email">Email</label>
+                        <input type="email"
+                            placeholder="chef@cuisine.com"
+                            id="email"
+                            name="email"
+                            onChange={(e) => getUserEmail(e.target.value)}
+                            onBlur={handleBlurEmail}
+                            required
+
+                        />
+                        {errorEmail && <p className="error">Veuillez remplir le champ email correctement</p>}
                     </div>
-                    {errorEmail && <p className="error">Veuillez remplir le champ email</p>}
                     <div className="input-wrapper">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="*********" onChange={(e) => getUserPass(e.target.value)} />
+                        <label htmlFor="password">Mot de passe</label>
+                        <input type="password"
+                            id="password"
+                            name="password"
+                            placeholder="*********"
+                            onChange={(e) => getUserPass(e.target.value)}
+                            required />
                     </div>
 
-                    <button className="btn sign-in-button" type="submit">Go Auth</button>
+                    <button className="btn go" type="submit">Se connecter</button>
                 </form>
             </section>
         </PageWrapper>

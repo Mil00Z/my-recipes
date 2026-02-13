@@ -54,6 +54,7 @@
     &-go{
         flex-direction: row-reverse;
         
+    
         .btn-icon{
             transform:rotateY(180deg);
         }
@@ -106,6 +107,9 @@
         color:var(--white-color);
         
     }
+
+     &.disabled {
+        color: var(--secondary-color);}
 
 }
 

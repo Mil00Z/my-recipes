@@ -38,7 +38,8 @@ export async function updateSession(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     // 1. Si Connecté -> Interdire l'accès à /login (Redirection Home)
-    if (user && request.nextUrl.pathname.startsWith('/login')) {
+    // Exception: Ignorer les requêtes _next (hot-reload en développement)
+    if (user && request.nextUrl.pathname.startsWith('/login') && !request.nextUrl.pathname.includes('_next')) {
         console.log(request.nextUrl);
         const url = request.nextUrl.clone()
 

@@ -53,6 +53,15 @@ export async function GET() {
       );
     }
 
+    // Order Fix Strategy
+    if (RawRecipes) {
+            RawRecipes.sort((a, b) => {
+                if (a.createdAt !== b.createdAt) return 0;
+                // Si les dates sont identiques, on trie par ID numérique décroissant
+                return Number(b.id) - Number(a.id); 
+            });
+        }
+
     return NextResponse.json(RawRecipes);
 
   } catch (err) {

@@ -1,8 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 
-
-
 # dependencies
 /node_modules
 /.pnp
@@ -45,9 +43,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# project datas
+# project own datas
 /legacy/*
 project-status.md
+UI-POLISH-TODO.md
 
 #prisma
 /prisma/*
@@ -58,5 +57,8 @@ project-status.md
 /src/datas/fakeRecipeTest.json
 eslint-reports.md
 
-#others
+
+#project Agent rules
 .agent/rules/*
+.github/copilot-instructions.md
+

@@ -69,6 +69,7 @@ body{
 }
 
 .wrapper {
+    --layout-spacing:3rem;
     width:var(--skeleton);
 
     &:has(.update-layout){
@@ -79,11 +80,6 @@ body{
     }
 }
 
-
-// .link {
-//     color:var(--white-color);
-//     font-size:var(--body-font-size);
-// }
 
 .v-hidden {
     position: absolute;

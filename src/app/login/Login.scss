@@ -1,20 +1,19 @@
 .login {
+    --reg-spacing: .25rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    // align-items: center;
 
     .error {
         padding: var(--reg-spacing);
 
         font : {
-            size: 1.2rem;
-            weight: bold;
+            size: 1rem;
         }
 
         text-align: center;
-        color:var(--white-color);
-        background:crimson
+        color:crimson
     }
 
     .success {
@@ -24,7 +23,7 @@
     }
 
     &-form {
-        width: 55%;
+        width: 45%;
         margin: 5dvh auto;
         padding: 2rem 2.5rem;
         background: #fff;
@@ -33,9 +32,48 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        transition: all 0.33s ease-in-out;
+        // transition: all 0.33s ease-in-out;
         outline: 1px solid transparent;
+
+        &.is-ok {
+            width: 65%;
+            padding: 3dvh;
+
+            h1 {
+            text-align: center;
+            }
+
+            .logged-in-message {
+            text-align: center;
+            margin-block:0;
+
+           
+            &:first-of-type {
+            
+                strong {
+                color: var(--primary-color);
+                font-weight: 600;
+                }
+            }
+
+            .count {
+                font-weight: bold;
+                color: var(--primary-color);
+            }
+        }     
+
+    .redirect {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
     }
+}
+
+    .sign-in-button {
+        width: fit-content;
+        align-self: center;
+    }
+}
 }
 
 

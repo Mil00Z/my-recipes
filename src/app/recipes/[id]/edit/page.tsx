@@ -22,8 +22,8 @@ import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
 
 
 //Styles
-import "@/app/recipes/[id]/edit/updateRecipe.scss";
 import "@/components/RecipeFormEdit/RecipeFormEdit.scss";
+import "@/app/recipes/[id]/edit/updateRecipe.scss";
 import "@/components/Filters/Filter.scss";
 
 
@@ -35,6 +35,7 @@ const UpdateRecipePage = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [formKey, setFormKey] = useState<number>(0);
+  const [imagePreview, setImagePreview] = useState<string>('/default.webp');
 
 
   const createNewIngredient = (): Ingredient => ({
@@ -94,6 +95,8 @@ const UpdateRecipePage = () => {
 
     const recipeToSend = { ...patchRecipe };
 
+    console.log("Ustensils to send:", recipeToSend.ustensils);
+
     try {
       const response = await fetch(`/api/recipes/${getParams.id}`, {
         method: "PATCH",
@@ -124,9 +127,11 @@ const UpdateRecipePage = () => {
   const handleReset = () => {
 
     if (!updatedRecipe) return;
+
     setIngredients(updatedRecipe.ingredients);
     setUstensils(updatedRecipe.ustensils);
     setAppliances(updatedRecipe.appliances);
+    setImagePreview(updatedRecipe.image || '/default.webp');
 
     setFormKey((prevKey) => (prevKey + 1));
   };
@@ -160,6 +165,7 @@ const UpdateRecipePage = () => {
         setIngredients(normalizeDatas.ingredients);
         setAppliances(normalizeDatas.appliances);
         setUstensils(normalizeDatas.ustensils);
+        setImagePreview(normalizeDatas.image || '/default.webp');
 
 
         // Disable Loading after datas fullfill local states
@@ -362,14 +368,31 @@ const UpdateRecipePage = () => {
                 defaultValue={updatedRecipe?.servings}
               />
             </label>
+
             <label>
               Image (URL)
               <input
                 type="text"
                 name="image"
-                defaultValue={updatedRecipe?.image ?? "/hf/default-recipe.webp"}
+                placeholder="/mon-image.jpg"
+                defaultValue={updatedRecipe?.image ?? "/default-recipe.webp"}
+                onChange={(e) => setImagePreview(e.target.value)}
               />
+
+              {imagePreview && (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imagePreview}
+                    alt={`Preview de ${imagePreview}`}
+                    className="preview-image"
+                    onError={(e) => e.currentTarget.classList.add('hidden')}
+                    onLoad={(e) => e.currentTarget.classList.remove('hidden')}
+                  />
+                </>
+              )}
             </label>
+
             <div className="letsgo">
               <button type="submit" className="btn">
                 Enregistrer les modifications
