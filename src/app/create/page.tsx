@@ -28,7 +28,7 @@ const AddRecipePage = () => {
   //Local
   const [createdRecipe, setCreatedRecipe] = useState<Recipe | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('/default.webp');
-  const [filePreview, setFilePreview] = useState<File | null>(null);
+  // const [filePreview, setFilePreview] = useState<File | null>(null);
 
   //Store
   const { recipes, addRecipe, fetchRecipes } = useStore();
@@ -277,7 +277,7 @@ const AddRecipePage = () => {
                 name="image"
                 id="image"
                 placeholder="/mon-image.jpg"
-                defaultValue={imagePreview}  
+                defaultValue={imagePreview}
                 onChange={(e) => setImagePreview(e.target.value)}
               />
               {/* <input
@@ -289,22 +289,23 @@ const AddRecipePage = () => {
                 accept="image/*"
                 onChange={(e) => setFilePreview(e.target.files?.[0] || null)}
               /> */}
-            {imagePreview && (
-              <>
-                <img 
-                  src={imagePreview || '/default.webp'}
-                  alt={`Preview de ${imagePreview}`}
-                  onError={(e) => e.currentTarget.classList.add('hidden')}
-                  onLoad={(e) => e.currentTarget.classList.remove('hidden')}
-                />
-                {/* <img 
+              {imagePreview && (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imagePreview || '/default.webp'}
+                    alt={`Preview de ${imagePreview}`}
+                    onError={(e) => e.currentTarget.classList.add('hidden')}
+                    onLoad={(e) => e.currentTarget.classList.remove('hidden')}
+                  />
+                  {/* <img 
                   src={filePreview ? URL.createObjectURL(filePreview) : undefined} 
                   alt={`Preview de ${imagePreview}`}
                   style={{ maxWidth: '100%' }}
                 />
                 <p>{filePreview?.name}</p> */}
-              </> )
-            }
+                </>)
+              }
             </label>
             <div className="letsgo">
               <button type="submit" className="btn">

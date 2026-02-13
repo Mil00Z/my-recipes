@@ -378,17 +378,18 @@ const UpdateRecipePage = () => {
                 defaultValue={updatedRecipe?.image ?? "/default-recipe.webp"}
                 onChange={(e) => setImagePreview(e.target.value)}
               />
-              
+
               {imagePreview && (
                 <>
-                  <img 
-                    src={imagePreview} 
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imagePreview}
                     alt={`Preview de ${imagePreview}`}
                     className="preview-image"
                     onError={(e) => e.currentTarget.classList.add('hidden')}
                     onLoad={(e) => e.currentTarget.classList.remove('hidden')}
-                  /> 
-                </> 
+                  />
+                </>
               )}
             </label>
 
