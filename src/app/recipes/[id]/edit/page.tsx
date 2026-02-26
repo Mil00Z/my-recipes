@@ -95,7 +95,7 @@ const UpdateRecipePage = () => {
 
     const recipeToSend = { ...patchRecipe };
 
-    console.log("Ustensils to send:", recipeToSend.ustensils);
+    // console.log("Ustensils to send:", recipeToSend.ustensils);
 
     try {
       const response = await fetch(`/api/recipes/${getParams.id}`, {
@@ -106,12 +106,12 @@ const UpdateRecipePage = () => {
         body: JSON.stringify(recipeToSend),
       });
 
-
       if (!response.ok) {
         throw new Error("Failed to Send New Recipe");
       }
 
       const optimsiticUpdatedRecipe = { ...updatedRecipe, ...patchRecipe } as Recipe;
+
       //Local State
       setUpdatedRecipe(optimsiticUpdatedRecipe);
       setIsUpdated(true);

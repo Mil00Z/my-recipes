@@ -190,7 +190,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     console.log(`✅ Recette ${currentRecipeId} partiellement modifiée avec succès.`);
 
     //Ingredients
-    if (ingredients && ingredients.length > 0) {
+    if (ingredients && ingredients.length >= 0) {
 
       // Clear Existing Joints
       const { error: deleteIngredientsError } = await supabase
@@ -273,7 +273,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
 
     //Appliances
-    if (appliances && appliances.length > 0) {
+    if (appliances && appliances.length >= 0) {
 
       // Clear Existing Joints
       const { error: deleteAppliancesError } = await supabase
@@ -359,7 +359,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
 
     //Ustensils
-    if (ustensils && ustensils.length > 0) {
+    if (ustensils && ustensils.length >= 0) {
 
       // Clear Existing Joints
       const { error: deleteUstensilsError } = await supabase
