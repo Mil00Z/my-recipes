@@ -337,7 +337,7 @@ const RecipeSingle = () => {
           </footer>
         </article>
 
-        <Modale title={fetchedRecipe.title} modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} />
+        <Modale title={fetchedRecipe.title} modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} onConfirm={handleDeleteRecipe} />
 
       </PageWrapper >
     </>
