@@ -1,122 +1,139 @@
-.btn  {
+.btn {
+    --color: var(--white-color);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: .8rem;
-    color:var(--white-color);
+    color: var(--color);
     text-decoration: none;
-    border:none;
+    border: none;
     border-radius: var(--radius);
     background-color: var(--black-color);
     transition: var(--regular-transi);
 
     //search
     &-search {
-    --sizes:45px;
-    width:var(--sizes);
-    height:var(--sizes);
-    position: absolute;
-    top:50%;
-    right:8px;
-    transform: translate(0,-50%);
+        --sizes: 45px;
+        width: var(--sizes);
+        height: var(--sizes);
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translate(0, -50%);
 
         i.fa-solid {
-        color:var(--secondary-color);
-        transition: var(--regular-transi);
+            color: var(--secondary-color);
+            transition: var(--regular-transi);
         }
     }
 
-    &-cta{
-    width: fit-content;
-    margin-block: 2rem;
-    padding: 1rem;
-    font {
-        size: 1.25rem;
-        weight: var(--weight-bold);
-    }
-    background-color: var(--corporate-color);
-    color:var(--white-color);
-    text-decoration: none;
-    
+    &-cta {
+        --color: var(--white-color);
+        width: fit-content;
+        margin-block: 2rem;
+        padding: 1rem;
+
+        font {
+            size: 1.25rem;
+            weight: var(--weight-bold);
+        }
+
+        background-color: var(--corporate-color);
+        text-decoration: none;
+
         &:hover {
-        transform: translateY(-2px);
-        background: var(--primary-color);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-        
-        .btn-icon {
-        transform: translateX(-10px);
-        }
-  }
+            transform: translateY(-2px);
+            background: var(--primary-color);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 
-    
+            .btn-icon {
+                transform: translateX(-10px);
+            }
+        }
+
+
     }
 
-    &-go{
+    &-go {
         flex-direction: row-reverse;
-        
-    
-        .btn-icon{
-            transform:rotateY(180deg);
+
+        .btn-icon {
+            transform: rotateY(180deg);
         }
     }
 
     &-icon {
-        margin-inline:5px;
+        margin-inline: 5px;
         font-size: 1.55rem;
         transition: var(--regular-transi);
     }
 
 
-    &[class*="reset"]{
+    &[class*="reset"] {
         padding: .55rem;
         font-size: 1.25rem;
 
-        &:hover{
-        color: var(--black-color);
-        background-color: var(--secondary-color);
+        &:hover {
+            --color: var(--black-color);
+            background-color: var(--secondary-color);
         }
 
     }
 
-    
-    &[class*="manage"]{
+    &[class*="manage"] {
         padding: .8rem 0;
+
         font {
             size: 1.1rem;
         }
-        color: var(--white-color);
 
-        &.add{
+        &.add {
             background-color: var(--primary-color);
-            font-weight: var(--weight-bold); 
+            font-weight: var(--weight-bold);
         }
 
-        &.remove{
+        &.remove {
             background-color: var(--color-debeug);
         }
     }
 
-    &[class*="delete"]{
-        width:100%;
+    &[class*="delete"] {
+        width: 100%;
         padding: 1rem 0;
+
         font {
             size: 1.25rem;
             weight: var(--weight-bold);
         }
+
         background-color: var(--corporate-color);
         color:var(--white-color);
-        
+
     }
 
-     &.disabled {
-        color: var(--secondary-color);}
+    &-link {
+        --color: var(--black-color);
+        background: none;
+        border: none;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            // --color: var(--secondary-color);
+        }
+    }
+
+    &.disabled {
+        --color: var(--secondary-color);
+    }
 
 }
 
-.btn:hover,
-.btn:focus {
+.btn:not(.btn-link):hover,
+.btn:not(.btn-link):focus {
+    --color: var(--white-color);
     background-color: var(--black-color);
-    color:var(--white-color);
     cursor: pointer;
 }
 
@@ -125,14 +142,12 @@ button[type="submit"] {
 
     font-size: 1rem;
     font-weight: var(--weight-bold);
-    color:var(--white-color);
+    color: var(--white-color);
     background: var(--primary-color);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 
     &:hover {
-    
-    background-color: var(--black-color);
+        background-color: var(--black-color);
     }
 }
-
