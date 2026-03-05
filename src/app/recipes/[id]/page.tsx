@@ -16,7 +16,7 @@ import { normalizeRecipe } from "@/utils/normalizeRecipeApi";
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
 import Loading from "@/components/Loading/Loading";
 import FeedbackBlock from "@/components/FeedbackBlock/FeedbackBlock";
-
+import Modale from "@/components/Modale/Modale";
 
 //Styles
 import "./Recipe.scss";
@@ -28,6 +28,8 @@ const RecipeSingle = () => {
   const [deletedRecipe, setDeletedRecipe] = useState<{ message: string } | null>(null);
   const [showAdminFlow, setShowAdminFlow] = useState<boolean>(false);
   const [imgError, setImageError] = useState<boolean>(false);
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
 
 
   //Get Url Params
@@ -51,34 +53,37 @@ const RecipeSingle = () => {
 
   }
 
-  const handleDeleteRecipe = async () => {
-    if (
-      window.confirm(
-        `Suppression de la recette ${getParams.id} - ${fetchedRecipe?.title} ?`
-      )
-    ) {
-      try {
-        const response = await fetch(`/api/recipes/${getParams.id}`, {
-          method: "delete",
-        });
+  const handleTriggerDelete = () => {
 
-        if (!response.ok) {
-          throw new Error("Failed to Delete Recipe");
-        }
+    setModalIsOpen(true);
 
-        const result = await response.json();
-        setDeletedRecipe(result);
-
-        //Delai for transition
-        setTimeout(() => {
-          //Redirect
-          router.push("/");
-        }, timeOutTiming);
-      } catch (error) {
-        console.error("Erreur réseau ou autre:", error);
-      }
-    }
   };
+
+  const handleDeleteRecipe = async () => {
+
+    try {
+      const response = await fetch(`/api/recipes/${getParams.id}`, {
+        method: "delete",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to Delete Recipe");
+      }
+
+      const result = await response.json();
+      setDeletedRecipe(result);
+
+      //Delai for transition
+      setTimeout(() => {
+        //Redirect
+        router.push("/");
+      }, timeOutTiming);
+    } catch (error) {
+      console.error("Erreur réseau ou autre:", error);
+    }
+
+
+  }
 
   useEffect(() => {
     if (!getParams.id) {
@@ -220,7 +225,7 @@ const RecipeSingle = () => {
                 <>
                   <button
                     className="btn btn-delete recipe-delete-btn"
-                    onClick={handleDeleteRecipe}
+                    onClick={handleTriggerDelete}
                   >
                     🗑️ Supprimer la recette
                   </button>
@@ -331,6 +336,9 @@ const RecipeSingle = () => {
             </Link>
           </footer>
         </article>
+
+        <Modale title={fetchedRecipe.title} modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} />
+
       </PageWrapper >
     </>
   );
