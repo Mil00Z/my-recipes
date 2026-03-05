@@ -1,0 +1,19 @@
+dialog::backdrop {
+    background: rgba(0, 0, 0, .55);
+}
+
+.modale {
+    --spacing: 2rem;
+    width: 50dvw;
+    height: fit-content;
+    padding: var(--spacing);
+    border-radius: var(--radius);
+    border: none;
+
+    .list-actions {
+        --gap: var(--spacing);
+        display: flex;
+        padding-inline: 0;
+        column-gap: var(--spacing);
+    }
+}
