@@ -8,11 +8,11 @@ interface ModaleProps {
     title: string;
     modalIsOpen: boolean;
     setModalIsOpen: (arg: boolean) => void;
-    // confirm?: () => void;
+    onConfirm: () => void;
     // delete?: () => void;
 }
 
-const Modale = ({ title, modalIsOpen, setModalIsOpen }: ModaleProps) => {
+const Modale = ({ title, modalIsOpen, setModalIsOpen, onConfirm }: ModaleProps) => {
 
     const dialog = useRef<HTMLDialogElement>(null);
 
@@ -23,8 +23,6 @@ const Modale = ({ title, modalIsOpen, setModalIsOpen }: ModaleProps) => {
         } else {
             dialog.current?.close();
         }
-
-        console.log(dialog.current?.returnValue);
     }, [modalIsOpen]);
 
 
@@ -36,10 +34,13 @@ const Modale = ({ title, modalIsOpen, setModalIsOpen }: ModaleProps) => {
                     <h2>Confirmer la suppression ?</h2>
                     <p>{`Are you sure you want to delete - ${title ? title : 'Recette Unknown'} ?`}</p>
                     <menu className="list-actions">
-                        <button id="confirmDelete" value="confirm" className="btn btn-cta">
+                        <button id="confirmDelete" value="confirm" className="btn btn-cta" onClick={(e) => {
+                            e.preventDefault();
+                            onConfirm();
+                        }}>
                             Supprimer
                         </button>
-                        <button className="btn btn-cta" value="cancel" >
+                        <button className="btn btn-link" value="cancel" >
                             Annuler
                         </button>
                     </menu>
