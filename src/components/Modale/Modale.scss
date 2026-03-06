@@ -1,5 +1,5 @@
 dialog::backdrop {
-    background: rgba(0, 0, 0, .55);
+    background: rgba(0, 0, 0, .66);
 }
 
 .modale {
@@ -16,4 +16,15 @@ dialog::backdrop {
         padding-inline: 0;
         column-gap: var(--spacing);
     }
+
+    &-confirm {}
+
+    &-alert {
+
+        .btn-cta {
+            margin-block: .5rem;
+        }
+
+    }
+
 }
