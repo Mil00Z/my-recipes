@@ -5,14 +5,15 @@ import './Modale.scss';
 
 
 interface ModaleProps {
+    type: "alert" | "confirm";
     title: string;
+    description?: string;
     modalIsOpen: boolean;
     setModalIsOpen: (arg: boolean) => void;
-    onConfirm: () => void;
-    // delete?: () => void;
+    onConfirm?: () => void;
 }
 
-const Modale = ({ title, modalIsOpen, setModalIsOpen, onConfirm }: ModaleProps) => {
+const Modale = ({ type, title, description, modalIsOpen, setModalIsOpen, onConfirm }: ModaleProps) => {
 
     const dialog = useRef<HTMLDialogElement>(null);
 
@@ -29,20 +30,29 @@ const Modale = ({ title, modalIsOpen, setModalIsOpen, onConfirm }: ModaleProps) 
 
     return (
         <>
-            <dialog id="deleteDialog" className="modale" ref={dialog} onClose={() => setModalIsOpen(false)} >
+            <dialog id="deleteDialog" className={`modale modale-${type}`} ref={dialog} onClose={() => setModalIsOpen(false)} >
                 <form method="dialog">
-                    <h2>Confirmer la suppression ?</h2>
-                    <p>{`Are you sure you want to delete - ${title ? title : 'Recette Unknown'} ?`}</p>
+                    <h2>{title}</h2>
+                    {description && <p>{description}</p>}
                     <menu className="list-actions">
-                        <button id="confirmDelete" value="confirm" className="btn btn-cta" onClick={(e) => {
-                            e.preventDefault();
-                            onConfirm();
-                        }}>
-                            Supprimer
-                        </button>
-                        <button className="btn btn-link" value="cancel" >
-                            Annuler
-                        </button>
+
+                        {type === 'confirm' && (<>
+                            <button id="confirmDelete" value="confirm" className="btn btn-cta" onClick={(e) => {
+                                e.preventDefault();
+                                onConfirm?.();
+                            }}>
+                                Supprimer
+                            </button>
+                            <button className="btn btn-link" value="cancel" >
+                                Annuler
+                            </button>
+
+                        </>)}
+
+                        {type === 'alert' && (<button value="confirm" className="btn btn-cta" >
+                            OK
+                        </button>)}
+
                     </menu>
                 </form>
             </dialog>
