@@ -170,7 +170,7 @@ export default function LoginPage() {
 
                     <button className="btn go" type="submit">Se connecter</button>
                 </form>
-                <Modale type={'alert'} title={`Identifiants Invalides`} modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} />
+                <Modale type={'alert'} title={`Identifiants Invalides`} description={"L'adresse email ou le mot de passe est incorrect. Veuillez réessayer."} modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen} />
             </section>
         </PageWrapper>
     )
