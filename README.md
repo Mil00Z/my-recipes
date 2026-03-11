@@ -13,8 +13,8 @@ Ce projet a évolué à travers plusieures phases distinctes :
 | Version | Stack Technique | Accès |
 | :--- | :--- | :--- |
 | **V0 (Originale)** | JavaScript Vanilla (Algorithmes natifs) | [Repo original](https://github.com/Mil00Z/les-petits-plats) |
-| **V1 (Refacto)** | Next.js + Zustand + TS (Données JSON locales) | [Branche `main`](https://my-recipes-2026.vercel.app) |
-| **V2 (Fullstack)** | Next.js 15 + API Routes + Supabase | [Branche `develop`](https://my-recipes-v2-preview.vercel.app) |
+| **V1 (Refacto)** | Next.js + Zustand + TS (Données JSON locales) | [Branche `main`](https://my-recipes-v1.vercel.app) |
+| **V2 (Fullstack)** | Next.js 15 + API Routes + Supabase | [Branche `develop`](https://my-recipes-fs.vercel.app) |
 
 ## �🛠 Stack choisie
 Ce projet a servi de support pour approfondir la maîtrise de l'écosystème Next.js :
@@ -43,5 +43,4 @@ Le cycle de développement a intégré plusieurs challenges techniques majeurs :
 *  **Interface d'Administration (Back-office) :** Feature "Porte", actuellement simplifiée pour la gestion CRUD des recettes.
 
 ## 🚀 État du projet
-* **Statut :** 🟢 **V2 Stable** (App Robuste & CRUD Complet).
-* **Focus actuel :** Optimisations UI & Polish final.
+* **Statut :** 🟢 **V2 online**
