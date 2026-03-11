@@ -1,14 +1,20 @@
 /* List of Recipes */
 .recipes-container {
-    --gap:5dvw;
-    width:100%;
-    min-height:80dvh;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: start;
-    gap:var(--gap) 1rem;
+    --gap: 5dvw;
+    --flow: 3;
+    width: 100%;
+    min-height: 80dvh;
+    display: grid;
+    grid-template-columns: repeat(var(--flow), 1fr);
+    gap: 3rem var(--gap);
     margin-top: 3rem;
+    align-items: start;
+
+    @media all and (max-width: 1060px) {
+        grid-template-columns: 1fr;
+    }
+
+    @media all and (min-width: 1061px) and (max-width: 1200px) {
+        --flow: 2
+    }
 }
-
-
