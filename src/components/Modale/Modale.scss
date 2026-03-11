@@ -1,0 +1,58 @@
+dialog[open]::backdrop {
+    animation: backdropFadeIn .2s ease-out forwards;
+    transition: var(--reg-transi);
+}
+
+.modale {
+    --spacing: 2rem;
+    width: clamp(200px, 45dvw, 500px);
+    height: fit-content;
+    padding: var(--spacing);
+    border-radius: var(--radius);
+    border: none;
+
+    &[open] {
+        animation: modalSlideIn .4s ease-out forwards;
+    }
+
+    .list-actions {
+        --gap: var(--spacing);
+        display: flex;
+        padding-inline: 0;
+        column-gap: var(--spacing);
+    }
+
+    &-confirm {}
+
+    &-alert {
+
+        .btn-cta {
+            margin-block: .5rem;
+        }
+
+    }
+
+}
+
+
+@keyframes backdropFadeIn {
+    from {
+        background: rgba(0, 0, 0, 0);
+    }
+
+    to {
+        background: rgba(0, 0, 0, .77);
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(25dvh);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
