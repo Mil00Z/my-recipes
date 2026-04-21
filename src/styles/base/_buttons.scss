@@ -1,50 +1,153 @@
-.btn  {
-    // --sizes:45px;
-    // width:var(--sizes);
-    // height:var(--sizes);
-    // position: absolute;
-    // top:50%;
-    // right:8px;
-    // transform: translate(0,-50%);
+.btn {
+    --color: var(--white-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
-    color:var(--white-color);
-    border:none;
+    padding: .8rem;
+    color: var(--color);
+    text-decoration: none;
+    border: none;
     border-radius: var(--radius);
     background-color: var(--black-color);
     transition: var(--regular-transi);
 
     //search
     &-search {
-    --sizes:45px;
-    width:var(--sizes);
-    height:var(--sizes);
-    position: absolute;
-    top:50%;
-    right:8px;
-    transform: translate(0,-50%);
+        --sizes: 45px;
+        width: var(--sizes);
+        height: var(--sizes);
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translate(0, -50%);
 
         i.fa-solid {
-        color:var(--secondary-color);
-        transition: var(--regular-transi);
+            color: var(--secondary-color);
+            transition: var(--regular-transi);
         }
     }
 
-    //reset
-    &.reset-tag{
+    &-cta {
+        --color: var(--white-color);
+        width: fit-content;
+        margin-block: 2rem;
+        padding: 1rem;
+
+        font {
+            size: 1.25rem;
+            weight: var(--weight-bold);
+        }
+
+        background-color: var(--corporate-color);
+        text-decoration: none;
+
+        &:hover {
+            transform: translateY(-2px);
+            background: var(--primary-color);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+
+            .btn-icon {
+                transform: translateX(-10px);
+            }
+        }
+
+
+    }
+
+    &-go {
+        flex-direction: row-reverse;
+
+        .btn-icon {
+            transform: rotateY(180deg);
+        }
+    }
+
+    &-icon {
+        margin-inline: 5px;
+        font-size: 1.55rem;
+        transition: var(--regular-transi);
+    }
+
+
+    &[class*="reset"] {
         padding: .55rem;
         font-size: 1.25rem;
-        color: var(--secondary-color);
-        background-color: var(--third-color);
+
+        &:hover {
+            --color: var(--black-color);
+            background-color: var(--secondary-color);
+        }
+
     }
+
+    &[class*="manage"] {
+        padding: .8rem 0;
+
+        font {
+            size: 1.1rem;
+        }
+
+        &.add {
+            background-color: var(--primary-color);
+            font-weight: var(--weight-bold);
+        }
+
+        &.remove {
+            background-color: var(--color-debeug);
+        }
+    }
+
+    &[class*="delete"] {
+        width: 100%;
+        padding: 1rem 0;
+
+        font {
+            size: 1.25rem;
+            weight: var(--weight-bold);
+        }
+
+        background-color: var(--corporate-color);
+        color:var(--white-color);
+
+    }
+
+    &-link {
+        --color: var(--black-color);
+        background: none;
+        border: none;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            // --color: var(--secondary-color);
+        }
+    }
+
+    &.disabled {
+        --color: var(--secondary-color);
+    }
+
 }
 
-.btn:hover,
-.btn:focus {
+.btn:not(.btn-link):hover,
+.btn:not(.btn-link):focus {
+    --color: var(--white-color);
     background-color: var(--black-color);
-    color:var(--white-color);
     cursor: pointer;
 }
 
+
+button[type="submit"] {
+
+    font-size: 1rem;
+    font-weight: var(--weight-bold);
+    color: var(--white-color);
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+        background-color: var(--black-color);
+    }
+}

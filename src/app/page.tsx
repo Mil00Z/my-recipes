@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 import { useStore } from "@/hooks/dataStore";
 import type { Filter } from "@/types/filter.types";
@@ -9,6 +9,8 @@ import type { Filter } from "@/types/filter.types";
 
 //UI
 import PageWrapper from "@/components/PageWrapper/PageWrapper";
+import Loading from '@/components/Loading/Loading';
+import Error from '@/components/Error/Error';
 import FilterSearch from "@/components/Filters/Filter";
 import ResetTag from "@/components/ResetTag/ResetTag";
 import RecipesList from "@/components/RecipesList/RecipesList";
@@ -16,80 +18,92 @@ import TagElement from "@/components/Tag/Tag";
 import Counter from "@/components/Counter/Counter";
 
 
-const FiltersDatas : Filter[] = [
-
+const FiltersDatas: Filter[] = [
   {
-    type : 'ingredients',
+    type: 'ingredients',
     title: 'Ingrédients',
-    method : (value:string) => console.log(value)
   },
   {
-    type : 'appliances',
+    type: 'appliances',
     title: 'Appareils',
-    method : (value:string) => console.log(value)
   },
   {
-    type : 'ustensils',
+    type: 'ustensils',
     title: 'Ustensiles',
-    method : (value:string) => console.log(value)
   },
   {
-    type : 'timing',
+    type: 'timing',
     title: 'Minutages',
-    method : (value:string) => console.log(value)
   }
 ]
 
 
-
 const Home = () => {
 
-  const {recipes,matchingRecipes,updateResults,resetTags} = useStore();
-
+  const { recipes, isLoading, isError, fetchRecipes, matchingRecipes } = useStore();
 
 
   useEffect(() => {
 
-    // PATCH : clean UI on reload | navigation
-    updateResults(recipes);
-    resetTags();
+    // PATCH LOCAL : clean UI on reload | navigation
+    // updateResults(recipes);
+    // resetTags();
 
+    fetchRecipes();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-return(
- 
-    <PageWrapper layout="home" >
+
+  if (isLoading) {
+
+    return (
+      <PageWrapper layout="home" >
+        <Loading />
+      </PageWrapper>
+    )
+  }
+
+  if (isError) {
+    return (
+      <PageWrapper>
+        <Error dataType={'recipes'} />
+      </PageWrapper>
+    );
+  }
+
+
+  return (
+
+    <PageWrapper layout="home">
 
       <section className="recipes-filter">
-          <form action="/" className="form-select">
-            <div className="filters-group">
 
-              {FiltersDatas.map((filter:Filter) => {
+        <form action="/" className="form-select">
+          <div className="filters-group">
 
-                  return(<FilterSearch key={filter.type} type={filter.type} title={filter.title} method={filter.method} />)
-              })}
+            {FiltersDatas.map((filter: Filter) => {
+              return (<FilterSearch key={filter.type} type={filter.type} title={filter.title} />)
+            })}
 
-              <ResetTag />
+            <ResetTag />
 
-            </div>
-                
-            <div className="recipe-taglist">
-              <TagElement element="tag" />
-            </div>
+          </div>
 
-            </form>
+          <div className="recipe-taglist">
+            <TagElement element="tag" />
+          </div>
 
+        </form>
 
-            <Counter value={matchingRecipes.length} />
-            
+        <Counter value={matchingRecipes.length} />
+
       </section>
 
-      
       <RecipesList recipes={recipes} matchingRecipes={matchingRecipes} />
-    
 
     </PageWrapper>
 
-)
+  )
 }
 export default Home;

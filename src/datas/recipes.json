@@ -97,7 +97,7 @@
           "unit": "ml"
         },
         {
-          "ingredient": "Coulis de tomate",
+          "ingredient": "Coulis de tomates",
           "quantity": 25,
           "unit": "cl"
         },
@@ -220,7 +220,7 @@
           "quantity": 1
         },
         {
-          "ingredient": "Pomme",
+          "ingredient": "Pommes",
           "quantity": 3
         },
         {
@@ -356,10 +356,14 @@
           "ingredient": "Vinaigre Balsamic"
         },
         {
-          "ingredient": "Huile d'olive"
+          "ingredient": "Huile d'olive",
+          "quantity": 1,
+          "unit": "cuillère à soupe"
         },
         {
-          "ingredient": "Basilic"
+          "ingredient": "Basilic",
+          "quantity":1,
+          "unit":"tige"
         }
       ],
       "time": 15,
@@ -776,8 +780,8 @@
         },
         {
           "ingredient": "Crème fraîche",
-          "quantity": 200,
-          "unit": "grammes"
+          "quantity": 25,
+          "unit": "cl"
         },
         {
           "ingredient": "Parmesan",
@@ -815,8 +819,8 @@
         },
         {
           "ingredient": "Coulis de tomate",
-          "quantity": 300,
-          "unit": "grammes"
+          "quantity": 40,
+          "unit": "cl"
         },
         {
           "ingredient": "Viande hachée 1% de matière grasse",
@@ -1484,7 +1488,7 @@
     "servings": 40,
     "ingredients": [
       {
-        "ingredient": "Pomme",
+        "ingredient": "Pommes",
         "quantity": 2
       },
       {
@@ -1746,8 +1750,8 @@
     "ingredients": [
       {
         "ingredient": "Jus de citron",
-        "quantity": 100,
-        "unit": "grammes"
+        "quantity": 50,
+        "unit": "cl"
       },
       {
         "ingredient": "Mascarpone",

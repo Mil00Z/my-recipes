@@ -8,16 +8,18 @@ import "./RecipesList.scss";
 
 interface RecipesListProps {
   recipes: Recipe[];
-  matchingRecipes: Recipe[];
+  matchingRecipes : Recipe[] ;
+  // matchingRecipes ?: Recipe[] | null;
 }
 
 const RecipesList = ({recipes,matchingRecipes}:RecipesListProps) => {
 
 const displayedRecipes = matchingRecipes?.length > 0 ? matchingRecipes : recipes;
 
+
   return (
     <section className="recipes-container">
-      {displayedRecipes.map((recipe:Recipe) => {
+      {displayedRecipes?.map((recipe:Recipe) => {
         return (<RecipeCard key={recipe.id} recipe={recipe} />) 
       })}
     </section>

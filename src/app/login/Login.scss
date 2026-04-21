@@ -1,0 +1,116 @@
+.login {
+    --reg-spacing: .25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // align-items: center;
+
+    .error {
+        padding: var(--reg-spacing);
+
+        font : {
+            size: 1rem;
+        }
+
+        text-align: center;
+        color:crimson
+    }
+
+    .success {
+        padding: var(--reg-spacing);
+        font-size: 1.2rem;
+        color: var(--primary-color);
+    }
+
+    &-form {
+        width: 45%;
+        margin: 5dvh auto;
+        padding: 2rem 2.5rem;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        // transition: all 0.33s ease-in-out;
+        outline: 1px solid transparent;
+
+        &.is-ok {
+            width: 65%;
+            padding: 3dvh;
+
+            h1 {
+            text-align: center;
+            }
+
+            .logged-in-message {
+            text-align: center;
+            margin-block:0;
+
+           
+            &:first-of-type {
+            
+                strong {
+                color: var(--primary-color);
+                font-weight: 600;
+                }
+            }
+
+            .count {
+                font-weight: bold;
+                color: var(--primary-color);
+            }
+        }     
+
+    .redirect {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+}
+
+    .sign-in-button {
+        width: fit-content;
+        align-self: center;
+    }
+}
+}
+
+
+.log-in-content {
+    --sizes: 450px;
+    width: var(--sizes);
+    box-sizing: border-box;
+    background-color: var(--white-color);
+    border-radius: 10px;
+    padding: var(--reg-spacing);
+    transition: var(--reg-transi);
+}
+
+.login-icon {
+    font-size: 5rem;
+}
+
+.input-remember {
+    display: flex;
+}
+
+.input-remember label {
+    margin-left: 0.25rem;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.input-wrapper label {
+    font-weight: bold;
+}
+
+.input-wrapper input {
+    padding: 5px;
+    font-size: 1.2rem;
+}

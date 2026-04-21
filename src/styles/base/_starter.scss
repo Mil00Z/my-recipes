@@ -37,6 +37,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100dvh;
     margin: 0;
     padding: 0;
     background-color: var(--body-background-color);
@@ -68,14 +69,17 @@ body{
 }
 
 .wrapper {
+    --layout-spacing:3rem;
     width:var(--skeleton);
+
+    &:has(.update-layout){
+        --skeleton:100%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
 }
 
-
-.link {
-    color:var(--white-color);
-    font-size:var(--body-font-size);
-}
 
 .v-hidden {
     position: absolute;

@@ -1,9 +1,10 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Filter } from "@/types/filter.types";
 import type { Recipe } from "@/types/recipe.types";
-import type { Tag } from "@/types/tag.types";
 import type { Ingredient } from "@/types/ingredient.types";
+import type { Ustensil } from '@/types/ustensil.types';
+import type { Appliance } from '@/types/appliance.types';
 
 import { useStore } from "@/hooks/dataStore";
 
@@ -11,36 +12,27 @@ import { useStore } from "@/hooks/dataStore";
 import "./Filter.scss";
 
 
-const FilterSearch = ({type,title}:Filter) => {
+const FilterSearch = ({ type, title }: Filter) => {
 
-    const {matchingRecipes,tags,updateTags,updateResults} = useStore();
+    const { matchingRecipes, updateTags } = useStore();
 
     // State pour la liste filtrée à afficher
     const [displayedFilters, setDisplayedFilters] = useState<string[]>([]);
 
 
-    function handleUpdateTag(value:string){
+    function handleUpdateTag(value: string) {
 
         //update tag
-        updateTags({type:type,value:value});
+        updateTags({ type: type, value: value });
 
-        // filter tag
-        // console.log('before',matchingRecipes)
-
-        const filteredResults = filteredData(type,value);
-        // console.log('after',filteredResults);
-        
-        //Update results
-        updateResults(filteredResults);
-       
     }
 
-    function handleRefreshFilters(value:string){
+    function handleRefreshFilters(value: string) {
 
         const currentString = value.toLowerCase();
 
         const filteredFilters = getFilterDatas().filter((element) => {
-            
+
             return String(element).includes(currentString);
         })
 
@@ -49,183 +41,111 @@ const FilterSearch = ({type,title}:Filter) => {
 
     }
 
-   function filteredData(type: string, value: string) {
-    return matchingRecipes.filter((recipe: Recipe) => {
+    const getFilterDatas = (): string[] => {
 
-        // 1. Vérifier tous les tags existants
-        const existTags = tags.every((tag:Tag) => {
-                switch(tag.type) {
+        // let filtersDatas: string[] = [];    
 
-                    case 'ingredients':
+        switch (type) {
 
-                    if (typeof tag.value === 'string'){
+            //Outils
+            case 'appliances': {
 
-                    return recipe.ingredients.some(ing => 
-                        ing.ingredient.toLowerCase() === tag.value
-                    );
+                const appliancesList: Appliance[] = matchingRecipes.flatMap((recipe: Recipe) => recipe.appliances);
 
-                    }
-                    return false;
 
-                    case 'ustensils':
-                    if (typeof tag.value === 'string'){
-                        return recipe.ustensils.includes(tag.value);
-                    }
-                    return false;
-                    
-                    case 'appliances':
-                    if(typeof tag.value === 'string'){
-                        return recipe.appliance.toLowerCase() === tag.value;
-                    }
-                    return false;
+                const applianceData = appliancesList.map((appliance: Appliance) => appliance.name.toLowerCase());
 
-                    case 'timing':
-                    console.log(tag.value,typeof tag.value);  
-                    return recipe.time === parseInt(String(tag.value));
+                const filtersDatas = Array.from(new Set(applianceData)).sort((a, b) => {
+                    return a.localeCompare(b);
+                });
 
-                    default:
-                    return false;
-                }
-            });
-
-        // 2. Vérifier le nouveau tag
-        const newTagMatch = (() => {
-            switch(type) {
-                case 'ingredients':
-                return recipe.ingredients.some(ing => 
-                    ing.ingredient.toLowerCase() === value
-                );
-                case 'ustensils':
-                return recipe.ustensils.includes(value);
-
-                case 'appliances':
-                return recipe.appliance.toLowerCase() === value;
-
-                case 'timing':
-                return recipe.time === parseInt(value);
-
-                default:
-                return false
+                return filtersDatas;
             }
-        })();
 
-        // 3. La recette doit matcher tous les critères
-        return existTags && newTagMatch;
-    });
-    }
+            //Temps
+            case 'timing': {
 
-    const getFilterDatas = () : string[] => {
+                const allTiming = matchingRecipes.map((recipe: Recipe) => recipe.time);
 
-    // let filtersDatas: string[] = [];    
-
-    switch(type) {
-
-        //Outils
-        case 'appliances':{
-            
-            const allAppliances = matchingRecipes.map((recipe:Recipe) => recipe.appliance.toLowerCase());
-           
-            // /Get distinct item of a collection of values
-            const filtersDatas : string[] = Array.from(new Set(allAppliances)).sort((a,b) => {
-                return a.localeCompare(b);
-            });
-    
-            return filtersDatas;
-        }
-
-        //Temps
-        case 'timing': {
-            
-            const allTiming = matchingRecipes.map((recipe:Recipe) => recipe.time);
-           
-            // /Get distinct item of a collection of values
-           const filtersDatas : string[] = Array.from(new Set(allTiming.map(t => t.toString()))).sort((a,b) => {
-                return a.localeCompare(b, undefined, { numeric: true });
-            });
-    
-            return filtersDatas;
-        }
-
-        //Ustensiles
-        case "ustensils": {
-
-            let ustenList: string[] = [];
-    
-            const ustensilsArrays : string[][] = matchingRecipes.map((recipe:Recipe) => recipe.ustensils);
-    
-            ustensilsArrays.forEach((singleUstensilArray:string[]) => {
-    
-                const singleUstensil = singleUstensilArray.map((element:string) =>{
-                    return element.toLowerCase();
+                // /Get distinct item of a collection of values
+                const filtersDatas: string[] = Array.from(new Set(allTiming.map(t => t.toString()))).sort((a, b) => {
+                    return a.localeCompare(b, undefined, { numeric: true });
                 });
-    
-                ustenList = ustenList.concat(singleUstensil);
-    
-            });
-    
-           
-            const filtersDatas: string[] = Array.from(new Set(ustenList)).sort((a,b) => {
-                return a.localeCompare(b);
-            });
-           
-            return filtersDatas;
 
-        }
+                return filtersDatas;
+            }
 
-        //Ingrédients
-        case "ingredients": {
+            //Ustensiles
+            case "ustensils": {
 
-            let ingredList: string[] = [];
-    
-            const ingredientsArrays : Ingredient[][] = matchingRecipes.map((recipe:Recipe) => recipe.ingredients);
-    
-            
-            ingredientsArrays.forEach((singleIngredientArray:Ingredient[]) => {
-    
-                const singleIngred = singleIngredientArray.map((element:Ingredient) =>{
-                    return element.ingredient.toLowerCase();
+                const ustenList: Appliance[] = matchingRecipes.flatMap((recipe: Recipe) => recipe.ustensils);
+
+
+                const ustenData = ustenList.map((ustensil: Ustensil) => ustensil.name.toLowerCase());
+
+                const filtersDatas = Array.from(new Set(ustenData)).sort((a, b) => {
+                    return a.localeCompare(b);
                 });
-    
-                ingredList = ingredList.concat(singleIngred);
-    
-            });
-    
-           
-            const filtersDatas:string[] = Array.from(new Set(ingredList)).sort((a,b) => {
-                return a.localeCompare(b);
-            });
-           
-            return filtersDatas;
 
+                return filtersDatas;
+            }
+
+            //Ingrédients
+            case "ingredients": {
+
+                let ingredList: string[] = [];
+
+                const ingredientsArrays: Ingredient[][] = matchingRecipes.map((recipe: Recipe) => recipe.ingredients);
+
+
+                ingredientsArrays.forEach((singleIngredientArray: Ingredient[]) => {
+
+                    const singleIngred = singleIngredientArray.map((element: Ingredient) => {
+                        return element.ingredient.toLowerCase();
+                    });
+
+                    ingredList = ingredList.concat(singleIngred);
+
+                });
+
+
+                const filtersDatas: string[] = Array.from(new Set(ingredList)).sort((a, b) => {
+                    return a.localeCompare(b);
+                });
+
+                return filtersDatas;
+
+            }
+
+            //Default Ending
+            default:
+                return [];
         }
-    
-       //Default Ending
-        default:
-        return [];
-    }
 
     };
 
-
     useEffect(() => {
+
         setDisplayedFilters(getFilterDatas());
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchingRecipes]);
-    
-   
-  return (
-    <>
-        <div className="filters">
-            <label htmlFor={type} className="labels">
-                {title} <i className="fa-solid fa-angle-down"></i>
-            </label>
-            <input type="search" name={type} id={type} className="search-filter" onChange={(event) => handleRefreshFilters(event.target.value)}/>
-            <ul className="search-results">
-                {displayedFilters?.map((element) => {
-                    return <li key={element} className="option" data-value={element} onClick={() => handleUpdateTag(element)}>{element}</li>;
-                })}
-            </ul>
-        </div>
-    </>
-  )
+
+
+    return (
+        <>
+            <div className="filters">
+                <label htmlFor={type} className="labels">
+                    {title} <i className="fa-solid fa-angle-down"></i>
+                </label>
+                <input type="search" name={type} id={type} className="search-filter" onChange={(event) => handleRefreshFilters(event.target.value)} />
+                <ul className="search-results">
+                    {displayedFilters?.map((element) => {
+                        return <li key={element} className="option" data-value={element} onClick={() => handleUpdateTag(element)}>{element}</li>;
+                    })}
+                </ul>
+            </div>
+        </>
+    )
 };
 export default FilterSearch;
