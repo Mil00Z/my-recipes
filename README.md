@@ -43,5 +43,4 @@ Le cycle de développement a intégré plusieurs challenges techniques majeurs :
 *  **Interface d'Administration (Back-office) :** Feature "Porte", actuellement simplifiée pour la gestion CRUD des recettes.
 
 ## 🚀 État du projet
-* **Statut :** 🟢 **Simple V2 online**
-
+* **Statut :** 🟢 **V2 online**
